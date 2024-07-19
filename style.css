@@ -13,6 +13,7 @@
   nav{
     background-color: white;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+    
   }
   nav ul{
     width: 100%;
@@ -61,7 +62,7 @@
   .sidebar a{
     width: 100%;
   }
-  .menu{
+  .menu-button{
     display: block;
     margin-right: auto;
     
@@ -74,16 +75,34 @@
   }
 
   @media(max-width: 800px){
+    .menu{
+      display: flex;
+      flex-direction: row;
+      margin-top: 10px;
+    
+    }
+    
     .hideOnMobile{
       display: none;
+    } 
+    .nav ul:nth-child(3){
+      flex-direction: column;
+      display: flex;
+      float 
     }
-    .menu{
-      display: block;
     }
-  }
+    
+  
   @media(max-width: 400px){
     .sidebar{
       width: 100%;
+    }
+    .topbar{
+      display: inline-block;
+      flex-direction: column;
+    }
+    .nav ul{
+      display: none;
     }
     
   }
@@ -112,5 +131,3 @@
 .search button i {
     font-size: 18px;
 }
-
-  
