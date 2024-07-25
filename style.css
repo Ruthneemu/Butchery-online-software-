@@ -5,13 +5,6 @@
 body{
   min-height: 100vh;
   background: url('laptop.jpg');
-  background-size: cover;*{
-  margin: 0;
-  padding: 0;
-}
-body{
-  min-height: 100vh;
-  background: url('laptop.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -92,8 +85,8 @@ img{
   flex-direction:row;
 }
   .person{
-    margin-left: 380px;
-    bottom: 150px;
+    margin-left: 390px;
+    bottom: 180px;
     position:relative;
   }
    nav ul{
@@ -101,11 +94,17 @@ img{
     display: block;
     
   }
+  .change{
+    display:block;
+    float: right;
+    position: relative;
+    bottom: 40px;
+  }
   form{
-    
     width: 500px;
     display: flex;
     height: 100%;
+    margin-top: 20px;
     
   }
   .search input[type="text"] {
@@ -123,146 +122,14 @@ img{
   .sidebar{
     width: 100%;
   }
- 
-  
-}
-
-.search{
-  flex-grow:1;
-  display: flex;
-  justify-content:flex-end;
-  align-items: center;
-}
-.search input[type="text"] {
-  padding: 5px;
-  margin-right: 0px;
-  font-size: 15px;
-  border-radius: 4px;
-}
-
-.search button {
-  padding: 6px;
-  background: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.search button i {
-  font-size: 18px;
-}
-
-
-  background-repeat: no-repeat;
-  background-position: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-nav{
-  background-color: white;
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
-  
-}
-nav ul{
-  width: 100%;
-  list-style: none;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin: center;
-}
-nav li{
-  height: 50px;
-}
-nav a{
-  height: 50px;
-  padding: 0 0 10px 10px;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  color: black;
-}
-nav a:hover{
-  background-color: #f0f0f0;
-  
-}
-
-.sidebar{
-  position: fixed;
-  top: 0; 
-  left: 0;
-  height: 100vh;
-  width: 250px;
-  background-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
-  list-style: none;
-  display: none;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-.sidebar li{
-  width: 100px;
-}
-.sidebar a{
-  width: 100%;
-}
-.menu-button{
-  display: block;
-  margin-right: auto;
-  
-}
-i{
-  padding: 5px;
-}
-
-img{
-  width: 50px;
-  height: auto;
-  margin-right: 0px;
-}
-
-@media(max-width: 800px){
-  .menu{
-    display: flex;
-    flex-direction: row;
-    margin-top: 10px;
-  
-  }
-
-  img{
-    margin-bottom: 100px;
-    margin-left: 40px;
-    position: relative;
-  }
-  .person{
-    margin-left: 380px;
-    bottom: 200px;
-    position:relative;
-  }
-   nav ul{
-    float: none;
-    display: block;
-  }
-  form{
-    width: 100%;
-    margin:0;
-  }
-  
-  
-  .hideOnMobile{
+  .change{
     display: none;
-  } 
-  
-  }
-  
-
-@media(max-width: 400px){
-  .sidebar{
-    width: 100%;
   }
  
   
+}
+.change{
+  display: block;
 }
 
 .search{
