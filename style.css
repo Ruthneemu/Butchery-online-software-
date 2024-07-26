@@ -1,8 +1,9 @@
-*{
+* {
   margin: 0;
   padding: 0;
 }
-body{
+
+body {
   min-height: 100vh;
   background: url('laptop.jpg');
   background-size: cover;
@@ -10,40 +11,43 @@ body{
   background-position: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-nav{
+
+nav {
   background-color: white;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
-  
 }
-nav ul{
+
+nav ul {
   width: 100%;
   list-style: none;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
- align-items: center;
-
+  align-items: center;
+  margin: 0;
+  padding: 0;
 }
-nav li{
-  height: 50px;
 
-}
-nav a{
+nav li {
   height: 50px;
-  padding: 0 0 10px 10px;
+}
+
+nav a {
+  height: 50px;
+  padding: 0 10px;
   text-decoration: none;
   display: flex;
   align-items: center;
   color: black;
 }
-nav a:hover{
+
+nav a:hover {
   background-color: #f0f0f0;
-  
 }
 
-.sidebar{
+.sidebar {
   position: fixed;
-  top: 0; 
+  top: 0;
   left: 0;
   height: 100vh;
   width: 250px;
@@ -56,104 +60,99 @@ nav a:hover{
   align-items: flex-start;
   justify-content: flex-start;
 }
-.sidebar li{
-  width: 100px;
-}
-.sidebar a{
+
+.sidebar li {
   width: 100%;
 }
-.menu-button{
+
+.sidebar a {
+  width: 100%;
+}
+
+.menu-button {
   display: block;
   margin-right: auto;
-  
 }
-i{
+
+i {
   padding: 5px;
 }
 
-img{
+img {
   width: 50px;
   height: auto;
   margin-right: 0px;
-  
-  
 }
 
-@media(max-width: 800px){
-.image,.menu-button{
-  display: inline-flex;
-  flex-direction:row;
+.change {
+  display: none;
 }
-  .person{
-    margin-left: 390px;
-    bottom: 180px;
-    position:relative;
+
+@media (max-width: 800px) {
+ .image,.menu-button {
+    display: inline-flex;
+    flex-direction: row;
   }
-   nav ul{
+
+
+  nav ul {
     float: none;
     display: block;
-    
   }
-  .change{
-    display:block;
+  .person {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+  }
+
+ .search button {
+    display: block;
+  }
+
+ .change {
+    display: block;
     float: right;
     position: relative;
     bottom: 40px;
   }
-  form{
-    width: 500px;
-    display: flex;
-    height: 100%;
-    margin-top: 20px;
-    
-  }
-  .search input[type="text"] {
-    width: 100%;
 
-  }
-  .hideOnMobile{
-    display: none;
-  } 
-  
-  }
-  
-
-@media(max-width: 400px){
-  .sidebar{
-    width: 100%;
-  }
-  .change{
+ .hideOnMobile {
     display: none;
   }
- 
-  
-}
-.change{
-  display: block;
 }
 
-.search{
-  flex-grow:1;
-  display: flex;
-  justify-content:flex-end;
+@media (max-width: 400px) {
+ .sidebar {
+    width: 100%;
+  }
+
+ .change {
+    display: block;
+    float: right;
+    position: relative;
+    bottom: 40px;
+  }
+}
+
+.search {
+  flex-grow: 1;
   align-items: center;
+  width: 100%;
+  padding-left: 20px;
+  
 }
+form{
+  display: column;
+}
+
 .search input[type="text"] {
-  padding: 5px;
-  margin-right: 0px;
-  font-size: 15px;
-  border-radius: 4px;
+  padding: 5px; /* increased padding */
+  font-size: 16px; /* increased font size */
+  border-radius: 10px; /* added border radius */
+  width: 380px;
+  height: 40px; 
 }
-
-.search button {
-  padding: 6px;
-  background: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.search button i {
+.search i {
   font-size: 18px;
 }
-
