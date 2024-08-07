@@ -443,9 +443,6 @@ body {
 	cursor: pointer;
   transition: transform 0.3s ease;
 }
-<<<<<<< HEAD
-
-=======
 .loogin{
   width: 280px;
   display: block;
@@ -462,7 +459,7 @@ body {
 .loogin:hover{
   background-color: #3e8e41;
 }
->>>>>>> e876675 (mesaage)
+
 .login-btn {
 	width: 100%;
 	padding: 10px;
@@ -499,13 +496,11 @@ body {
   margin-bottom: 10px;
 }
 /*register form*/
-<<<<<<< HEAD
 /* ... (rest of the CSS code remains the same) */
 
 /* Register Form Styles */
 
-=======
->>>>>>> e876675 (mesaage)
+
 .register-box {
 	width: 300px;
 	background-color: #fff;
@@ -568,10 +563,7 @@ body {
 	color: #ffffff;
 	padding: 10px;
 	margin-top: 10px;
-<<<<<<< HEAD
-=======
   margin-bottom: 10px;
->>>>>>> e876675 (mesaage)
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
@@ -585,12 +577,9 @@ body {
 .register-box .login-btn {
 	background-color: #3e8e41;
 	color: #ffffff;
-<<<<<<< HEAD
 	padding: 10px 20px;
-=======
 	padding: 10px 20px; 
   margin-top: 10px;
->>>>>>> e876675 (mesaage)
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
@@ -599,7 +588,66 @@ body {
 .register-box .login-btn:hover {
 	background-color: #23527c;
 }
-<<<<<<< HEAD
-=======
-                                                                                                                                                                                                                                                                                     
->>>>>>> e876675 (mesaage)
+/*delivery.html*/
+.container {
+  width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #45a049;
+}
+
+.map-container {
+  width: 200px;
+  height: 400px;
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+#map { 
+  width:100%;
+  height: 180px;
+}
+        
+.save-address {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.save-address:hover {
+  background-color: #3e8e41; /* Darker green on hover */
+}                                                                                                                   
