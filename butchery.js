@@ -8,6 +8,15 @@ function hideSidebar(){
     sidebar.style.display='none'
 
 }
+const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+
+dropdownToggles.forEach((toggle) => {
+  toggle.addEventListener('click', (event) => {
+    event.preventDefault();
+    const dropdownMenu = toggle.nextElementSibling;
+    dropdownMenu.classList.toggle('show');
+  });
+});
 // Toggle chatbox on click
 document.getElementById('chat-icon').addEventListener('click', function() {
   document.getElementById('chatbox').style.display = 'block';
@@ -33,6 +42,34 @@ document.getElementById('send-message').addEventListener('click', function() {
     messageInput.value = '';
   }
 });
+//login.html 
+function login() {
+  var email = document.getElementById('email').value;
+  var password = document.getElementById('password').value;
+
+  if (email === '' || password === '') {
+    alert("Please fill in all fields!");
+  } else {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'login.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send('email=' + email + '&password=' + password);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        var response = xhr.responseText;
+        if (response === 'success') {
+          alert("Login successful!");
+          // Redirect to dashboard or other page
+        } else {
+          alert("Invalid email or password!");
+        }
+      } else {
+        alert("Error: " + xhr.status);
+      }
+    };
+  }
+}
+// registration.html
 const eyeIcon = document.getElementById('eye');
 const passwordInput = document.querySelector('.password-input input');
 
@@ -60,27 +97,42 @@ eyeIcon.addEventListener('touchstart', () => {
     eyeIcon.classList.remove('fa-eye-slash');
   }
 });
-/*google maps*/
-// Create the map
-document.addEventListener("DOMContentLoaded", function() {
-  const searchButton = document.getElementById("searchButton");
-  const saveButton = document.getElementById("saveButton");
+  
+/*close button*/
+function close(){
+  const container = document.querySelector('.container')
+  container.style.display='none'
+}
+//contact.html
+function myFunction() {
+  var name = document.getElementById('name').value;
+  var email = document.getElementById('email').value;
+  var message = document.getElementById('message').value;
 
-  searchButton.addEventListener("click", function() {
-    alert("Search button clicked!");
-  });
+  if (name === '' || email === '' || message === '') {
+    alert("Empty! Please fill in all fields and send us a message.");
+  } else {
+    alert("Message sent successfully!");
+  }
+}
+//add to cart
+document.getElementById('add-to-cart-form').addEventListener('submit', function(event) {
+  event.preventDefault(); // Prevent the default form submission
 
-  saveButton.addEventListener("click", function() {
-    alert("Save button clicked!");
+  // Get form data
+  const formData = new FormData(this);
+
+  // Make an AJAX request to add the item to the cart
+  fetch('add_to_cart.php', {
+      method: 'POST',
+      body: formData
+  })
+  .then(response => response.text())
+  .then(result => {
+      alert('Item added to cart!');
+      // Optionally update cart UI or redirect
+  })
+  .catch(error => {
+      console.error('Error:', error);
   });
 });
-  // Create the map
-  var map = L.map('map').setView([51.505, -0.09], 13);
-
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    subdomains: ['a', 'b', 'c'],
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
-
-var marker = L.marker([51.5, -0.09]).addTo(map);
