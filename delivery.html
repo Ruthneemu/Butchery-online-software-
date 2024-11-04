@@ -2,25 +2,23 @@
 <html>
   <head>
     <title>Add Map</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""/>    
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""></script>
       <body>
     <div class="container">
-        <h2>Add Address</h2>
-        <p>Certain items may not be present at your closest store. You have the option to substitute these products in your cart.</p>
-        <input type="text" placeholder="Enter your address">
-        <button class="button">Search</button>
+      <div class="cont"><button onclick="close()"></button><a href="index.php"><i class="fa fa-times" aria-hidden="true"></i></a></div>
+      <div class="breadcrumb">
+        <a href="index.php">Home</a> <span>&gt;</span> <a href="delivery.html">Add Map</a>
+      </div>
+      <h2 class="header">Add Address</h2>
+       <p>Certain items may not be present at your closest store. You have the option to substitute these products in your cart.</p>
+       <form action="https://www.google.com/maps/search/" method="get" target="_blank">
+       <input type="text" name="q" id="addressInput" placeholder="Enter your address">
+        <button type="submit" class="button" id="address-button">Search</button></form>
         <div class="map-container">
-          <div id="map">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15959.051141154838!2d36.05099334591605!3d-0.30230489181572145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x18298ddc068e4f17%3A0xa8c2270c2c0ea0d6!2sFamily%20Butchery!5e0!3m2!1sen!2ske!4v1723611951408!5m2!1sen!2ske" width="520" margin-top: 10px; height="405" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>
         </div>
-        <button class="button save-address">Save Address</button>
-
       </div>
   </body>
 </html>

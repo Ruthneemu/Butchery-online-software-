@@ -1,138 +1,168 @@
-function showSidebar(){
-    const sidebar = document.querySelector('.sidebar')
-    sidebar.style.display='flex'
+// JavaScript to handle star rating selection
+const stars = document.querySelectorAll('.rating i');
+let userRatingValue = 0;
 
+stars.forEach(star => {
+    star.addEventListener('click', function() {
+        userRatingValue = this.getAttribute('data-value');
+        updateStarRating(userRatingValue);
+        console.log(`Rated ${userRatingValue} stars`);
+    });
+
+    star.addEventListener('mouseover', function() {
+        updateStarRating(this.getAttribute('data-value'));
+    });
+
+    star.addEventListener('mouseout', function() {
+        updateStarRating(userRatingValue);
+    });
+});
+
+function updateStarRating(value) {
+    stars.forEach(star => {
+        star.classList.toggle('active', star.getAttribute('data-value') <= value);
+    });
 }
-function hideSidebar(){
-    const sidebar = document.querySelector('.sidebar')
-    sidebar.style.display='none'
 
-}
-const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-
-dropdownToggles.forEach((toggle) => {
-  toggle.addEventListener('click', (event) => {
+// Review submission
+document.getElementById('reviewForm').addEventListener('submit', function(event) {
     event.preventDefault();
-    const dropdownMenu = toggle.nextElementSibling;
-    dropdownMenu.classList.toggle('show');
-  });
-});
-// Toggle chatbox on click
-document.getElementById('chat-icon').addEventListener('click', function() {
-  document.getElementById('chatbox').style.display = 'block';
+    const reviewText = document.getElementById('reviewText').value;
+    if (userRatingValue > 0 && reviewText.trim() !== "") {
+        const reviewCard = document.createElement('div');
+        reviewCard.classList.add('review-card');
+        reviewCard.innerHTML = `
+            <div class="review-rating">Rating: ${userRatingValue} Star(s)</div>
+            <div class="review-text">${reviewText}</div>
+        `;
+        document.getElementById('existingReviews').appendChild(reviewCard);
+        document.getElementById('reviewText').value = ""; // Clear textarea
+        userRatingValue = 0; // Reset rating
+        stars.forEach(s => s.classList.remove('active')); // Reset user stars
+    } else {
+        alert("Please provide a rating and a review text.");
+    }
 });
 
-// Close chatbox on click
-document.getElementById('close-chatbox').addEventListener('click', function() {
-  document.getElementById('chatbox').style.display = 'none';
-});
+// Add to Cart Functionality
+document.querySelectorAll('.add-to-cart').forEach((button) => {
+    const counterContainer = button.nextElementSibling; // Assuming counterContainer is next to the button
+    const incrementBtn = counterContainer.querySelector('#increment-btn');
+    const decrementBtn = counterContainer.querySelector('#decrement-btn');
+    const counterValue = counterContainer.querySelector('#counter-value');
 
-// Send message on click
-document.getElementById('send-message').addEventListener('click', function() {
-  const messageInput = document.getElementById('message-input');
-  const message = messageInput.value.trim();
-  if (message !== '') {
-    const chatContent = document.querySelector('.chatbox-content');
-    const messageHTML = `
-      <div class="message">
-        <p>${message}</p>
-      </div>
-    `;
-    chatContent.innerHTML += messageHTML;
-    messageInput.value = '';
-  }
-});
-//login.html 
-function login() {
-  var email = document.getElementById('email').value;
-  var password = document.getElementById('password').value;
+    let quantity = 0; // Initialize quantity for this product
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-  if (email === '' || password === '') {
-    alert("Please fill in all fields!");
-  } else {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'login.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.send('email=' + email + '&password=' + password);
-    xhr.onload = function() {
-      if (xhr.status === 200) {
-        var response = xhr.responseText;
-        if (response === 'success') {
-          alert("Login successful!");
-          // Redirect to dashboard or other page
+    button.addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent default behavior
+
+        const productElement = button.closest('.product');
+        const productName = productElement.querySelector('.product-name').textContent;
+        const productPrice = parseFloat(productElement.querySelector('.product-price').textContent.replace('Ksh ', '').replace(',', ''));
+
+        // Check if the product is already in the cart
+        const existingProductIndex = cart.findIndex(item => item.name === productName);
+
+        if (existingProductIndex > -1) {
+            // Set quantity to the existing product's quantity
+            quantity = cart[existingProductIndex].quantity;
         } else {
-          alert("Invalid email or password!");
+            // Add new product to cart
+            cart.push({
+                name: productName,
+                image: productElement.querySelector('.product-image').src, // Update to use the correct selector for the image
+                price: productPrice,
+                quantity: 1,
+                purchasedOn: new Date().toLocaleString()
+            });
+            quantity = 1; // Start with quantity 1
         }
-      } else {
-        alert("Error: " + xhr.status);
-      }
-    };
-  }
-}
-// registration.html
-const eyeIcon = document.getElementById('eye');
-const passwordInput = document.querySelector('.password-input input');
 
-eyeIcon.addEventListener('click', () => {
-  if (passwordInput.type === 'password') {
-    passwordInput.type = 'text';
-    eyeIcon.classList.add('fa-eye-slash');
-    eyeIcon.classList.remove('fa-eye');
-  } else {
-    passwordInput.type = 'password';
-    eyeIcon.classList.add('fa-eye');
-    eyeIcon.classList.remove('fa-eye-slash');
-  }
+        // Update the counter display
+        counterValue.textContent = quantity;
+
+        // Hide the "Add to Cart" button
+        button.style.display = 'none'; // Hide the button
+
+        // Show the counterContainer
+        counterContainer.style.display = 'flex';
+
+        // Increment Button Functionality
+        incrementBtn.onclick = () => {
+            quantity += 1;
+            counterValue.textContent = quantity;
+
+            // Update cart quantity
+            if (existingProductIndex > -1) {
+                cart[existingProductIndex].quantity = quantity; // Update quantity in the cart
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount(); // Update the cart count
+            showToast('Product quantity updated!'); // Show success message
+        };
+
+        setTimeout(() => {
+            counterContainer.style.display = 'none'; // Hide the counter
+            button.style.display = 'block'; // Show the button
+        }, 3000);
+
+        // Decrement Button Functionality
+        decrementBtn.onclick = () => {
+            if (quantity > 0) {
+                quantity -= 1;
+                counterValue.textContent = quantity;
+                if (existingProductIndex > -1) {
+                    cart[existingProductIndex].quantity = quantity; // Update quantity in the cart
+                    if (quantity === 0) {
+                        cart.splice(existingProductIndex, 1); // Remove the item from the cart if quantity is 0
+                        counterContainer.style.display = 'none'; // Hide the counter if quantity is 0
+                    }
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartCount(); // Update the cart count
+                showToast('Product quantity updated!'); // Show success message
+            }
+        };
+
+        // Save cart to localStorage for the first addition
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount(); // Update the cart count
+        showToast('Product added to cart successfully!');
+    });
 });
 
-// Add event listener for touch devices
-eyeIcon.addEventListener('touchstart', () => {
-  if (passwordInput.type === 'password') {
-    passwordInput.type = 'text';
-    eyeIcon.classList.add('fa-eye-slash');
-    eyeIcon.classList.remove('fa-eye');
-  } else {
-    passwordInput.type = 'password';
-    eyeIcon.classList.add('fa-eye');
-    eyeIcon.classList.remove('fa-eye-slash');
-  }
-});
-  
-/*close button*/
-function close(){
-  const container = document.querySelector('.container')
-  container.style.display='none'
+updateCartCount();
+
+// Cart Functionality
+function updateCartCount() {
+    const cartCount = document.getElementById('basket-count');
+    if (cartCount) {
+        const totalItems = cart.reduce((total, item) => total + item.quantity, 0); // Sum up quantities
+        cartCount.textContent = totalItems; // Update cart count display
+        cartCount.style.display = totalItems > 0 ? 'block' : 'none'; // Show or hide based on item count
+    }
 }
-//contact.html
-function myFunction() {
-  var name = document.getElementById('name').value;
-  var email = document.getElementById('email').value;
-  var message = document.getElementById('message').value;
 
-  if (name === '' || email === '' || message === '') {
-    alert("Empty! Please fill in all fields and send us a message.");
-  } else {
-    alert("Message sent successfully!");
-  }
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
 }
-//add to cart
-document.getElementById('add-to-cart-form').addEventListener('submit', function(event) {
-  event.preventDefault(); // Prevent the default form submission
 
-  // Get form data
-  const formData = new FormData(this);
-
-  // Make an AJAX request to add the item to the cart
-  fetch('add_to_cart.php', {
-      method: 'POST',
-      body: formData
-  })
-  .then(response => response.text())
-  .then(result => {
-      alert('Item added to cart!');
-      // Optionally update cart UI or redirect
-  })
-  .catch(error => {
-      console.error('Error:', error);
-  });
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('add-to-cart')) {
+        console.log("Add to Cart button clicked");
+    } else if (event.target.classList.contains('wishlist-button')) {
+        console.log("Wishlist button clicked");
+        const productId = event.target.getAttribute('data-product-id');
+        addToWishlist(productId);
+    }
 });
+

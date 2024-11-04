@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step-by-Step Order Page</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            display: flex;
+            gap: 20px;
+        }
+
+        /* Header Styling */
+        .header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            background-color: #007bff;
+            padding: 15px;
+            border-radius: 8px;
+            color: #fff;
+            position: relative; /* Make the header position relative */
+        }
+        .header-logo {
+            flex: 0 0 auto; /* Prevent the logo from growing or shrinking */
+        }
+        .header-logo img {
+            height: 50px; /* Adjust logo size */
+        }
+        .header-title {
+            flex: 1; /* Allow the title to take up remaining space */
+            text-align: center; /* Center the title */
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Main Section */
+        .main-section {
+            flex: 2;
+            padding: 20px;
+        }
+
+        /* Card Styling */
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .card-header span {
+            display: flex;
+            align-items: center;
+        }
+        .card-header .step-number {
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+        }
+        .card-header .status {
+            font-size: 1.5rem;
+            color: green;
+            display: none;
+        }
+        .details, .shipment {
+            font-size: 0.95rem;
+            color: #555;
+            margin-top: 5px;
+        }
+        .change-link {
+            margin-top: 5px;
+            font-size: 0.9rem;
+            color: #007bff;
+            cursor: pointer;
+        }
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            width: fit-content;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* Order Summary Styling */
+        .order-summary {
+            flex: 1;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 20px;
+        }
+        .summary-item, .summary-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+        .summary-total {
+            font-weight: bold;
+        }
+        
+        /* Discount Code */
+        .discount-code {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+        .discount-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #eaeaea;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+        .apply-btn, .confirm-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .confirm-btn {
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        #delivery-section {
+            border: 1px solid #ccc;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .shipments-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px; /* Space between shipment items */
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin: 20px 0;
+    }
+
+    .shipment-item {
+        border: 1px solid #ddd;
+        padding: 15px;
+        display: flex;
+        align-items: center; /* Center items vertically */
+    }
+
+    .shipment-item img {
+        width: 50px; /* Set image size */
+        height: 50px;
+        margin-right: 15px; /* Space between image and text */
+    }
+
+    .shipment-item h3 {
+        margin: 0; /* Remove default margin */
+        font-size: 1.2em; /* Adjust font size */
+    }
+
+    .shipment-item p {
+        margin: 5px 0; /* Add spacing between paragraphs */
+    }
+    </style>
+</head>
+<body>
+
+<!-- Header Section -->
+<div class="header">
+    <a class="header-logo" href="index.php">
+        <img src="butchery.jpg" alt="Butchery Logo">
+    </a>
+    <div class="header-title">Place Your Order</div>
+</div>
+
+<div class="container">
+    <!-- Left Side: Main Section -->
+    <div class="main-section">
+        <!-- Step 1: Customer Address -->
+        <div class="card" id="step1">
+            <div class="card-header">
+                <span><div class="step-number">1</div>Customer Address</span>
+                <span class="status" id="status1">✔</span>
+            </div>
+            <div class="address-container" id="address-details">
+                <!-- User address will be populated here -->
+                <p id="customerName"></p>
+                <p id="customerPhone"></p>
+                <p id="customerEmail"></p>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                <span class="change-link" onclick="window.location.href='delivery.html'">Add Address</span>
+                <button class="btn" onclick="completeStep(1)">Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Delivery Details -->
+        <div class="card" id="step2" style="display: none;">
+            <div class="card-header">
+                <span><div class="step-number">2</div>Delivery Details</span>
+                <span class="status" id="status2">✔</span>
+            </div>
+            <div class="details">
+                <strong>Delivery Method:</strong>
+        <div>
+            <input type="radio" id="homeDelivery" name="deliveryMethod" value="home" checked>
+            <label for="homeDelivery">Home Delivery</label><br>
+            <input type="radio" id="pickupStation" name="deliveryMethod" value="pickup">
+            <label for="pickupStation">Pickup Station</label>
+        </div>
+        <br>
+        <strong>Delivery Timeframe:</strong>
+        <p>Delivery between <strong>31 October</strong> and <strong>02 November</strong>.</p>
+        <p>Save up to KSh 342.</p>
+        <span style="color: #007bff; cursor: pointer;">Switch to a pickup station starting from KSh 259</span>
+    </div>
+    <div class="details" id="shipmentContainer">
+        <h3>Shipment Details</h3>
+    <div id="shipments-items"></div>
+    </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                <span class="change-link" onclick="window.location.href='cart.html'">Modify Cart</span>
+                <button class="btn" onclick="completeStep(2)">Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Payment Method -->
+        <div class="card" id="step3" style="display: none;">
+            <div class="card-header">
+                <span><div class="step-number">3</div>Payment Method</span>
+                <span class="status" id="status3">✔</span>
+            </div>
+            <div class="details">
+                Jumia Pay Now (M-Pesa, Airtel, or Bank Cards)<br>
+                Pay now fast and securely with JumiaPay, Mastercard, or Visa<br>
+            </div>
+            <div id="payment-section" style="padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+                <h2 style="text-align: center;">Select Payment Method</h2>
+                
+                <div style="margin: 20px 0; text-align: center;">
+                    <p>Choose a payment method to proceed with your purchase:</p>
+                </div>
+            
+                <div style="text-align: center;">
+                    <label>
+                        <input type="radio" name="payment-method" value="prepay" checked>
+                        <strong>Pre-pay Now</strong> (Jumia Pay - M-Pesa, Airtel or Bank Cards)
+                    </label>
+                    <br>
+                    <label>
+                        <input type="radio" name="payment-method" value="pay-on-delivery">
+                        <strong>Pay on Delivery</strong> (Mobile Money and Bank Cards)
+                    </label>
+                </div>
+            </div>
+            
+           
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                <span class="change-link" onclick="changeStep(3)">Change</span>
+                <button class="btn" onclick="completeStep(3)">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side: Order Summary -->
+    <div class="order-summary" id="order-summary" style="display: none;">
+        <div class="card-header">
+            <span>Order Summary</span>
+        </div>
+        <div class="summary-item">
+            <span>Item's total (5)</span>
+            <span id="order-total-price"></span>
+        </div>
+        <div class="summary-item">
+            <span>Delivery fees</span>
+            <span id="delivery-fee">Ksh 200</span>
+        </div>
+        <div class="summary-total">
+            <span>Final Total</span>
+            <span id="final-total-price"></span>
+        </div>
+
+        <!-- Confirm Order Button -->
+        <button class="confirm-btn" onclick="window.location.href='payment.html'">Confirm Order</button>
+    </div>
+</div>
+
+<script>
+    function completeStep(step) {
+        // Show checkmark for the completed step
+        document.getElementById(`status${step}`).style.display = 'inline';
+
+        // Show next step
+        const nextStep = step + 1;
+        const nextStepElement = document.getElementById(`step${nextStep}`);
+        if (nextStepElement) {
+            nextStepElement.style.display = 'block';
+        }
+
+        // Show order summary after last step
+        if (nextStep > 3) {
+            document.getElementById('order-summary').style.display = 'block';
+        }
+    }
+
+    function changeStep(step) {
+        // Hide current step
+        const currentStep = document.getElementById(`step${step}`);
+        currentStep.style.display = 'none';
+
+        // Hide order summary if it is visible
+        if (step === 3) {
+            document.getElementById('order-summary').style.display = 'none';
+        }
+    }
+
+    // Fetch user data when the page loads
+    document.addEventListener("DOMContentLoaded", fetchUserData);
+
+    function fetchUserData() {
+        fetch('fetchUserData.php') // Path to your PHP file
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data); // Log the data for debugging
+                document.getElementById('customerName').innerText = `Name: ${data.first_name} ${data.last_name}`;
+                document.getElementById('customerPhone').innerText = `Phone: ${data.phone}`;
+                document.getElementById('customerEmail').innerText = `Email: ${data.email}`;
+            })
+            .catch(error => {
+                console.error('Error fetching user data:', error);
+                document.getElementById('address-details').innerText = 'Failed to load user data.';
+            });
+    }
+
+    function applyDiscount() {
+        // Discount application logic can go here
+        alert('Discount applied!');
+    }
+
+    function confirmOrder() {
+        // Order confirmation logic can go here
+        alert('Order confirmed!');
+    }
+    // JavaScript to dynamically populate shipment details
+    function getCartItems() {
+            return JSON.parse(localStorage.getItem('cart')) || [];
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+    // Fetch cart items from localStorage
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // Get the container element where items will be displayed
+    const shipmentsContainer = document.getElementById('shipments-items');
+
+    // Clear the container in case of any existing data
+    shipmentsContainer.innerHTML = '';
+
+    // Loop through each item in the cart and display it
+    cartItems.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.classList.add('shipment-item');
+        itemElement.innerHTML = `
+            <img src="${item.imageUrl}" alt="${item.name}" />
+            <div>
+                <h3>${item.name}</h3>
+                <p>Price: KSh ${item.price}</p>
+                <p>Quantity: ${item.quantity}</p>
+            </div>
+        `;
+        shipmentsContainer.appendChild(itemElement);
+    });
+});
+ // Retrieve the total price from local storage
+ document.addEventListener('DOMContentLoaded', () => {
+    // Retrieve the total price from local storage and convert to a number
+    const orderTotalPrice = parseFloat(localStorage.getItem('totalPrice')) || 0.00;
+    const deliveryFee = 200; // Constant delivery fee
+    
+    // Calculate final total price
+    const finalTotalPrice = orderTotalPrice + deliveryFee;
+
+    // Debugging lines
+    console.log('Retrieved total price:', orderTotalPrice); // This should be a number now
+    console.log('Delivery fee:', deliveryFee);
+    console.log('Final total price:', finalTotalPrice); // This should display the correct final price
+
+    // Display the total price on the order summary page
+    const totalPriceElement = document.getElementById('order-total-price');
+    if (totalPriceElement) {
+        totalPriceElement.textContent = `Ksh ${orderTotalPrice.toFixed(2)}`; // Update element with order total price
+    } else {
+        console.log('Total price element not found.'); // Error log
+    }
+
+    // Display the delivery fee
+    const deliveryFeeElement = document.getElementById('delivery-fee');
+    if (deliveryFeeElement) {
+        deliveryFeeElement.textContent = `Ksh ${deliveryFee.toFixed(2)}`; // Update delivery fee element
+    }
+
+    // Display the final total price
+    const finalTotalPriceElement = document.getElementById('final-total-price');
+    if (finalTotalPriceElement) {
+        finalTotalPriceElement.textContent = `Ksh ${finalTotalPrice.toFixed(2)}`; // Update final total price element
+    }
+});
+
+
+
+                function confirmPaymentMethod() {
+                    const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
+                    if (paymentMethod === 'prepay') {
+                        // Redirect to JumiaPay platform logic for pre-pay
+                        alert('Redirecting to JumiaPay platform...');
+                        // Replace with actual redirection code
+                    } else {
+                        // Logic for Pay on Delivery
+                        alert('You have selected Pay on Delivery.');
+                        // Add any necessary handling here
+                    }
+                }
+                
+            </script>
+
+</body>
+</html>

@@ -6,7 +6,7 @@
 </head>
 <body>
 	<div class="register-box">
-		<form>
+		<form action="register.php" method="post">
 			<div class="logo">
 				<img src="butchery.jpg" alt="Logo">
 			</div>
@@ -31,9 +31,15 @@
 			<div class="form-group">
 				<label for="password">Password</label>
 				<input type="password" id="password" name="password" required>
+				<i class="fa fa-eye" aria-hidden="true" id="eye"></i>
+			</div>
+			<div class="form-group">
+				<label for="confirm-password">Confirm Password</label>
+				<input type="password" id="confirm-password" name="confirm_password" required>
+				<i class="fa fa-eye" aria-hidden="true" id="eye"></i>
 			</div>
 
-			<button class="register-btn">Create Account</button>
+			<button type="submit" class="register-btn">Create Account</button>
 		</form>
 		<p>Already have an account? <button class="login-btn" onclick="location.href='Login.html'">Login</button></p>
 	</div>

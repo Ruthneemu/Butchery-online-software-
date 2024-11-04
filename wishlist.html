@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Wishlist</title>
+</head>
+<body>
+    <h1>Your Wishlist</h1>
+    <div id="wishlistItems"></div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function getUserId() {
+                return 1; // Placeholder for actual user ID
+            }
+
+            const userId = getUserId();
+            $.ajax({
+    url: 'wishlist.php',
+    method: 'POST',
+    data: {
+        user_id: '1', // Replace with actual user ID
+        product_id: '1' // Replace with actual product ID
+    },
+    success: function(data) {
+        // If data is already an object, no need to parse it
+        var wishlist;
+        if (typeof data === 'object') {
+             wishlist = data;
+        } else {
+            // If data is a string, parse it
+             wishlist = JSON.parse(data);
+        }
+        console.log(wishlist);
+    },
+    error: function(error) {
+        console.error('Error fetching wishlist:', error);
+    }
+});
+  });
+    </script>
+</body>
+</html>

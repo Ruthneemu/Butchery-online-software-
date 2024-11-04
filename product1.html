@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lean Grounded Meat</title>
+    <meta name="viewport" width="device-width">
+    <meta charset="utf-8" initial-scale="1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        nav {
+    background-color: white;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+    position: sticky; /* Make the nav sticky */
+    top: 0; /* Stick to the top */
+    z-index: 1000; /* Ensure it stays above other content */
+}
+
+
+        .product-container {
+            display: flex;
+            margin: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-images {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .main-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .thumbnail-images img {
+            width: 50px;
+            height: auto;
+            margin: 5px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .product-details {
+            flex: 2;
+            padding: 20px;
+        }
+        .share-product {
+    margin-top: 10px;
+    text-align: left;
+}
+
+.share-product p {
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+.social-icons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.social-icon {
+    margin: 5px 0;
+    color: #555;
+    font-size: 1.5em;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.social-icon:hover {
+    color: #ff6f20;
+}
+
+.social-icon i {
+    margin-right: 8px;
+}
+
+
+        .price-info {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        #counter-value {
+            margin: 0 10px;
+            font-size: 1.2em;
+        }
+
+        .add-to-cart {
+            background-color: #ff6f20;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+
+        .add-to-cart:hover {
+            background-color: #ff5733;
+        }
+
+        .availability-info {
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        .delivery-fee {
+            font-size: 16px;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .specifications, .related-products {
+            margin: 20px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .rating {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            direction: rtl; /* Makes the stars flow from right to left */
+        }
+
+        .rating i {
+            font-size: 2em;
+            color: #ccc;
+            cursor: pointer;
+        }
+
+        .rating i.active,
+        .rating i:hover,
+        .rating i:hover ~ i {
+            color: #ff6f20;
+        }
+
+        .specifications h2, .related-products h2 {
+            margin-top: 0;
+        }
+
+        .related-products {
+            margin-top: 40px;
+        }
+
+        .related-products h2 {
+            margin-bottom: 20px;
+        }
+
+        .product-card-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .product-card {
+            flex: 1;
+            max-width: 200px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .product-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 150px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .product-name {
+            font-size: 18px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .product-price {
+            font-size: 16px;
+            color: #ff6f20;
+        }
+        .breadcrumb {
+            display: flex; /* Flexbox for layout */
+            list-style: none; /* Removing default list styles */
+            padding: 10px; /* Padding around breadcrumb */
+            background-color: #f9f9f9; /* Light background */
+            border-radius: 5px; /* Rounded corners */
+            margin-left: 10px; /* Left margin for spacing */
+        }
+
+        .breadcrumb li {
+            margin: 0 0px; /* Spacing between breadcrumb items */
+        }
+
+        .breadcrumb li a {
+            text-decoration: none; /* Removing underline from links */
+            color: #3498db; /* Link color */
+        }
+
+        .breadcrumb li span {
+            color: #666; /* Current page color */
+        }
+        .sort-by {
+    margin-left: auto; /* Push the sort dropdown to the right */
+    display: flex; /* Flex for the label and dropdown */
+    align-items: center; /* Center vertically */
+}
+
+.sort-by label {
+    margin-right: 5px; /* Space between label and dropdown */
+}
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #f5f5f5;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+</div>
+   <!-- Breadcrumb Navigation -->
+   <ul class="breadcrumb">
+    <li><a href="index.php">Home</a></li>
+    <li><a href="Beef.html">Beef</a></li>
+    <li><span>Lean Grounded Meat</span></li>
+</ul>
+</div>
+<div id="message" style="display: none;">Success!</div>
+    <main>
+        <div class="product">
+            <div class="product-image">
+                <img src="image1.png" alt="Lean Grounded Meat"  >
+                <div class="share-product">
+                <p>Share this product:</p>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=your-product-link" target="_blank" class="social-icon">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="https://twitter.com/intent/tweet?url=your-product-link&text=Check%20this%20out!" target="_blank" class="social-icon">
+                    <i class="fab fa-twitter"></i>
+                </a>
+            </div>
+            </div>
+             <div class="product-details">
+                <div class="product-name">Lean Grounded Meat</div>
+                <p>Our Lean Grounded Meat is freshly sourced and expertly ground to ensure quality and flavor. Perfect for various dishes, it's a staple in every kitchen.</p>
+                
+                <div class="product-price">
+                    <span class="current-price">Ksh 200</span>
+                </div>
+                <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
+                <div class="counterContainer" style="display:none;">
+                  <button id="increment-btn">+</button>
+                  <div id="counter-value">0</div>
+                  <button id="decrement-btn">-</button>
+              </div>
+                <div class="availability-info">
+                    <p>Status: <strong>In Stock</strong></p>
+                    <p>Estimated Delivery: <strong>2-3 Days</strong></p>
+                </div>
+                <div class="delivery-fee">
+                    Delivery fee: Ksh. 100.00 within Nairobi.
+                </div>
+            </div>
+        </div>
+
+        <section class="specifications">
+            <h2>Specifications</h2>
+            <ul>
+                <li>Weight: 500g</li>
+                <li>Type: Lean Ground Meat</li>
+                <li>Packaging: Vacuum Sealed</li>
+                <li>Storage: Refrigerate after opening</li>
+            </ul>
+        </section>
+        <div class="related-products">
+            <h2>Related Products</h2>
+            <div class="product-card-container">
+                <a href="product2.html" class="product-card">
+                    <img src="image3.png" alt="Product 2">
+                    <div class="product-name">mutton</div>
+                    <div class="product-price">Ksh. 150.00</div>
+                </a>
+                <a href="product3.html" class="product-card">
+                    <img src="image6.png" alt="Product 3">
+                    <div class="product-name">Lamb</div>
+                    <div class="product-price">Ksh. 150.00</div>
+                </a>
+                <a href="product4.html" class="product-card">
+                    <img src="image5.png" alt="Product 4">
+                    <div class="product-name">Chicken</div>
+                    <div class="product-price">Ksh. 200.00</div>
+                </a>
+            </div>
+        </div>
+
+       <!-- Review Section -->
+       <div class="review-section">
+        <h3>Write a Review</h3>
+        <form class="review-form" id="reviewForm">
+            <div class="rating" id="userRating">
+                <i class="far fa-star" data-value="5"></i>
+                <i class="far fa-star" data-value="4"></i>
+                <i class="far fa-star" data-value="3"></i>
+                <i class="far fa-star" data-value="2"></i>
+                <i class="far fa-star" data-value="1"></i>
+            </div>
+            <textarea id="reviewText" rows="4" placeholder="Write your review here..."></textarea>
+            <button type="submit">Submit Review</button>
+        </form>
+
+        <div class="existing-reviews" id="existingReviews">
+            <h4>Customer Reviews</h4>
+            <!-- Existing reviews will be dynamically inserted here -->
+        </div>
+    </div>
+    <div id="toast" style="display: none;">Quantity updated!</div>
+    </main>
+      
+    <footer>
+        <p>&copy; 2024 Family Butchery. All rights reserved.</p>
+    </footer>
+</body>
+<script src="butchery.js"></script>
+</script>
+</html>
