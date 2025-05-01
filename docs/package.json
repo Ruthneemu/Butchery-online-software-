@@ -1,0 +1,14 @@
+{
+    "name": "online_butchery",
+    "version": "1.0.0",
+    "description": "",
+    "main": "butchery.js", 
+    "type": "module",      
+    "scripts": {
+      "start": "node butchery.js"
+    },
+    "dependencies": {
+      "jsdom": "^19.0.0"
+    }
+  }
+  
