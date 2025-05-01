@@ -10,154 +10,211 @@
   <body>
     <nav>
       <ul class="sidebar">
-        <li onclick="hideSidebar()">
-          <a href="#">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
-              <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
-            </svg>
-          </a>
+        <li onclick="hideSidebar()"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a></li>
+        <li><a href="docs/views/cart.html">Cart</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categories<i class="fa fa-caret-down" aria-hidden="true"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="docs/views/Beef.html">Beef</a></li>
+            <li><a href="docs/views/Lamb.html">Lamb</a></li>
+            <li><a href="docs/views/Mutton.html">Mutton</a></li>
+            <li><a href="docs/views/Nyama_choma.html">Nyama Choma</a></li>
+            <li><a href="docs/views/Minced_meat.html">Minced Meat</a></li>
+          </ul>
         </li>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="views/dashboard.html">Categories</a></li>
-        <li><a href="views/shop.html">Shop</a></li>
-        <li><a href="views/contact.html">Contact us</a></li>
-        <li><a href="views/cart.html">Cart</a></li>
-        <li><a href="views/chatbox.html">Chatbox</a></li>
-        <li><a href="views/contact.html">Contact</a></li>
-        <li><a href="views/dashboard.html">Dashboard</a></li>
-        <li><a href="views/delivery.html">Delivery</a></li>
-        <li><a href="views/Login.html">Login</a></li>
-        <li><a href="views/payment.html">Payment</a></li>
-        <li><a href="views/place-order.html">Place Order</a></li>
-        <li><a href="views/product1.html">Product 1</a></li>
-        <li><a href="views/register.html">Register</a></li>
-        <li><a href="views/test.html">Test</a></li>
-        <li><a href="views/wishlist.html">Wishlist</a></li>
-      </ul>
+        <li><a href="docs/index.html">Shop</a></li>
+        <li><a href="docs/views/contact.html">Contact us</a></li>
+    </ul>
 
-      <ul>
-        <li class="menu-button" onclick="showSidebar()">
-          <a href="#">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="26px" fill="#5f6368">
-              <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/>
-            </svg>
+<ul>
+  <li class="menu-button"onclick="showSidebar()"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="26px" fill="#5f6368"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+  <a class="image" href="docs/index.html"><img src="docs/assets/butchery.jpg" alt="Butchery Logo"></a> 
+  <nav class="search-bar">
+    <input type="search" id="search-input" placeholder="Search Products...">
+    <button class="search-icon" aria-label="Search">
+      <i class="fa fa-search"></i>
+    </button>
+  </nav>
+  
+  <li class="split">
+    <span><i class="fa fa-map-marker" aria-hidden="true" onclick="window.location.href='docs/views/delivery.html'"></i> Delivery</span>
+    <button class="change" onclick="window.location.href='docs/views/delivery.html'">Change</button>
+</li>
+<li class="person">
+  <a href="#" id="userGreeting">
+    <i class="fa fa-user" aria-hidden="true"></i>
+    Hey, <span id="firstName"><?php echo $firstName; ?></span> ▼</a>
+      <ul id="userDropdown" class="dropdown-menu" style="display: none;">
+      <li><a href="docs/views/account.html">Account</a></li>
+      <li><a href="docs/views/wishlist.html">Wishlist</a></li>
+      <li><a href="docs/views/place-order.html">Place Your Order</a></li>
+      <li>
+        <button class="logout-button" onclick="window.location.href='docs/server/logout.php'">Logout</button>
+      </li>
+            </ul>
+</li>
+      <li class="hideOnMobile"><a href="docs/views/contact.html"><i class="fa fa-info" aria-hidden="true"></i>Contact us</a></li>
+  </ul>
+  
+
+</nav>
+</ul>
+</div>
+<div class="main-content">
+  <ul class="breadcrumb">
+    <li><a href="docs/index.html">Home</a></li>
+    <li><span>Dashboard</span></li>
+  </ul>
+</div>
+<h1>Family Butchery</h1>
+<h2>Discover Meat products from family online shop at the best prices in Kenya. Make your orders and have your deliveries at your doorstep at affordable prices.</h2>
+<div id="floating-message" class="floating-message" style="display: none;">Success!</div>
+<div class="product-info">
+  <div class="product-count"><p>6 Products</p></div>
+  <div class="sort-by">
+    <label for="sort-select">Sort by:</label>
+    <select id="sort-select" class="sort-select">
+      <option value="price-asc">Price (low to high)</option>
+      <option value="price-desc">Price (high to low)</option>
+      <option value="name-asc">Name (A-Z)</option>
+      <option value="name-desc">Name (Z-A)</option>
+    </select>
+  </div>
+</div>
+</div>
+
+<div class="product-grid" id="productList">
+  <div class="product" >
+    <a href="docs/views/product1.html" class="product-image">
+      <img src="docs/assets/image1.png" alt="Product Image">
+    </a>
+    <div class="product-details">
+      <h2 class="product-name">Lean Ground Beef</h2>
+      <p class="product-price">Ksh 250</p>
+      <div class="tooltip">
+        <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
+        <span class="tooltiptext">Add this item to your cart</span>
+    </div>
+    
+      <div class="counterContainer" style="display:none;">
+        <button id="increment-btn">+</button>
+        <div id="counter-value">0</div>
+        <button id="decrement-btn">-</button>
+    </div>
+    </div>
+    </div>
+    <div class="product-grid" id="productList">
+      <div class="product" >
+        <a href="docs/views/product1.html" class="product-image">
+          <img src="docs/assets/image1.png" alt="Product Image">
+        </a>
+        <div class="product-details">
+          <h2 class="product-name">Lean Ground Beef</h2>
+          <p class="product-price">Ksh 250</p>
+          <div class="tooltip">
+            <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
+            <span class="tooltiptext">Add this item to your cart</span>
+        </div>
+        
+          <div class="counterContainer" style="display:none;">
+            <button id="increment-btn">+</button>
+            <div id="counter-value">0</div>
+            <button id="decrement-btn">-</button>
+        </div>
+        </div>
+        </div>
+        <div class="product">
+          <a href="#" class="product-image">
+            <img src="docs/assets/image2.png" alt="Product Image">
           </a>
-        </li>
-        <a class="image" href="index.html">
-          <img src="assets/images/butchery.jpg" alt="Butchery Logo">
-        </a>
-        <div class="search">
-          <form>
-            <input type="text" id="searchbar" placeholder="Search...">
-            <i class="fa fa-search"></i>
-          </form>
+          <div class="product-details">
+            <h2 class="product-name">Raw ground beef</h2>
+            <p class="product-price">Ksh 100</p>
+            <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
+      
+            <div class="counterContainer" style="display:none;">
+              <button id="increment-btn">+</button>
+              <div id="counter-value">0</div>
+              <button id="decrement-btn">-</button>
+          </div>
+          </div>
         </div>
-      </ul>
-    </nav>
+        <div class="product">
+          <a href="#" class="product-image">
+            <img src="docs/assets/image3.png" alt="Product Image">
+          </a>
+          <div class="product-details">
+            <h2 class="product-name">mutton</h2>
+            <p class="product-price">Ksh 150</p>
+      <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
 
-    <div class="main-content">
-      <ul class="breadcrumb">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="views/dashboard.html">Fresh Food</a></li>
-        <li><span>Family Butchery</span></li>
-      </ul>
-      <h1>Family Butchery</h1>
-      <h2>Discover Meat products from family online shop at the best prices in Kenya. Make your orders and have your deliveries at your doorstep at affordable prices.</h2>
-      <div class="product-info">
-        <div class="product-count"><p>36 Products</p></div>
-        <div class="sort-by">
-          <label for="sort-select">Sort by:</label>
-          <select id="sort-select" class="sort-select">
-            <option value="price-asc">Price (low to high)</option>
-            <option value="price-desc">Price (high to low)</option>
-            <option value="name-asc">Name (A-Z)</option>
-            <option value="name-desc">Name (Z-A)</option>
-          </select>
-        </div>
-      </div>
+      <div class="counterContainer" style="display:none;">
+        <button id="increment-btn">+</button>
+        <div id="counter-value">0</div>
+        <button id="decrement-btn">-</button>
     </div>
-
-    <div class="product-grid">
-      <div class="product">
-        <a href="#" class="product-image">
-          <img src="assets/images/image1.PNG" alt="Product Image">
-        </a>
-        <div class="product-details">
-          <h2 class="product-name">Product Name 1</h2>
-          <p class="product-price">$19.99</p>
-          <button class="add-to-cart">Add to Cart</button>
-        </div>
-      </div>
-      <div class="product">
-        <a href="#" class="product-image">
-          <img src="assets/images/image2.PNG" alt="Product Image">
-        </a>
-        <div class="product-details">
-          <h2 class="product-name">Product Name 2</h2>
-          <p class="product-price">$29.99</p>
-          <button class="add-to-cart">Add to Cart</button>
-        </div>
-      </div>
-      <div class="product">
-        <a href="#" class="product-image">
-          <img src="assets/images/image3.jpg" alt="Product Image">
-        </a>
-        <div class="product-details">
-          <h2 class="product-name">Product Name 3</h2>
-          <p class="product-price">$29.99</p>
-          <button class="add-to-cart">Add to Cart</button>
-        </div>
-      </div>
-      <div class="product">
-        <a href="#" class="product-image">
-          <img src="assets/images/image4.png" alt="Product Image">
-        </a>
-        <div class="product-details">
-          <h2 class="product-name">Product Name 4</h2>
-          <p class="product-price">$29.99</p>
-          <button class="add-to-cart">Add to Cart</button>
-        </div>
-      </div>
-      <div class="product">
-        <a href="#" class="product-image">
-          <img src="assets/images/image5.png" alt="Product Image">
-        </a>
-        <div class="product-details">
-          <h2 class="product-name">Product Name 5</h2>
-          <p class="product-price">$29.99</p>
-          <button class="add-to-cart">Add to Cart</button>
-        </div>
-      </div>
-      <div class="product">
-        <a href="#" class="product-image">
-          <img src="assets/images/image6.png" alt="Product Image">
-        </a>
-        <div class="product-details">
-          <h2 class="product-name">Product Name 6</h2>
-          <p class="product-price">$29.99</p>
-          <button class="add-to-cart">Add to Cart</button>
-        </div>
-      </div>
     </div>
+  </div>
+  <div class="product">
+    <a href="#" class="product-image">
+      <img src="docs/assets/image4.png" alt="Product Image">
+    </a>
+    <div class="product-details">
+      <h2 class="product-name">Pork</h2>
+      <p class="product-price">Ksh 130</p>
+      <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
 
-    <div id="chat-icon">
-      <a href="#chatbox" class="chat-link">
-        <i class="fa fa-comment-o" aria-hidden="true" style="font-size: 24px; color: #25d366;"></i>
-      </a>
+      <div class="counterContainer" style="display:none;">
+        <button id="increment-btn">+</button>
+        <div id="counter-value">0</div>
+        <button id="decrement-btn">-</button>
     </div>
+  </div>
+</div>
+<div class="product">
+  <a href="#" class="product-image">
+    <img src="docs/assets/image5.png" alt="Product Image">
+  </a>
+  <div class="product-details">
+    <h2 class="product-name">chicken</h2>
+    <p class="product-price">Ksh 200</p>
+    <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
 
-    <div id="chatbox" class="chatbox">
-      <div class="chatbox-header">
-        <h4>Chat with us</h4>
-        <button id="close-chatbox">&times;</button>
-      </div>
-      <div class="chatbox-content"></div>
-      <div class="chatbox-footer">
-        <input type="text" placeholder="Type a message...">
-        <button class="send-message">Send</button>
-      </div>
-    </div>
+    <div class="counterContainer" style="display:none;">
+      <button id="increment-btn">+</button>
+      <div id="counter-value">0</div>
+      <button id="decrement-btn">-</button>
+  </div>
+  </div>
+</div>
+<div class="product">
+  <a href="#" class="product-image">
+    <img src="docs/assets/image6.png" alt="Product Image">
+  </a>
+  <div class="product-details">
+    <h2 class="product-name">Lamb</h2>
+    <p class="product-price">Ksh 150</p>
+    <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
 
-    <script src="src/butchery.js"></script>
-  </body>
+    <div class="counterContainer" style="display:none;">
+      <button id="increment-btn">+</button>
+      <div id="counter-value">0</div>
+      <button id="decrement-btn">-</button>
+  </div>
+</div>
+</div>
+
+<div id="chat-icon" >
+<a href="docs/views/chatbox.html" id="chatbox" class="chat-link">
+  <i class="fa fa-comment-o" aria-hidden="true" style="font-size: 24px; color: #25d366;"></i>
+</a>
+</div>
+<div id="basket-icon">
+  <a href="docs/views/cart.html"class="cart">
+    <i class="fa fa-shopping-cart" aria-hidden="true" style="font-size: 24px; color: #25d366;" ></i>
+  </a>
+  <span id="basket-count">0</span>
+</div>
+</body>
+  <script src="docs/src/butcha.js"></script>
 </html>
