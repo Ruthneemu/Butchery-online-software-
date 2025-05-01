@@ -87,7 +87,7 @@ const chatIcon = document.getElementById('chat-icon');
 if (chatIcon) {
     chatIcon.addEventListener('click', (event) => {
         event.preventDefault(); // Prevent default behavior
-        window.location.href = 'views/chatbox.html'; // Redirect to chat.html
+        window.location.href = '/views/chatbox.html'; // Redirect to chat.html
     });
 }
 
