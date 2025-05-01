@@ -298,6 +298,7 @@ document.querySelectorAll('.add-to-cart').forEach((button) => {
         const productElement = button.closest('.product');
         const productName = productElement.querySelector('.product-name').textContent;
         const productPrice = parseFloat(productElement.querySelector('.product-price').textContent.replace('Ksh ', '').replace(',', ''));
+        const productImage = productElement.querySelector('img')?.src || '';
 
         // Check if the product is already in the cart
         const existingProductIndex = cart.findIndex(item => item.name === productName);
