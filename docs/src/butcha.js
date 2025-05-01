@@ -309,7 +309,7 @@ document.querySelectorAll('.add-to-cart').forEach((button) => {
             // Add new product to cart
             cart.push({
                 name: productName,
-                image: product.image,
+                image: productElement.querySelector('img')?.src || '',
                 price: productPrice,
                 quantity: 1,
                 purchasedOn: new Date().toLocaleString()
