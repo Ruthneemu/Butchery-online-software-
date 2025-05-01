@@ -8,6 +8,7 @@
     <meta charset="utf-8" initial-scale="1.0">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="../styles/style.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -278,7 +279,7 @@
     <main>
         <div class="product">
             <div class="product-image">
-                <img src="image1.png" alt="Lean Grounded Meat"  >
+                <img src="../assets/images/product1.jpg" alt="Product 1">
                 <div class="share-product">
                 <p>Share this product:</p>
                 <a href="https://www.facebook.com/sharer/sharer.php?u=your-product-link" target="_blank" class="social-icon">
@@ -296,7 +297,9 @@
                 <div class="product-price">
                     <span class="current-price">Ksh 200</span>
                 </div>
-                <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
+                <form action="../server/add_to_cart.php" method="post">
+                    <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
+                </form>
                 <div class="counterContainer" style="display:none;">
                   <button id="increment-btn">+</button>
                   <div id="counter-value">0</div>
@@ -370,5 +373,5 @@
     </footer>
 </body>
 <script src="butchery.js"></script>
-</script>
+<script src="../scripts/product1.js"></script>
 </html>

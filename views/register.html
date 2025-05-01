@@ -2,13 +2,13 @@
 <html>
 <head>
 	<title>Registration Form</title>
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="../styles/style.css">
 </head>
 <body>
 	<div class="register-box">
-		<form action="register.php" method="post">
+		<form action="../server/register.php" method="post">
 			<div class="logo">
-				<img src="butchery.jpg" alt="Logo">
+				<img src="../assets/images/butchery.jpg" alt="Logo">
 			</div>
 			<h2>Create a new account</h2>
 			<div class="form-group">
@@ -41,7 +41,8 @@
 
 			<button type="submit" class="register-btn">Create Account</button>
 		</form>
-		<p>Already have an account? <button class="login-btn" onclick="location.href='Login.html'">Login</button></p>
+		<p>Already have an account? <a href="../views/Login.html" class="login-btn btn">Login</a></p>
 	</div>
+	<script src="../scripts/butchery.js"></script>
 </body>
 </html>
