@@ -189,10 +189,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const categoriesMenu = document.getElementById("categoriesMenu");
     const categoriesDropdown = document.getElementById("categoriesDropdown");
 
-    categoriesMenu.addEventListener("click", (e) => {
-        e.preventDefault();
-        toggleDropdown(categoriesDropdown);
-    });
+    if (categoriesMenu && categoriesDropdown) {
+        categoriesMenu.addEventListener("click", (e) => {
+            e.preventDefault();
+            toggleDropdown(categoriesDropdown);
+        });
+    }
 
     // Function to toggle dropdown visibility
     function toggleDropdown(dropdown) {
@@ -301,16 +303,14 @@ document.querySelectorAll('.add-to-cart').forEach((button) => {
             quantity = 1; // Start with quantity 1
         }
 
-
-
         // Update the counter display
         counterValue.textContent = quantity;
 
-          // Hide the "Add to Cart" button
-          button.style.display = 'none'; // Hide the button
+        // Hide the "Add to Cart" button
+        button.style.display = 'none'; // Hide the button
 
-          // Show the counterContainer
-          counterContainer.style.display = 'flex';
+        // Show the counterContainer
+        counterContainer.style.display = 'flex';
 
         // Increment Button Functionality
         incrementBtn.onclick = () => {
@@ -372,5 +372,3 @@ document.querySelectorAll('.add-to-cart').forEach((button) => {
     });
 });
 updateCartCount();
-
-
