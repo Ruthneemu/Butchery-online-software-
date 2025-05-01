@@ -189,10 +189,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const categoriesMenu = document.getElementById("categoriesMenu");
     const categoriesDropdown = document.getElementById("categoriesDropdown");
 
-    categoriesMenu.addEventListener("click", (e) => {
-        e.preventDefault();
-        toggleDropdown(categoriesDropdown);
-    });
+    if (categoriesMenu && categoriesDropdown) {
+        categoriesMenu.addEventListener("click", (e) => {
+            e.preventDefault();
+            toggleDropdown(categoriesDropdown);
+        });
+
+        // Function to toggle dropdown visibility
+        function toggleDropdown(dropdown) {
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener("click", (e) => {
+            if (!categoriesMenu.contains(e.target) && !categoriesDropdown.contains(e.target)) {
+                categoriesDropdown.style.display = "none";
+            }
+        });
+    } else {
+        console.error("categoriesMenu or categoriesDropdown element not found.");
+    }
 
     // Function to toggle dropdown visibility
     function toggleDropdown(dropdown) {
