@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Page</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../styles/style.css">
+    <script src="../scripts/chatbox.js"></script>
+    <script src="../scripts/contact.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -117,7 +119,7 @@
 <body>
     <!-- Breadcrumb Navigation -->
     <ul class="breadcrumb">
-        <li><a href="index.php">Home</a></li>
+        <li><a href="../views/index.html">Home</a></li>
         <li><span>Chat</span></li>
     </ul>
 
@@ -130,10 +132,17 @@
             <!-- Messages will be appended here -->
         </div>
         <div class="chat-input">
-            <input type="text" id="message-input" placeholder="Type a message...">
-            <button type="submit" id="send-message">Send</button>
+            <form action="../server/send_message.php" method="POST">
+                <input type="text" id="message-input" placeholder="Type a message...">
+                <button type="submit" id="send-message">Send</button>
+            </form>
         </div>
     </div>
+    <img src="../assets/images/chat-icon.png" alt="Chat Icon">
+    <img src="../assets/images/contact-banner.jpg" alt="Contact Banner">
+    <form action="../server/contact_form.php" method="POST">
+        <a href="../views/index.html">Home</a>
+    </form>
 
     <script>
         const chatMessages = document.getElementById('chat-messages');
@@ -204,3 +213,4 @@
     </script>
 </body>
 </html>
+``` 

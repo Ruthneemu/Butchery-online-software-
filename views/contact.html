@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../styles/style.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -83,16 +84,17 @@
 <body>
     <div class="container">
         <div class="breadcrumb">
-            <a href="index.php">Home</a> <span>&gt;</span> <a href="contact.html">Contact Us</a>
+            <a href="../views/index.html">Home</a> <span>&gt;</span> <a href="contact.html">Contact Us</a>
         </div>
         <button class="close" onclick="closeContainer()"><i class="fa fa-times" aria-hidden="true"></i></button>
         <h1>Contact Us</h1>
+        <img src="../assets/images/contact-banner.jpg" alt="Contact Banner">
         <div class="about-us">
             <h2>About Us</h2>
             <p>We are a team of dedicated professionals passionate about providing excellent service to our customers. Our team is led by Alex, who has over 10 years of experience in the industry.</p>
             <p>Our mission is to provide top-notch service to our customers, and to build long-lasting relationships with them. We strive to be the best in our field, and to continuously improve our services to meet the evolving needs of our customers.</p>
         </div>
-        <form class="contact-form" id="contact-form" action="message.php" method="POST">
+        <form class="contact-form" id="contact-form" action="../server/contact_form.php" method="POST">
             <div class="form-field">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" />
@@ -108,6 +110,7 @@
             <input type="submit" name="submit" value="Send Message" />
         </form>
     </div>
+    <script src="../scripts/contact.js"></script>
     <script>
         function closeContainer() {
             const container = document.querySelector('.container');
