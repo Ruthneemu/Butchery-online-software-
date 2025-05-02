@@ -2,6 +2,12 @@
 function showSidebar() {
     const sidebar = document.querySelector('.sidebar');
     sidebar.style.display = 'flex';
+
+    // Hide the search bar when sidebar opens
+    const searchBar = document.getElementById('search-input'); // or use querySelector('.search-bar')
+    if (searchBar) {
+        searchBar.style.display = 'none';
+    }
 }
 
 function hideSidebar() {
