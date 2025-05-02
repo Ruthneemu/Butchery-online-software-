@@ -189,26 +189,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const categoriesMenu = document.getElementById("categoriesMenu");
     const categoriesDropdown = document.getElementById("categoriesDropdown");
 
-    if (categoriesMenu && categoriesDropdown) {
-        categoriesMenu.addEventListener("click", (e) => {
-            e.preventDefault();
-            toggleDropdown(categoriesDropdown);
-        });
-
-        // Function to toggle dropdown visibility
-        function toggleDropdown(dropdown) {
-            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-        }
-
-        // Close dropdowns when clicking outside
-        document.addEventListener("click", (e) => {
-            if (!categoriesMenu.contains(e.target) && !categoriesDropdown.contains(e.target)) {
-                categoriesDropdown.style.display = "none";
-            }
-        });
-    } else {
-        console.error("categoriesMenu or categoriesDropdown element not found.");
-    }
+    categoriesMenu.addEventListener("click", (e) => {
+        e.preventDefault();
+        toggleDropdown(categoriesDropdown);
+    });
 
     // Function to toggle dropdown visibility
     function toggleDropdown(dropdown) {
@@ -298,7 +282,6 @@ document.querySelectorAll('.add-to-cart').forEach((button) => {
         const productElement = button.closest('.product');
         const productName = productElement.querySelector('.product-name').textContent;
         const productPrice = parseFloat(productElement.querySelector('.product-price').textContent.replace('Ksh ', '').replace(',', ''));
-        const productImage = productElement.querySelector('img')?.src || '';
 
         // Check if the product is already in the cart
         const existingProductIndex = cart.findIndex(item => item.name === productName);
@@ -310,7 +293,7 @@ document.querySelectorAll('.add-to-cart').forEach((button) => {
             // Add new product to cart
             cart.push({
                 name: productName,
-                image: productElement.querySelector('img')?.src || '',
+                image: product.image,
                 price: productPrice,
                 quantity: 1,
                 purchasedOn: new Date().toLocaleString()
