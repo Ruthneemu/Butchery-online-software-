@@ -2,23 +2,15 @@
 function showSidebar() {
     const sidebar = document.querySelector('.sidebar');
     sidebar.style.display = 'flex';
-
-    // Hide the search bar when sidebar opens
-    const searchBar = document.getElementById('search-input'); // or use querySelector('.search-bar')
-    if (searchBar) {
-        searchBar.style.display = 'none';
-    }
+    const searchBar = document.querySelector('.search-bar');  // adjust selector if needed
+    if (searchBar) searchBar.style.display = 'none';
 }
 
 function hideSidebar() {
     const sidebar = document.querySelector('.sidebar');
     sidebar.style.display = 'none';
-
-    // Show the search bar back when sidebar closes
-    const searchBar = document.getElementById('search-input');
-    if (searchBar) {
-        searchBar.style.display = 'block'; // or 'flex' depending on your CSS
-    }
+    const searchBar = document.querySelector('.search-bar');
+    if (searchBar) searchBar.style.display = 'block';
 }
 
 // Dropdown Toggle Functionality
