@@ -91,6 +91,7 @@
     border: 1px solid #ccc;
     padding: 10px;
     display: none;
+    z-index: 1100;
   }
   
   .dropdown-menu li {
@@ -160,7 +161,7 @@
     }
     .search-bar {
       width: 100%; /* Full width on smaller screens */
-      margin-left: 0; /* No margin on the left */
+      margin-right: 0; /* No margin on the left */
   }
   
    .hideOnMobile {
