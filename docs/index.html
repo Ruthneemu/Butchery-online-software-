@@ -12,9 +12,9 @@
       <ul class="sidebar">
         <li onclick="hideSidebar()"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a></li>
         <li><a href="views/cart.html">Cart</a></li>
-        <li class="dropdown">
+        <li class="dropdown" id="categoriesMenu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categories<i class="fa fa-caret-down" aria-hidden="true"></i></a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu" id="categoriesDropdown">
             <li><a href="views/Beef.html">Beef</a></li>
             <li><a href="views/Lamb.html">Lamb</a></li>
             <li><a href="views/Mutton.html">Mutton</a></li>
@@ -92,14 +92,14 @@
           <h2 class="product-name">Lean Ground Beef</h2>
           <p class="product-price">Ksh 250</p>
           <div class="tooltip">
-            <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
+            <button class="add-to-cart" id="add-to-cart" class="add-to-cart">Add to Cart</button>
             <span class="tooltiptext">Add this item to your cart</span>
         </div>
         
           <div class="counterContainer" style="display:none;">
-            <button id="increment-btn">+</button>
+            <button id="increment-btn" class="increment-btn">+</button>
             <div id="counter-value">0</div>
-            <button id="decrement-btn">-</button>
+            <button id="decrement-btn" class="decrement-btn">-</button>
         </div>
         </div>
         </div>
@@ -110,12 +110,12 @@
           <div class="product-details">
             <h2 class="product-name">Raw ground beef</h2>
             <p class="product-price">Ksh 100</p>
-            <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
+            <button class="add-to-cart" id="add-to-cart" class="add-to-cart">Add to Cart</button>
       
             <div class="counterContainer" style="display:none;">
-              <button id="increment-btn">+</button>
+              <button id="increment-btn" class="increment-btn">+</button>
               <div id="counter-value">0</div>
-              <button id="decrement-btn">-</button>
+              <button id="decrement-btn" class="decrement-btn">-</button>
           </div>
           </div>
         </div>
@@ -126,12 +126,12 @@
           <div class="product-details">
             <h2 class="product-name">mutton</h2>
             <p class="product-price">Ksh 150</p>
-      <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
+      <button class="add-to-cart" id="add-to-cart" class="add-to-cart">Add to Cart</button>
 
       <div class="counterContainer" style="display:none;">
-        <button id="increment-btn">+</button>
+        <button id="increment-btn" class="increment-btn">+</button>
         <div id="counter-value">0</div>
-        <button id="decrement-btn">-</button>
+        <button id="decrement-btn" class="decrement-btn">-</button>
     </div>
     </div>
   </div>
@@ -142,12 +142,12 @@
     <div class="product-details">
       <h2 class="product-name">Pork</h2>
       <p class="product-price">Ksh 130</p>
-      <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
+      <button class="add-to-cart" id="add-to-cart" class="add-to-cart">Add to Cart</button>
 
       <div class="counterContainer" style="display:none;">
-        <button id="increment-btn">+</button>
+        <button id="increment-btn" class="increment-btn">+</button>
         <div id="counter-value">0</div>
-        <button id="decrement-btn">-</button>
+        <button id="decrement-btn" class="decrement-btn">-</button>
     </div>
   </div>
 </div>
@@ -158,12 +158,12 @@
   <div class="product-details">
     <h2 class="product-name">chicken</h2>
     <p class="product-price">Ksh 200</p>
-    <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
+    <button class="add-to-cart" id="add-to-cart" class="add-to-cart">Add to Cart</button>
 
     <div class="counterContainer" style="display:none;">
-      <button id="increment-btn">+</button>
+      <button id="increment-btn" class="increment-btn">+</button>
       <div id="counter-value">0</div>
-      <button id="decrement-btn">-</button>
+      <button id="decrement-btn" class="decrement-btn">-</button>
   </div>
   </div>
 </div>
@@ -174,12 +174,12 @@
   <div class="product-details">
     <h2 class="product-name">Lamb</h2>
     <p class="product-price">Ksh 150</p>
-    <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
+    <button class="add-to-cart" id="add-to-cart" class="add-to-cart">Add to Cart</button>
 
     <div class="counterContainer" style="display:none;">
-      <button id="increment-btn">+</button>
+      <button id="increment-btn" class="increment-btn">+</button>
       <div id="counter-value">0</div>
-      <button id="decrement-btn">-</button>
+      <button id="decrement-btn" class="decrement-btn">-</button>
   </div>
 </div>
 </div>
@@ -195,6 +195,7 @@
   </a>
   <span id="basket-count">0</span>
 </div>
+
+<script src="src/butcha.js"></script>
 </body>
-  <script src="src/butcha.js"></script>
 </html>
