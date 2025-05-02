@@ -282,7 +282,7 @@ document.querySelectorAll('.add-to-cart').forEach((button) => {
         const productElement = button.closest('.product');
         const productName = productElement.querySelector('.product-name').textContent;
         const productPrice = parseFloat(productElement.querySelector('.product-price').textContent.replace('Ksh ', '').replace(',', ''));
-
+        const productImage = productElement.querySelector('img').src;  // get image source
         // Check if the product is already in the cart
         const existingProductIndex = cart.findIndex(item => item.name === productName);
 
@@ -293,7 +293,7 @@ document.querySelectorAll('.add-to-cart').forEach((button) => {
             // Add new product to cart
             cart.push({
                 name: productName,
-                image: product.image,
+                image: productImage,
                 price: productPrice,
                 quantity: 1,
                 purchasedOn: new Date().toLocaleString()
