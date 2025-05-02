@@ -13,6 +13,12 @@ function showSidebar() {
 function hideSidebar() {
     const sidebar = document.querySelector('.sidebar');
     sidebar.style.display = 'none';
+
+    // Show the search bar back when sidebar closes
+    const searchBar = document.getElementById('search-input');
+    if (searchBar) {
+        searchBar.style.display = 'block'; // or 'flex' depending on your CSS
+    }
 }
 
 // Dropdown Toggle Functionality
