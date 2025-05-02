@@ -266,6 +266,11 @@ document.querySelectorAll('.add-to-cart').forEach((button) => {
             }
         };
 
+        setTimeout(() => {
+            counterContainer.style.display = 'none';  // hide counters automatically
+            button.style.display = 'block';            // show Add to Cart button again
+        }, 3000);
+
         localStorage.setItem('cart', JSON.stringify(cart));
         updateCartCount();
         showToast('Product added to cart successfully!');
