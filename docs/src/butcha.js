@@ -216,7 +216,7 @@ document.querySelectorAll('.add-to-cart').forEach((button) => {
         const counterContainer = productElement.querySelector('.counterContainer');
         const incrementBtn = counterContainer.querySelector('.increment-btn');
         const decrementBtn = counterContainer.querySelector('.decrement-btn');
-        const counterValue = counterContainer.querySelector('#counter-value');
+        const counterValue = counterContainer.querySelector('.counter-value');
 
         let quantity = 1;
         const existingIndex = cart.findIndex(item => item.name === productName);
