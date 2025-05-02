@@ -268,10 +268,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Add to Cart Functionality
 document.querySelectorAll('.add-to-cart').forEach((button) => {
-    const counterContainer = button.nextElementSibling; // Assuming counterContainer is next to the button
-    const incrementBtn = counterContainer.querySelector('#increment-btn');
-    const decrementBtn = counterContainer.querySelector('#decrement-btn');
-    const counterValue = counterContainer.querySelector('#counter-value');
+    const productElement = button.closest('.product');
+    const counterContainer = productElement.querySelector('.counterContainer');
+    const incrementBtn = counterContainer.querySelector('.increment-btn');
+    const decrementBtn = counterContainer.querySelector('.decrement-btn');
+    const counterValue = counterContainer.querySelector('.counter-value');
+
+    // Now you can use counterValue.textContent without errors
+
+
 
     let quantity = 0; // Initialize quantity for this product
 
