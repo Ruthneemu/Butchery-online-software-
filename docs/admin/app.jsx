@@ -1,15 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/dashboard";
-import "./src/style.css";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './src/style.css'; // ensure correct path to Tailwind CSS
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-      </Routes>
-    </BrowserRouter>
-  </React.StrictMode>
-);
+const App = () => {
+  return (
+    <div className="p-4 text-center text-xl text-blue-600">
+      Butchee Admin Dashboard
+    </div>
+  );
+};
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);

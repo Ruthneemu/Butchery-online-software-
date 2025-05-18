@@ -8,6 +8,8 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.7",
+    "@vitejs/plugin-react": "^4.4.1",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.24",
     "react": "^18.2.0",
