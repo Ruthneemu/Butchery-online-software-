@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/dashboard";
-import '../src/style.css';
+import './src/style.css';
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
