@@ -9,7 +9,8 @@
     },
     "dependencies": {
         "@supabase/supabase-js": "^2.49.4",
-        "jsdom": "^19.0.0"
+        "jsdom": "^19.0.0",
+        "react-router-dom": "^7.6.0"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.21",
