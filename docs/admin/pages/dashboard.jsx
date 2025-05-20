@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import supabase from '../supabaseClient';
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+
 const navItems = [
   { name: "Dashboard", path: "/" },
   { name: "Inventory", path: "/inventory" },
@@ -9,58 +9,11 @@ const navItems = [
   { name: "Settings", path: "/settings" },
 ];
 
-const Dashboard = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+const Layout = ({ children, title }) => {
   const location = useLocation();
-  const [summary, setSummary] = useState({});
-  const [recentSales, setRecentsales] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchDashboardData = async () => {
-        const { data: products, error: productError } = await supabase
-           .from("products")
-           .select("*");
-
-           const { data: sales, error: salesError } = await supabase
-             .from("sales")
-             .select("*")
-             .order("created_at", {ascending: false})
-             .limit(5);
-             if (productError || salesError) {
-                console.error("Fetch error:", productError || salesError);
-                return;
-             }
-             const lowStockCount = products.filter(p => p.quantity < 5).length;
-      const expiringSoonCount = products.filter(p => {
-        const expiry = new Date(p.expiry_date);
-        const now = new Date();
-        const in3Days = new Date(now.setDate(now.getDate() + 3));
-        return expiry <= in3Days;
-      }).length;
-
-      const totalSalesToday = sales
-        .filter(s => new Date(s.created_at).toDateString() === new Date().toDateString())
-        .reduce((acc, s) => acc + s.total_amount, 0);
-
-      setSummary({
-        totalProducts: products.length,
-        totalSalesToday,
-        lowStock: lowStockCount,
-        expiringSoon: expiringSoonCount,
-      });
-
-      setRecentSales(sales.map((s, idx) => ({
-        id: s.id,
-        product: s.product_name,
-        qty: s.quantity,
-        amount: s.total_amount,
-        time: new Date(s.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      })));
-    };
-
-    fetchDashboardData();
-  }, []);
-
+  const showBackButton = location.pathname !== "/";
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -87,7 +40,7 @@ const Dashboard = () => {
         </nav>
       </div>
 
-      {/* Overlay (mobile only) */}
+      {/* Overlay */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 bg-black opacity-30 z-20 md:hidden"
@@ -104,7 +57,6 @@ const Dashboard = () => {
             className="text-gray-700 focus:outline-none"
             aria-label="Toggle menu"
           >
-            {/* Hamburger Icon */}
             <svg
               className="w-6 h-6"
               fill="none"
@@ -121,66 +73,24 @@ const Dashboard = () => {
               )}
             </svg>
           </button>
-          <h1 className="text-xl font-bold">Dashboard</h1>
+          <h1 className="text-xl font-bold">{title || "Page"}</h1>
           <div></div>
         </header>
 
-        {/* Dashboard Content */}
-        <main className="p-6">
-          {/* Summary Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <SummaryCard label="Total Products" value={summary.totalProducts} color="bg-blue-100" />
-            <SummaryCard
-              label="Sales Today"
-              value={`Ksh ${summary.totalSalesToday}`}
-              color="bg-green-100"
-            />
-            <SummaryCard label="Low Stock" value={summary.lowStock} color="bg-yellow-100" />
-            <SummaryCard label="Expiring Soon" value={summary.expiringSoon} color="bg-red-100" />
-          </div>
-
-          {/* Alerts */}
-          {summary.lowStock > 0 && (
-            <div className="bg-yellow-100 text-yellow-700 p-4 rounded mb-6">
-              ⚠️ {summary.lowStock} product(s) are running low on stock!
+        {/* Breadcrumb + Back Button */}
+        <div className="px-6 pt-6">
+          {showBackButton && (
+            <div className="mb-2 text-sm text-gray-500">
+              <Link to="/" className="text-blue-600 hover:underline">Dashboard</Link> &gt; {title}
             </div>
           )}
+        </div>
 
-          {/* Recent Sales */}
-          <div className="bg-white rounded shadow p-4">
-            <h2 className="text-xl font-semibold mb-4">Recent Sales</h2>
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b">
-                  <th className="py-2">Product</th>
-                  <th>Qty</th>
-                  <th>Amount</th>
-                  <th>Time</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentSales.map((sale) => (
-                  <tr key={sale.id} className="border-b hover:bg-gray-100">
-                    <td className="py-2">{sale.product}</td>
-                    <td>{sale.qty}</td>
-                    <td>Ksh {sale.amount}</td>
-                    <td>{sale.time}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </main>
+        {/* Page Content */}
+        <main className="p-6">{children}</main>
       </div>
     </div>
   );
 };
 
-const SummaryCard = ({ label, value, color }) => (
-  <div className={`p-4 rounded shadow ${color}`}>
-    <p className="text-gray-600">{label}</p>
-    <h3 className="text-2xl font-bold">{value}</h3>
-  </div>
-);
-
-export default Dashboard;
+export default Layout;

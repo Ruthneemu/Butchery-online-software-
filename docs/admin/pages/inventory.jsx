@@ -20,7 +20,7 @@ const Inventory = () => {
   const fetchProducts = async () => {
     setLoading(true);
     const { data, error } = await supabase
-      .from('products')
+      .from('inventory')
       .select('*')
       .order('created_at', { ascending: false });
 
@@ -46,7 +46,7 @@ const Inventory = () => {
       return;
     }
 
-    const { error } = await supabase.from('products').insert([
+    const { error } = await supabase.from('inventory').insert([
       {
         name: newName,
         quantity: Number(newQuantity),
@@ -68,7 +68,7 @@ const Inventory = () => {
   const deleteProduct = async (id) => {
     if (!window.confirm('Are you sure you want to delete this product?')) return;
 
-    const { error } = await supabase.from('products').delete().eq('id', id);
+    const { error } = await supabase.from('inventory').delete().eq('id', id);
     if (error) {
       alert('Failed to delete: ' + error.message);
     } else {
