@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import supabase from '../supabaseClient';
+import Layout from "../components/layout";
 
 const Inventory = () => {
   const [products, setProducts] = useState([]);
@@ -129,6 +130,7 @@ const Inventory = () => {
   };
 
   return (
+    <Layout>
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-bold text-red-700 mb-6">Butchery Inventory</h1>
 
@@ -286,6 +288,7 @@ const Inventory = () => {
         )}
       </div>
     </div>
+    </Layout>
   );
 };
 

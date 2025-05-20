@@ -14,6 +14,9 @@ const Layout = ({ children, title = "Butchee Admin" }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 
+  // Create breadcrumb parts from URL
+  const breadcrumbs = location.pathname.split("/").filter(Boolean);
+
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
@@ -47,16 +50,14 @@ const Layout = ({ children, title = "Butchee Admin" }) => {
         ></div>
       )}
 
-      {/* Main Content */}
+      {/* Main content */}
       <div className="flex-1 flex flex-col min-h-screen ml-0 md:ml-64">
-        {/* Mobile Header */}
+        {/* Mobile header */}
         <header className="flex items-center justify-between bg-white p-4 shadow-md md:hidden">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="text-gray-700 focus:outline-none"
-            aria-label="Toggle menu"
           >
-            {/* Hamburger Icon */}
             <svg
               className="w-6 h-6"
               fill="none"
@@ -76,6 +77,26 @@ const Layout = ({ children, title = "Butchee Admin" }) => {
           <h1 className="text-xl font-bold">{title}</h1>
           <div></div>
         </header>
+
+        {/* Breadcrumb */}
+        <div className="p-4 text-sm text-gray-600 bg-gray-100 border-b">
+          <nav className="flex space-x-2">
+            <Link to="/" className="hover:underline text-blue-600">
+              Dashboard
+            </Link>
+            {breadcrumbs.map((crumb, idx) => {
+              const path = "/" + breadcrumbs.slice(0, idx + 1).join("/");
+              return (
+                <React.Fragment key={path}>
+                  <span>/</span>
+                  <Link to={path} className="hover:underline text-blue-600 capitalize">
+                    {crumb}
+                  </Link>
+                </React.Fragment>
+              );
+            })}
+          </nav>
+        </div>
 
         {/* Page content */}
         <main className="p-6">{children}</main>

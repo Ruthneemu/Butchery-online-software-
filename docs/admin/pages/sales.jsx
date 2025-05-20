@@ -3,6 +3,7 @@ import supabase from '../supabaseClient';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import Papa from 'papaparse';
+import Layout from "../components/layout";
 
 const Sales = () => {
   const [sales, setSales] = useState([]);
@@ -233,6 +234,7 @@ const Sales = () => {
   };
 
   return (
+    <Layout>
     <div className="p-6 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold text-red-700 mb-4">Real-Time Sales Tracker</h1>
 
@@ -385,6 +387,7 @@ const Sales = () => {
         </table>
       )}
     </div>
+    </Layout>
   );
 };
 

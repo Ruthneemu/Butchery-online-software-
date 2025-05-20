@@ -5,6 +5,7 @@ import { Pie } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable'; // ✅ Correct way for ES modules
+import Layout from "../components/layout";
 
 Chart.register(ArcElement, Tooltip, Legend);
 
@@ -114,6 +115,7 @@ const Reports = () => {
   };
 
   return (
+    <Layout>
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-bold text-red-700 mb-6">Inventory Reports</h1>
 
@@ -212,6 +214,8 @@ const Reports = () => {
         </>
       )}
     </div>
+    </Layout>
+
   );
 };
 
