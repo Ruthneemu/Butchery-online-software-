@@ -1,0 +1,39 @@
+<!-- HTML part where messages will be displayed -->
+<div id="messages"></div>
+
+<!-- Supabase client script -->
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  // Initialize Supabase client
+  const supabaseUrl = 'https://your-project-id.supabase.co'; // Replace with your Supabase URL
+  const supabaseKey = 'your-anon-key'; // Replace with your Supabase anon key
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  // Function to fetch messages
+  async function fetchMessages() {
+    const { data, error } = await supabase
+      .from('messages')
+      .select('*')
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      document.getElementById('messages').innerHTML = `<p>Error fetching messages: ${error.message}</p>`;
+    } else {
+      const container = document.getElementById('messages');
+      container.innerHTML = ''; // Clear previous content
+
+      data.forEach(msg => {
+        container.innerHTML += `
+          <div class='message'>
+            <strong>${msg.name}:</strong> ${msg.message}
+            <span>${new Date(msg.created_at).toLocaleString()}</span>
+          </div>
+        `;
+      });
+    }
+  }
+
+  // Call the function when page loads
+  fetchMessages();
+</script>

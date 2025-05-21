@@ -1,0 +1,71 @@
+<!-- add-to-cart.html or embedded in product page -->
+<script type="module">
+import supabase from "../supabaseClient";
+
+// Check if user is logged in
+const {
+  data: { session },
+  error: sessionError
+} = await supabase.auth.getSession();
+
+if (!session) {
+  alert("User not logged in. Please log in first.");
+  return;
+}
+
+// Replace these with actual values from form
+const product_id = document.querySelector("#product_id").value;
+const quantity = parseInt(document.querySelector("#quantity").value);
+const user_id = session.user.id; // Supabase auth user ID
+
+// 1. Check if product exists
+let { data: product, error: productError } = await supabase
+  .from("products")
+  .select("*")
+  .eq("product_id", product_id)
+  .single();
+
+if (productError || !product) {
+  alert("Product does not exist.");
+  return;
+}
+
+// 2. Check if already in cart
+let { data: cartItem, error: cartError } = await supabase
+  .from("cart")
+  .select("*")
+  .eq("user_id", user_id)
+  .eq("product_id", product_id)
+  .single();
+
+if (cartItem) {
+  // 3. Product already in cart → Update quantity
+  const { error: updateError } = await supabase
+    .from("cart")
+    .update({ quantity: cartItem.quantity + quantity })
+    .eq("user_id", user_id)
+    .eq("product_id", product_id);
+
+  if (updateError) {
+    alert("Error updating product quantity in cart.");
+  } else {
+    alert("Product quantity updated in cart.");
+  }
+} else {
+  // 4. Product not in cart → Insert new entry
+  const { error: insertError } = await supabase
+    .from("cart")
+    .insert({
+      user_id,
+      product_id,
+      quantity,
+      created_at: new Date().toISOString(),
+    });
+
+  if (insertError) {
+    alert("Error adding product to cart.");
+  } else {
+    alert("Product added to cart!");
+  }
+}
+</script>

@@ -1,77 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Butchery Management System</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="../styles/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Butchery Management System</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="../styles/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+  <style>
+    /* Simple modal styling */
+    #loginModal {
+      display: none;
+      position: fixed; top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.5);
+      justify-content: center; align-items: center;
+    }
+    #loginModal.active { display: flex; }
+    #loginModal form {
+      background: white; padding: 20px; border-radius: 5px;
+      display: flex; flex-direction: column; gap: 10px;
+      width: 300px;
+    }
+    #loginModal input, #loginModal button {
+      padding: 8px; font-size: 1rem;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Butchery Management System</h1>
-    </header>
-    <main>
-        <section class="hero">
-            <h2>Welcome to our Butchery Management System!</h2>
-            <p>Manage your butchery business with ease. Track inventory, monitor sales, and optimize operations with our intuitive and user-friendly platform. Plus, offer online delivery to your customers for a seamless shopping experience!</p>
-        </section>
-        <section class="features">
-            <h2>Key Features</h2>
-            <ul>
-                <li>
-                    <i class="fas fa-box"></i>
-                    <h3>Inventory Management</h3>
-                    <p>Track your meat stock, monitor expiration dates, and receive alerts when it's time to restock.</p>
-                </li>
-                <li>
-                    <i class="fas fa-chart-bar"></i>
-                    <h3>Sales and Reporting</h3>
-                    <p>Analyze sales trends, track customer behavior, and generate detailed reports to inform your business decisions.</p>
-                </li>
-                <li>
-                    <i class="fas fa-truck"></i>
-                    <h3>Order Management</h3>
-                    <p>Manage customer orders, track deliveries, and streamline your fulfillment process.</p>
-                </li>
-                <li>
-                    <i class="fas fa-handshake"></i>
-                    <h3>Supplier Management</h3>
-                    <p>Keep track of your suppliers, monitor prices, and optimize your procurement process.</p>
-                </li>
-                <li>
-                    <i class="fas fa-shipping-fast"></i>
-                    <h3>Online Delivery</h3>
-                    <p>Offer online delivery to your customers, with real-time tracking and updates.</p>
-                </li>
-            </ul>
-        </section>
-        <section class="quick-links">
-            <h2>Get Started Quickly</h2>
-            <ul>
-                <li>
-                    <a href="#" class="btn">Add New Product</a>
-                </li>
-                <li>
-                    <a href="#" class="btn">View Sales Report</a>
-                </li>
-                <li>
-                    <a href="#" class="btn">Manage Orders</a>
-                </li>
-                <li>
-                    <a href="#" class="btn">Configure Delivery Options</a>
-                </li>
-            </ul>
-        </section>
-        <button class="cta">Get Started Now →</button>
-        <img src="../assets/images/dashboard-icon.png" alt="Dashboard Icon">
-        <a href="../views/index.html">Home</a>
-    </main>
-    <footer>
-        <p>Copyright 2023 Butchery Management System. All rights reserved.</p>
-    </footer>
+  <header>
+    <h1>Butchery Management System</h1>
+  </header>
+  <main>
+    <section class="hero">
+      <h2>Welcome to our Butchery Management System!</h2>
+      <p>
+        Manage your butchery business with ease. Track inventory, monitor sales,
+        and optimize operations with our intuitive and user-friendly platform.
+        Plus, offer online delivery to your customers for a seamless shopping
+        experience!
+      </p>
+    </section>
+    <section class="features">
+      <h2>Key Features</h2>
+      <ul>
+        <li>
+          <i class="fas fa-box"></i>
+          <h3>Inventory Management</h3>
+          <p>
+            Track your meat stock, monitor expiration dates, and receive alerts
+            when it's time to restock.
+          </p>
+        </li>
+        <li>
+          <i class="fas fa-chart-bar"></i>
+          <h3>Sales and Reporting</h3>
+          <p>
+            Analyze sales trends, track customer behavior, and generate detailed
+            reports to inform your business decisions.
+          </p>
+        </li>
+        <li>
+          <i class="fas fa-truck"></i>
+          <h3>Order Management</h3>
+          <p>
+            Manage customer orders, track deliveries, and streamline your
+            fulfillment process.
+          </p>
+        </li>
+        <li>
+          <i class="fas fa-handshake"></i>
+          <h3>Supplier Management</h3>
+          <p>
+            Keep track of your suppliers, monitor prices, and optimize your
+            procurement process.
+          </p>
+        </li>
+        <li>
+          <i class="fas fa-shipping-fast"></i>
+          <h3>Online Delivery</h3>
+          <p>
+            Offer online delivery to your customers, with real-time tracking and
+            updates.
+          </p>
+        </li>
+      </ul>
+    </section>
+    <section class="quick-links">
+      <h2>Get Started Quickly</h2>
+      <ul>
+        <li><button id="addProductBtn" class="btn">Add New Product</button></li>
+        <li><button id="viewSalesBtn" class="btn">View Sales Report</button></li>
+        <li><button id="manageOrdersBtn" class="btn">Manage Orders</button></li>
+        <li><button id="configureDeliveryBtn" class="btn">Configure Delivery Options</button></li>
+      </ul>
+    </section>
+    <button class="cta" id="getStartedBtn">Get Started Now →</button>
+    <img src="../assets/images/dashboard-icon.png" alt="Dashboard Icon" />
+    <a href="../views/index.html">Home</a>
+  </main>
+  <footer>
+    <p>Copyright 2023 Butchery Management System. All rights reserved.</p>
+  </footer>
 
-    <script src="butcha.js"></script>
-    <script src="../scripts/dashboard.js"></script>
+  <!-- Login Modal -->
+  <div id="loginModal">
+    <form id="loginForm">
+      <h3>Login</h3>
+      <input type="email" id="emailInput" placeholder="Email" required />
+      <input type="password" id="passwordInput" placeholder="Password" required />
+      <button type="submit">Login</button>
+      <button type="button" id="closeLoginModal">Cancel</button>
+      <p id="loginMessage" style="color:red;"></p>
+    </form>
+  </div>
+
+  <script>
+    // Initialize Supabase client (replace with your keys)
+    const SUPABASE_URL = 'https://YOUR_SUPABASE_URL.supabase.co';
+    const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const loginModal = document.getElementById('loginModal');
+    const loginForm = document.getElementById('loginForm');
+    const loginMessage = document.getElementById('loginMessage');
+    const addProductBtn = document.getElementById('addProductBtn');
+
+    let user = null;
+
+    // Show login modal
+    function showLogin() {
+      loginModal.classList.add('active');
+      loginMessage.textContent = '';
+    }
+
+    // Hide login modal
+    function hideLogin() {
+      loginModal.classList.remove('active');
+      loginForm.reset();
+      loginMessage.textContent = '';
+    }
+
+    // Check auth state on load
+    async function checkAuth() {
+      const { data, error } = await supabase.auth.getSession();
+      if (data.session) {
+        user = data.session.user;
+        console.log('Logged in as:', user.email);
+      } else {
+        user = null;
+      }
+    }
+
+    checkAuth();
+
+    // Login form submit
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('emailInput').value;
+      const password = document.getElementById('passwordInput').value;
+      loginMessage.textContent = '';
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        loginMessage.textContent = error.message;
+      } else {
+        user = data.user;
+        hideLogin();
+        alert(`Welcome, ${user.email}! You are now logged in.`);
+      }
+    });
+
+    document.getElementById('closeLoginModal').addEventListener('click', hideLogin);
+
+    // Add New Product button click handler
+    addProductBtn.addEventListener('click', async () => {
+      if (!user) {
+        alert('Please login first');
+        showLogin();
+        return;
+      }
+      const productName = prompt('Enter new product name:');
+      if (!productName) return;
+
+      // Insert new product into 'products' table
+      const { data, error } = await supabase
+        .from('products')
+        .insert([{ name: productName, created_at: new Date().toISOString() }]);
+
+      if (error) {
+        alert('Error adding product: ' + error.message);
+      } else {
+        alert('Product added successfully!');
+      }
+    });
+
+    // You can add similar event listeners for other buttons below:
+    // #viewSalesBtn, #manageOrdersBtn, #configureDeliveryBtn
+
+    // For example:
+    // document.getElementById('viewSalesBtn').addEventListener('click', () => {
+    //   if (!user) {
+    //     alert('Please login first');
+    //     showLogin();
+    //     return;
+    //   }
+    //   window.location.href = 'sales-report.html'; // or load sales report UI here
+    // });
+  </script>
+
+  <script src="butcha.js"></script>
+  <script src="../scripts/dashboard.js"></script>
 </body>
 </html>

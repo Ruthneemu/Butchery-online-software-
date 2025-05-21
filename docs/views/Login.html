@@ -1,25 +1,74 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html>
 <head>
-	<title>Login Form</title>
-	<link rel="stylesheet" type="text/css" href="../styles/style.css">
+  <title>Login Form</title>
+  <link rel="stylesheet" type="text/css" href="../styles/style.css">
 </head>
 <body>
-	<div class="login-form">
-		<div class="logo">
-			<img src="../assets/images/butchery.jpg" alt="Logo">
-		</div>
-		<form action="../server/login.php" method="post">
-			<div class="form-group">				
-			<input type="email" placeholder="Enter Email:" name="email" class="form-control">
-        </div>
-        <div class="form-group">
-            <input type="password" placeholder="Enter Password:" name="password" class="form-control">
-			<i class="fa fa-eye" aria-hidden="true" id="eye"></i>
-        </div>
-			<button type="submit" value="Login" name="login" class="login-btn" >Login</button>
-			  <p class="no-account">Don't have an account? <a href="../views/register.html" class="register-btn btn">Register</a></p>
-		</form>
-			</body>
-<script src="../scripts/butchery.js"></script>
+  <div class="login-form">
+    <div class="logo">
+      <img src="../assets/images/butchery.jpg" alt="Logo">
+    </div>
+    <form id="loginForm">
+      <div class="form-group">       
+        <input type="email" placeholder="Enter Email:" name="email" id="email" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <input type="password" placeholder="Enter Password:" name="password" id="password" class="form-control" required>
+        <i class="fa fa-eye" aria-hidden="true" id="eye"></i>
+      </div>
+      <button type="submit" class="login-btn">Login</button>
+      <p class="no-account">Don't have an account? <a href="../views/register.html" class="register-btn btn">Register</a></p>
+    </form>
+    <p id="errorMessage" style="color:red;"></p>
+  </div>
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+
+  <script>
+    // Initialize Supabase
+    const SUPABASE_URL = 'https://YOUR_SUPABASE_URL.supabase.co';
+    const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Toggle password visibility (optional)
+    const eyeIcon = document.getElementById('eye');
+    const passwordInput = document.getElementById('password');
+    eyeIcon.addEventListener('click', () => {
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.classList.add('fa-eye-slash');
+        eyeIcon.classList.remove('fa-eye');
+      } else {
+        passwordInput.type = 'password';
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+      }
+    });
+
+    // Handle login form submission
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+      if (error) {
+        document.getElementById('errorMessage').textContent = error.message;
+      } else {
+        // Login successful
+        // Redirect to dashboard or home page
+        window.location.href = '../views/dashboard.html'; // change as needed
+      }
+    });
+  </script>
+
+  <script src="../scripts/butchery.js"></script>
+</body>
 </html>

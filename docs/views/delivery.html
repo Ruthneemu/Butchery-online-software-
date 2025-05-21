@@ -1,28 +1,74 @@
-<!doctype html>
+<!doctype html> 
 <html>
   <head>
     <title>Add Map</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <link rel="stylesheet" href="../styles/style.css">
-    <script src="../scripts/delivery.js"></script>
+    <link rel="stylesheet" href="../styles/style.css" />
   </head>
   <body>
     <div class="container">
-      <div class="cont"><button onclick="close()"></button><a href="index.php"><i class="fa fa-times" aria-hidden="true"></i></a></div>
+      <div class="cont">
+        <button onclick="window.history.back()"></button>
+        <a href="index.html"><i class="fa fa-times" aria-hidden="true"></i></a>
+      </div>
       <div class="breadcrumb">
         <a href="../index.html">Home</a> <span>&gt;</span> <a href="delivery.html">Add Map</a>
       </div>
       <h2 class="header">Add Address</h2>
-       <p>Certain items may not be present at your closest store. You have the option to substitute these products in your cart.</p>
-       <form action="../server/delivery_form.php" method="POST" target="_blank">
-       <input type="text" name="q" id="addressInput" placeholder="Enter your address">
-        <button type="submit" class="button" id="address-button">Search</button></form>
-        <div class="map-container">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15959.051141154838!2d36.05099334591605!3d-0.30230489181572145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x18298ddc068e4f17%3A0xa8c2270c2c0ea0d6!2sFamily%20Butchery!5e0!3m2!1sen!2ske!4v1723611951408!5m2!1sen!2ske" width="520" margin-top: 10px; height="405" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </div>
-          <img src="../assets/images/delivery-truck.png" alt="Delivery Truck">
-        </div>
+      <p>Certain items may not be present at your closest store. You have the option to substitute these products in your cart.</p>
+      
+      <form id="addressForm">
+        <input type="text" name="q" id="addressInput" placeholder="Enter your address" required>
+        <button type="submit" class="button" id="address-button">Save Address</button>
+      </form>
+      
+      <p id="message" style="color:green;"></p>
+
+      <div class="map-container">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15959.051141154838!2d36.05099334591605!3d-0.30230489181572145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x18298ddc068e4f17%3A0xa8c2270c2c0ea0d6!2sFamily%20Butchery!5e0!3m2!1sen!2ske!4v1723611951408!5m2!1sen!2ske" width="520" margin-top: 10px; height="405" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
+      <img src="../assets/images/delivery-truck.png" alt="Delivery Truck" />
+    </div>
+
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+    <script>
+      // Initialize Supabase client
+      const SUPABASE_URL = 'https://YOUR_SUPABASE_URL.supabase.co';
+      const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+      const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      // Form submission handler
+      document.getElementById('addressForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const address = document.getElementById('addressInput').value.trim();
+        const messageEl = document.getElementById('message');
+        messageEl.textContent = '';
+
+        if (!address) {
+          messageEl.style.color = 'red';
+          messageEl.textContent = 'Please enter an address.';
+          return;
+        }
+
+        // Insert address into Supabase table "addresses"
+        const { data, error } = await supabase
+          .from('addresses')
+          .insert([{ address: address }]);
+
+        if (error) {
+          messageEl.style.color = 'red';
+          messageEl.textContent = 'Failed to save address: ' + error.message;
+          return;
+        }
+
+        messageEl.style.color = 'green';
+        messageEl.textContent = 'Address saved successfully!';
+        document.getElementById('addressForm').reset();
+      });
+    </script>
+
+    <script src="../scripts/delivery.js"></script>
   </body>
 </html>

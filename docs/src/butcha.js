@@ -108,7 +108,7 @@ function login(event) {
         alert("Please fill in all fields!");
     } else {
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'login.php', true);
+        xhr.open('POST', 'login.html', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.send(`email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
         xhr.onload = function () {

@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Step-by-Step Order Page</title>
     <style>
         /* General Styling */
@@ -164,35 +164,35 @@
         }
 
         .shipments-container {
-        display: flex;
-        flex-direction: column;
-        gap: 20px; /* Space between shipment items */
-        border: 1px solid #ccc;
-        padding: 20px;
-        margin: 20px 0;
-    }
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Space between shipment items */
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px 0;
+        }
 
-    .shipment-item {
-        border: 1px solid #ddd;
-        padding: 15px;
-        display: flex;
-        align-items: center; /* Center items vertically */
-    }
+        .shipment-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            display: flex;
+            align-items: center; /* Center items vertically */
+        }
 
-    .shipment-item img {
-        width: 50px; /* Set image size */
-        height: 50px;
-        margin-right: 15px; /* Space between image and text */
-    }
+        .shipment-item img {
+            width: 50px; /* Set image size */
+            height: 50px;
+            margin-right: 15px; /* Space between image and text */
+        }
 
-    .shipment-item h3 {
-        margin: 0; /* Remove default margin */
-        font-size: 1.2em; /* Adjust font size */
-    }
+        .shipment-item h3 {
+            margin: 0; /* Remove default margin */
+            font-size: 1.2em; /* Adjust font size */
+        }
 
-    .shipment-item p {
-        margin: 5px 0; /* Add spacing between paragraphs */
-    }
+        .shipment-item p {
+            margin: 5px 0; /* Add spacing between paragraphs */
+        }
     </style>
 </head>
 <body>
@@ -200,7 +200,7 @@
 <!-- Header Section -->
 <div class="header">
     <a class="header-logo" href="../index.html">
-        <img src="../assets/images/butchery.jpg" alt="Butchery Logo">
+        <img src="../assets/images/butchery.jpg" alt="Butchery Logo" />
     </a>
     <div class="header-title">Place Your Order</div>
 </div>
@@ -234,22 +234,22 @@
             </div>
             <div class="details">
                 <strong>Delivery Method:</strong>
-        <div>
-            <input type="radio" id="homeDelivery" name="deliveryMethod" value="home" checked>
-            <label for="homeDelivery">Home Delivery</label><br>
-            <input type="radio" id="pickupStation" name="deliveryMethod" value="pickup">
-            <label for="pickupStation">Pickup Station</label>
-        </div>
-        <br>
-        <strong>Delivery Timeframe:</strong>
-        <p>Delivery between <strong>31 October</strong> and <strong>02 November</strong>.</p>
-        <p>Save up to KSh 342.</p>
-        <span style="color: #007bff; cursor: pointer;">Switch to a pickup station starting from KSh 259</span>
-    </div>
-    <div class="details" id="shipmentContainer">
-        <h3>Shipment Details</h3>
-    <div id="shipments-items"></div>
-    </div>
+                <div>
+                    <input type="radio" id="homeDelivery" name="deliveryMethod" value="home" checked />
+                    <label for="homeDelivery">Home Delivery</label><br />
+                    <input type="radio" id="pickupStation" name="deliveryMethod" value="pickup" />
+                    <label for="pickupStation">Pickup Station</label>
+                </div>
+                <br />
+                <strong>Delivery Timeframe:</strong>
+                <p>Delivery between <strong>31 October</strong> and <strong>02 November</strong>.</p>
+                <p>Save up to KSh 342.</p>
+                <span style="color: #007bff; cursor: pointer;">Switch to a pickup station starting from KSh 259</span>
+            </div>
+            <div class="details" id="shipmentContainer">
+                <h3>Shipment Details</h3>
+                <div id="shipments-items"></div>
+            </div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
                 <span class="change-link" onclick="window.location.href='cart.html'">Modify Cart</span>
                 <button class="btn" onclick="completeStep(2)">Continue</button>
@@ -263,203 +263,113 @@
                 <span class="status" id="status3">✔</span>
             </div>
             <div class="details">
-                Jumia Pay Now (M-Pesa, Airtel, or Bank Cards)<br>
-                Pay now fast and securely with JumiaPay, Mastercard, or Visa<br>
+                <input type="radio" id="mpesa" name="payment" value="mpesa" checked />
+                <label for="mpesa">M-Pesa</label><br />
+                <input type="radio" id="paypal" name="payment" value="paypal" />
+                <label for="paypal">PayPal</label><br />
+                <input type="radio" id="creditCard" name="payment" value="creditCard" />
+                <label for="creditCard">Credit Card</label>
             </div>
-            <div id="payment-section" style="padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
-                <h2 style="text-align: center;">Select Payment Method</h2>
-                
-                <div style="margin: 20px 0; text-align: center;">
-                    <p>Choose a payment method to proceed with your purchase:</p>
-                </div>
-            
-                <div style="text-align: center;">
-                    <label>
-                        <input type="radio" name="payment-method" value="prepay" checked>
-                        <strong>Pre-pay Now</strong> (Jumia Pay - M-Pesa, Airtel or Bank Cards)
-                    </label>
-                    <br>
-                    <label>
-                        <input type="radio" name="payment-method" value="pay-on-delivery">
-                        <strong>Pay on Delivery</strong> (Mobile Money and Bank Cards)
-                    </label>
-                </div>
-            </div>
-            
-           
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-                <span class="change-link" onclick="changeStep(3)">Change</span>
+            <div style="margin-top: 10px;">
                 <button class="btn" onclick="completeStep(3)">Continue</button>
             </div>
         </div>
     </div>
 
     <!-- Right Side: Order Summary -->
-    <div class="order-summary" id="order-summary" style="display: none;">
-        <div class="card-header">
-            <span>Order Summary</span>
+    <div class="order-summary">
+        <h2>Order Summary</h2>
+        <div class="summary-item">
+            <span>Subtotal</span>
+            <span>KSh 4,199</span>
         </div>
         <div class="summary-item">
-            <span>Item's total (5)</span>
-            <span id="order-total-price"></span>
+            <span>Delivery</span>
+            <span>KSh 500</span>
         </div>
         <div class="summary-item">
-            <span>Delivery fees</span>
-            <span id="delivery-fee">Ksh 200</span>
+            <span>Discount</span>
+            <span id="discountValue">-</span>
         </div>
         <div class="summary-total">
-            <span>Final Total</span>
-            <span id="final-total-price"></span>
+            <span>Total</span>
+            <span id="totalPrice">KSh 4,699</span>
         </div>
-
-        <!-- Confirm Order Button -->
-        <button class="confirm-btn" onclick="window.location.href='payment.html'">Confirm Order</button>
+        <div class="discount-code">
+            <input type="text" id="discountCode" placeholder="Discount code" class="discount-input" />
+            <button class="apply-btn" onclick="applyDiscount()">Apply</button>
+        </div>
+        <button class="confirm-btn" onclick="confirmOrder()">Confirm Order</button>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-    function completeStep(step) {
-        // Show checkmark for the completed step
-        document.getElementById(`status${step}`).style.display = 'inline';
+    // Supabase client initialization
+    const supabaseUrl = 'YOUR_SUPABASE_URL';
+    const supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
+    const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-        // Show next step
-        const nextStep = step + 1;
-        const nextStepElement = document.getElementById(`step${nextStep}`);
-        if (nextStepElement) {
-            nextStepElement.style.display = 'block';
-        }
+    async function fetchUserData() {
+        try {
+            // Get the logged-in user from Supabase Auth
+            const {
+                data: { user },
+                error: authError,
+            } = await supabase.auth.getUser();
 
-        // Show order summary after last step
-        if (nextStep > 3) {
-            document.getElementById('order-summary').style.display = 'block';
+            if (authError || !user) {
+                throw new Error('User not authenticated');
+            }
+
+            // Fetch user profile from the 'profiles' table by user id
+            const { data, error } = await supabase
+                .from('profiles')
+                .select('first_name, last_name, phone, email')
+                .eq('id', user.id)
+                .single();
+
+            if (error) throw error;
+
+            // Populate UI fields
+            document.getElementById('customerName').innerText = `Name: ${data.first_name} ${data.last_name}`;
+            document.getElementById('customerPhone').innerText = `Phone: ${data.phone}`;
+            document.getElementById('customerEmail').innerText = `Email: ${data.email}`;
+        } catch (error) {
+            console.error('Error fetching user data:', error.message);
+            document.getElementById('address-details').innerText = 'Failed to load user data.';
         }
     }
 
-    function changeStep(step) {
-        // Hide current step
-        const currentStep = document.getElementById(`step${step}`);
-        currentStep.style.display = 'none';
+    // Call fetchUserData on page load
+    window.onload = () => {
+        fetchUserData();
+    };
 
-        // Hide order summary if it is visible
-        if (step === 3) {
-            document.getElementById('order-summary').style.display = 'none';
+    // Simple step completion handler
+    function completeStep(stepNumber) {
+        document.getElementById(`step${stepNumber}`).style.display = 'none';
+        if (stepNumber < 3) {
+            document.getElementById(`step${stepNumber + 1}`).style.display = 'block';
         }
+        document.getElementById(`status${stepNumber}`).style.display = 'inline';
     }
 
-    // Fetch user data when the page loads
-    document.addEventListener("DOMContentLoaded", fetchUserData);
-
-    function fetchUserData() {
-        fetch('fetchUserData.php') // Path to your PHP file
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data); // Log the data for debugging
-                document.getElementById('customerName').innerText = `Name: ${data.first_name} ${data.last_name}`;
-                document.getElementById('customerPhone').innerText = `Phone: ${data.phone}`;
-                document.getElementById('customerEmail').innerText = `Email: ${data.email}`;
-            })
-            .catch(error => {
-                console.error('Error fetching user data:', error);
-                document.getElementById('address-details').innerText = 'Failed to load user data.';
-            });
-    }
-
+    // Dummy functions for discount and confirm order
     function applyDiscount() {
-        // Discount application logic can go here
-        alert('Discount applied!');
+        const code = document.getElementById('discountCode').value.trim();
+        if (code === 'SAVE10') {
+            document.getElementById('discountValue').innerText = 'KSh 420';
+            document.getElementById('totalPrice').innerText = 'KSh 4,279';
+            alert('Discount applied!');
+        } else {
+            alert('Invalid discount code');
+        }
     }
 
     function confirmOrder() {
-        // Order confirmation logic can go here
-        alert('Order confirmed!');
+        alert('Order confirmed! Thank you for your purchase.');
     }
-    // JavaScript to dynamically populate shipment details
-    function getCartItems() {
-            return JSON.parse(localStorage.getItem('cart')) || [];
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-    // Fetch cart items from localStorage
-    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-    
-    // Get the container element where items will be displayed
-    const shipmentsContainer = document.getElementById('shipments-items');
-
-    // Clear the container in case of any existing data
-    shipmentsContainer.innerHTML = '';
-
-    // Loop through each item in the cart and display it
-    cartItems.forEach(item => {
-        const itemElement = document.createElement('div');
-        itemElement.classList.add('shipment-item');
-        itemElement.innerHTML = `
-            <img src="${item.imageUrl}" alt="${item.name}" />
-            <div>
-                <h3>${item.name}</h3>
-                <p>Price: KSh ${item.price}</p>
-                <p>Quantity: ${item.quantity}</p>
-            </div>
-        `;
-        shipmentsContainer.appendChild(itemElement);
-    });
-});
- // Retrieve the total price from local storage
- document.addEventListener('DOMContentLoaded', () => {
-    // Retrieve the total price from local storage and convert to a number
-    const orderTotalPrice = parseFloat(localStorage.getItem('totalPrice')) || 0.00;
-    const deliveryFee = 200; // Constant delivery fee
-    
-    // Calculate final total price
-    const finalTotalPrice = orderTotalPrice + deliveryFee;
-
-    // Debugging lines
-    console.log('Retrieved total price:', orderTotalPrice); // This should be a number now
-    console.log('Delivery fee:', deliveryFee);
-    console.log('Final total price:', finalTotalPrice); // This should display the correct final price
-
-    // Display the total price on the order summary page
-    const totalPriceElement = document.getElementById('order-total-price');
-    if (totalPriceElement) {
-        totalPriceElement.textContent = `Ksh ${orderTotalPrice.toFixed(2)}`; // Update element with order total price
-    } else {
-        console.log('Total price element not found.'); // Error log
-    }
-
-    // Display the delivery fee
-    const deliveryFeeElement = document.getElementById('delivery-fee');
-    if (deliveryFeeElement) {
-        deliveryFeeElement.textContent = `Ksh ${deliveryFee.toFixed(2)}`; // Update delivery fee element
-    }
-
-    // Display the final total price
-    const finalTotalPriceElement = document.getElementById('final-total-price');
-    if (finalTotalPriceElement) {
-        finalTotalPriceElement.textContent = `Ksh ${finalTotalPrice.toFixed(2)}`; // Update final total price element
-    }
-});
-
-
-
-                function confirmPaymentMethod() {
-                    const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
-                    if (paymentMethod === 'prepay') {
-                        // Redirect to JumiaPay platform logic for pre-pay
-                        alert('Redirecting to JumiaPay platform...');
-                        // Replace with actual redirection code
-                    } else {
-                        // Logic for Pay on Delivery
-                        alert('You have selected Pay on Delivery.');
-                        // Add any necessary handling here
-                    }
-                }
-                
-            </script>
-
+</script>
 </body>
 </html>
- 

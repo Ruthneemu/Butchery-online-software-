@@ -1,0 +1,41 @@
+<div id="profile"></div>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  // Setup Supabase client
+  const supabaseUrl = 'https://your-project-id.supabase.co'; // Replace with your Supabase URL
+  const supabaseKey = 'your-anon-key'; // Replace with your anon/public key
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  // Get the currently logged-in user
+  const {
+    data: { user },
+    error: userError
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    document.getElementById("profile").innerHTML = `<p>Error: Not logged in</p>`;
+  } else {
+    const userId = user.id;
+
+    // Fetch user details from 'register' table
+    const { data, error } = await supabase
+      .from('register')
+      .select('first_name, last_name, phone, email')
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      document.getElementById("profile").innerHTML = `<p>Error fetching profile: ${error.message}</p>`;
+    } else {
+      // Render profile
+      document.getElementById("profile").innerHTML = `
+        <p><strong>First Name:</strong> ${data.first_name}</p>
+        <p><strong>Last Name:</strong> ${data.last_name}</p>
+        <p><strong>Phone:</strong> ${data.phone}</p>
+        <p><strong>Email:</strong> ${data.email}</p>
+      `;
+    }
+  }
+</script>

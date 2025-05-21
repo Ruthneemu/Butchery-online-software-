@@ -1,16 +1,27 @@
-// JavaScript to handle star rating selection
+// Import and initialize Supabase client at the top of your script
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+const SUPABASE_URL = 'https://your-project.supabase.co'; // replace with your URL
+const SUPABASE_KEY = 'public-anonymous-key'; // replace with your anon key
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Assume we have user_id available (e.g., from auth or hardcoded for demo)
+const userId = 'some-user-id'; 
+
+// Rating stars
 const stars = document.querySelectorAll('.rating i');
 let userRatingValue = 0;
 
 stars.forEach(star => {
     star.addEventListener('click', function() {
-        userRatingValue = this.getAttribute('data-value');
+        userRatingValue = parseInt(this.getAttribute('data-value'));
         updateStarRating(userRatingValue);
         console.log(`Rated ${userRatingValue} stars`);
     });
 
     star.addEventListener('mouseover', function() {
-        updateStarRating(this.getAttribute('data-value'));
+        updateStarRating(parseInt(this.getAttribute('data-value')));
     });
 
     star.addEventListener('mouseout', function() {
@@ -20,149 +31,281 @@ stars.forEach(star => {
 
 function updateStarRating(value) {
     stars.forEach(star => {
-        star.classList.toggle('active', star.getAttribute('data-value') <= value);
+        star.classList.toggle('active', parseInt(star.getAttribute('data-value')) <= value);
     });
 }
 
-// Review submission
-document.getElementById('reviewForm').addEventListener('submit', function(event) {
+// Submit Review - save to Supabase
+document.getElementById('reviewForm').addEventListener('submit', async function(event) {
     event.preventDefault();
-    const reviewText = document.getElementById('reviewText').value;
-    if (userRatingValue > 0 && reviewText.trim() !== "") {
-        const reviewCard = document.createElement('div');
-        reviewCard.classList.add('review-card');
-        reviewCard.innerHTML = `
-            <div class="review-rating">Rating: ${userRatingValue} Star(s)</div>
-            <div class="review-text">${reviewText}</div>
-        `;
-        document.getElementById('existingReviews').appendChild(reviewCard);
+    const reviewText = document.getElementById('reviewText').value.trim();
+
+    if (userRatingValue > 0 && reviewText !== "") {
+        // Save review to Supabase
+        const { data, error } = await supabase
+            .from('reviews')
+            .insert([{
+                product_id: 'product-123', // replace with actual product ID
+                rating: userRatingValue,
+                review_text: reviewText,
+                created_at: new Date()
+            }]);
+
+        if (error) {
+            alert("Failed to save review: " + error.message);
+            return;
+        }
+
+        // Optionally append the new review immediately to UI
+        appendReviewToUI(userRatingValue, reviewText);
+
         document.getElementById('reviewText').value = ""; // Clear textarea
-        userRatingValue = 0; // Reset rating
-        stars.forEach(s => s.classList.remove('active')); // Reset user stars
+        userRatingValue = 0;
+        stars.forEach(s => s.classList.remove('active'));
     } else {
         alert("Please provide a rating and a review text.");
     }
 });
 
-// Add to Cart Functionality
+function appendReviewToUI(rating, text) {
+    const reviewCard = document.createElement('div');
+    reviewCard.classList.add('review-card');
+    reviewCard.innerHTML = `
+        <div class="review-rating">Rating: ${rating} Star(s)</div>
+        <div class="review-text">${text}</div>
+    `;
+    document.getElementById('existingReviews').appendChild(reviewCard);
+}
+
+// Load reviews from Supabase on page load
+async function loadReviews() {
+    const { data, error } = await supabase
+        .from('reviews')
+        .select('*')
+        .eq('product_id', 'product-123') // replace with actual product ID
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        console.error('Error loading reviews:', error);
+        return;
+    }
+
+    const container = document.getElementById('existingReviews');
+    container.innerHTML = ''; // clear previous
+
+    data.forEach(review => {
+        appendReviewToUI(review.rating, review.review_text);
+    });
+}
+
+// Add to Cart Functionality - using Supabase
 document.querySelectorAll('.add-to-cart').forEach((button) => {
-    const counterContainer = button.nextElementSibling; // Assuming counterContainer is next to the button
+    const counterContainer = button.nextElementSibling;
     const incrementBtn = counterContainer.querySelector('#increment-btn');
     const decrementBtn = counterContainer.querySelector('#decrement-btn');
     const counterValue = counterContainer.querySelector('#counter-value');
 
-    let quantity = 0; // Initialize quantity for this product
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let quantity = 0;
 
-    button.addEventListener('click', (event) => {
-        event.preventDefault(); // Prevent default behavior
+    async function refreshCart() {
+        const { data: cartItems, error } = await supabase
+            .from('cart_items')
+            .select('*')
+            .eq('user_id', userId)
+            .eq('product_name', productName);
 
-        const productElement = button.closest('.product');
-        const productName = productElement.querySelector('.product-name').textContent;
-        const productPrice = parseFloat(productElement.querySelector('.product-price').textContent.replace('Ksh ', '').replace(',', ''));
-
-        // Check if the product is already in the cart
-        const existingProductIndex = cart.findIndex(item => item.name === productName);
-
-        if (existingProductIndex > -1) {
-            // Set quantity to the existing product's quantity
-            quantity = cart[existingProductIndex].quantity;
-        } else {
-            // Add new product to cart
-            cart.push({
-                name: productName,
-                image: productElement.querySelector('.product-image').src, // Update to use the correct selector for the image
-                price: productPrice,
-                quantity: 1,
-                purchasedOn: new Date().toLocaleString()
-            });
-            quantity = 1; // Start with quantity 1
+        if (error) {
+            console.error('Error fetching cart:', error);
+            return;
         }
 
-        // Update the counter display
-        counterValue.textContent = quantity;
-
-        // Hide the "Add to Cart" button
-        button.style.display = 'none'; // Hide the button
-
-        // Show the counterContainer
-        counterContainer.style.display = 'flex';
-
-        // Increment Button Functionality
-        incrementBtn.onclick = () => {
-            quantity += 1;
+        if (cartItems.length > 0) {
+            quantity = cartItems[0].quantity;
             counterValue.textContent = quantity;
+            button.style.display = 'none';
+            counterContainer.style.display = 'flex';
+        } else {
+            quantity = 0;
+            counterValue.textContent = quantity;
+            button.style.display = 'block';
+            counterContainer.style.display = 'none';
+        }
+    }
 
-            // Update cart quantity
-            if (existingProductIndex > -1) {
-                cart[existingProductIndex].quantity = quantity; // Update quantity in the cart
+    const productElement = button.closest('.product');
+    const productName = productElement.querySelector('.product-name').textContent;
+    const productPrice = parseFloat(productElement.querySelector('.product-price').textContent.replace('Ksh ', '').replace(',', ''));
+    const productImage = productElement.querySelector('.product-image').src;
+
+    // Initialize cart state for this product
+    refreshCart();
+
+    button.addEventListener('click', async (event) => {
+        event.preventDefault();
+
+        // Check if product already in cart
+        const { data: existingItems, error } = await supabase
+            .from('cart_items')
+            .select('*')
+            .eq('user_id', userId)
+            .eq('product_name', productName);
+
+        if (error) {
+            alert("Error accessing cart: " + error.message);
+            return;
+        }
+
+        if (existingItems.length > 0) {
+            // Update quantity +1
+            quantity = existingItems[0].quantity + 1;
+
+            const { error: updateError } = await supabase
+                .from('cart_items')
+                .update({ quantity })
+                .eq('id', existingItems[0].id);
+
+            if (updateError) {
+                alert("Failed to update cart: " + updateError.message);
+                return;
             }
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount(); // Update the cart count
-            showToast('Product quantity updated!'); // Show success message
-        };
+        } else {
+            quantity = 1;
+            const { error: insertError } = await supabase
+                .from('cart_items')
+                .insert([{
+                    user_id: userId,
+                    product_name: productName,
+                    image_url: productImage,
+                    price: productPrice,
+                    quantity: 1,
+                    purchased_on: new Date()
+                }]);
 
-        setTimeout(() => {
-            counterContainer.style.display = 'none'; // Hide the counter
-            button.style.display = 'block'; // Show the button
-        }, 3000);
-
-        // Decrement Button Functionality
-        decrementBtn.onclick = () => {
-            if (quantity > 0) {
-                quantity -= 1;
-                counterValue.textContent = quantity;
-                if (existingProductIndex > -1) {
-                    cart[existingProductIndex].quantity = quantity; // Update quantity in the cart
-                    if (quantity === 0) {
-                        cart.splice(existingProductIndex, 1); // Remove the item from the cart if quantity is 0
-                        counterContainer.style.display = 'none'; // Hide the counter if quantity is 0
-                    }
-                }
-                localStorage.setItem('cart', JSON.stringify(cart));
-                updateCartCount(); // Update the cart count
-                showToast('Product quantity updated!'); // Show success message
+            if (insertError) {
+                alert("Failed to add to cart: " + insertError.message);
+                return;
             }
-        };
+        }
 
-        // Save cart to localStorage for the first addition
-        localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartCount(); // Update the cart count
+        counterValue.textContent = quantity;
+        button.style.display = 'none';
+        counterContainer.style.display = 'flex';
+        updateCartCount();
         showToast('Product added to cart successfully!');
     });
+
+    incrementBtn.onclick = async () => {
+        quantity++;
+        counterValue.textContent = quantity;
+
+        const { data: existingItems, error } = await supabase
+            .from('cart_items')
+            .select('*')
+            .eq('user_id', userId)
+            .eq('product_name', productName);
+
+        if (existingItems.length > 0) {
+            const { error: updateError } = await supabase
+                .from('cart_items')
+                .update({ quantity })
+                .eq('id', existingItems[0].id);
+
+            if (updateError) {
+                alert("Failed to update cart: " + updateError.message);
+                return;
+            }
+        }
+
+        updateCartCount();
+        showToast('Product quantity updated!');
+    };
+
+    decrementBtn.onclick = async () => {
+        if (quantity > 1) {
+            quantity--;
+            counterValue.textContent = quantity;
+
+            const { data: existingItems, error } = await supabase
+                .from('cart_items')
+                .select('*')
+                .eq('user_id', userId)
+                .eq('product_name', productName);
+
+            if (existingItems.length > 0) {
+                const { error: updateError } = await supabase
+                    .from('cart_items')
+                    .update({ quantity })
+                    .eq('id', existingItems[0].id);
+
+                if (updateError) {
+                    alert("Failed to update cart: " + updateError.message);
+                    return;
+                }
+            }
+        } else if (quantity === 1) {
+            // Remove from cart
+            const { data: existingItems, error } = await supabase
+                .from('cart_items')
+                .select('*')
+                .eq('user_id', userId)
+                .eq('product_name', productName);
+
+            if (existingItems.length > 0) {
+                const { error: deleteError } = await supabase
+                    .from('cart_items')
+                    .delete()
+                    .eq('id', existingItems[0].id);
+
+                if (deleteError) {
+                    alert("Failed to remove from cart: " + deleteError.message);
+                    return;
+                }
+            }
+
+            quantity = 0;
+            counterValue.textContent = quantity;
+            counterContainer.style.display = 'none';
+            button.style.display = 'block';
+        }
+
+        updateCartCount();
+        showToast('Product quantity updated!');
+    };
 });
 
-updateCartCount();
-
-// Cart Functionality
-function updateCartCount() {
+// Update cart count from Supabase
+async function updateCartCount() {
     const cartCount = document.getElementById('basket-count');
-    if (cartCount) {
-        const totalItems = cart.reduce((total, item) => total + item.quantity, 0); // Sum up quantities
-        cartCount.textContent = totalItems; // Update cart count display
-        cartCount.style.display = totalItems > 0 ? 'block' : 'none'; // Show or hide based on item count
+    if (!cartCount) return;
+
+    const { data, error } = await supabase
+        .from('cart_items')
+        .select('*', { count: 'exact' })
+        .eq('user_id', userId);
+
+    if (error) {
+        console.error("Failed to fetch cart count:", error);
+        cartCount.style.display = 'none';
+        return;
     }
+
+    const totalItems = data.reduce((total, item) => total + item.quantity, 0);
+    cartCount.textContent = totalItems;
+    cartCount.style.display = totalItems > 0 ? 'block' : 'none';
 }
 
+// Toast message display
 function showToast(message) {
     const toast = document.createElement('div');
     toast.className = 'toast';
     toast.textContent = message;
     document.body.appendChild(toast);
 
-    // Auto-hide after 3 seconds
     setTimeout(() => {
         toast.remove();
     }, 3000);
 }
 
-document.addEventListener('click', function(event) {
-    if (event.target.classList.contains('add-to-cart')) {
-        console.log("Add to Cart button clicked");
-    } else if (event.target.classList.contains('wishlist-button')) {
-        console.log("Wishlist button clicked");
-        const productId = event.target.getAttribute('data-product-id');
-        addToWishlist(productId);
-    }
-});
-
+// Load reviews initially
+loadReviews();
+updateCartCount();

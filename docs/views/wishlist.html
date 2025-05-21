@@ -1,50 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Wishlist</title>
-    <link rel="stylesheet" href="../styles/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Wishlist</title>
+  <link rel="stylesheet" href="../styles/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    <h1>Your Wishlist</h1>
-    <img src="../assets/images/wishlist-icon.jpg" alt="Wishlist Icon">
-    <div id="wishlistItems"></div>
-    
-    <form action="../server/wishlist_form.php" method="post"></form>
-    
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../scripts/wishlist.js"></script>
-    <script>
-        $(document).ready(function() {
-            function getUserId() {
-                return 1; // Placeholder for actual user ID
-            }
+  <h1>Your Wishlist</h1>
+  <img src="../assets/images/wishlist-icon.jpg" alt="Wishlist Icon" />
+  <div id="wishlistItems"></div>
 
-            const userId = getUserId();
-            $.ajax({
-    url: 'wishlist.php',
-    method: 'POST',
-    data: {
-        user_id: '1', // Replace with actual user ID
-        product_id: '1' // Replace with actual product ID
-    },
-    success: function(data) {
-        // If data is already an object, no need to parse it
-        var wishlist;
-        if (typeof data === 'object') {
-             wishlist = data;
-        } else {
-            // If data is a string, parse it
-             wishlist = JSON.parse(data);
-        }
-        console.log(wishlist);
-    },
-    error: function(error) {
-        console.error('Error fetching wishlist:', error);
+  <script>
+    // Initialize Supabase client
+    const supabaseUrl = 'https://YOUR_SUPABASE_PROJECT_REF.supabase.co';
+    const supabaseKey = 'YOUR_ANON_PUBLIC_KEY';
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    // Replace this with real logged-in user ID logic
+    const userId = 1;
+
+    async function fetchWishlist(userId) {
+      try {
+        const { data, error } = await supabase
+          .from('wishlist')
+          .select('id, product_id, products(name, price, image_url)') 
+          .eq('user_id', userId);
+
+        if (error) throw error;
+
+        displayWishlist(data);
+      } catch (error) {
+        console.error('Error fetching wishlist:', error.message);
+        document.getElementById('wishlistItems').textContent =
+          'Failed to load wishlist.';
+      }
     }
-});
-  });
-    </script>
+
+    function displayWishlist(items) {
+      const container = document.getElementById('wishlistItems');
+      if (!items || items.length === 0) {
+        container.innerHTML = '<p>Your wishlist is empty.</p>';
+        return;
+      }
+
+      container.innerHTML = items
+        .map(
+          (item) => `
+          <div class="wishlist-item">
+            <img src="${item.products.image_url}" alt="${item.products.name}" width="100" />
+            <h3>${item.products.name}</h3>
+            <p>Price: Ksh ${item.products.price}</p>
+          </div>
+        `
+        )
+        .join('');
+    }
+
+    // Load wishlist on page ready
+    fetchWishlist(userId);
+  </script>
 </body>
 </html>

@@ -1,48 +1,116 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Registration Form</title>
-	<link rel="stylesheet" type="text/css" href="../styles/style.css">
+  <title>Registration Form</title>
+  <link rel="stylesheet" type="text/css" href="../styles/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-	<div class="register-box">
-		<form action="../server/register.php" method="post">
-			<div class="logo">
-				<img src="../assets/images/butchery.jpg" alt="Logo">
-			</div>
-			<h2>Create a new account</h2>
-			<div class="form-group">
-				<label for="first-name">First Name</label>
-				<input type="text" id="first-name" name="first-name" required>
-			</div>
-			<div class="form-group">
-				<label for="last-name">Last Name</label>
-				<input type="text" id="last-name" name="last-name" required>
-			</div>
-			<div class="form-group">
-				<label for="phone-number">Phone Number</label>
-				<span>+254</span>
-				<input type="tel" id="phone-number" name="phone-number" required>
-			</div>
-			<div class="form-group">
-				<label for="email">Email Address</label>
-				<input type="email" id="email" name="email" required>
-			</div>
-			<div class="form-group">
-				<label for="password">Password</label>
-				<input type="password" id="password" name="password" required>
-				<i class="fa fa-eye" aria-hidden="true" id="eye"></i>
-			</div>
-			<div class="form-group">
-				<label for="confirm-password">Confirm Password</label>
-				<input type="password" id="confirm-password" name="confirm_password" required>
-				<i class="fa fa-eye" aria-hidden="true" id="eye"></i>
-			</div>
+  <div class="register-box">
+    <form id="registerForm">
+      <div class="logo">
+        <img src="../assets/images/butchery.jpg" alt="Logo" />
+      </div>
+      <h2>Create a new account</h2>
 
-			<button type="submit" class="register-btn">Create Account</button>
-		</form>
-		<p>Already have an account? <a href="../views/Login.html" class="login-btn btn">Login</a></p>
-	</div>
-	<script src="../scripts/butchery.js"></script>
+      <div class="form-group">
+        <label for="first-name">First Name</label>
+        <input type="text" id="first-name" name="firstName" required />
+      </div>
+
+      <div class="form-group">
+        <label for="last-name">Last Name</label>
+        <input type="text" id="last-name" name="lastName" required />
+      </div>
+
+      <div class="form-group">
+        <label for="phone-number">Phone Number</label>
+        <span>+254</span>
+        <input type="tel" id="phone-number" name="phoneNumber" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+      </div>
+
+      <div class="form-group">
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" id="confirm-password" name="confirmPassword" required />
+      </div>
+
+      <button type="submit" class="register-btn">Create Account</button>
+    </form>
+
+    <p>
+      Already have an account?
+      <a href="../views/Login.html" class="login-btn btn">Login</a>
+    </p>
+  </div>
+
+  <script>
+    // Initialize Supabase client
+    const supabaseUrl = 'https://YOUR_SUPABASE_PROJECT_REF.supabase.co';
+    const supabaseKey = 'YOUR_ANON_PUBLIC_KEY';
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    const form = document.getElementById('registerForm');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const firstName = form.firstName.value.trim();
+      const lastName = form.lastName.value.trim();
+      const phoneNumber = form.phoneNumber.value.trim();
+      const email = form.email.value.trim();
+      const password = form.password.value;
+      const confirmPassword = form.confirmPassword.value;
+
+      if (password !== confirmPassword) {
+        alert('Passwords do not match');
+        return;
+      }
+
+      try {
+        // Sign up user with email and password
+        const { data, error } = await supabase.auth.signUp({
+          email: email,
+          password: password,
+        });
+
+        if (error) {
+          alert('Error during sign up: ' + error.message);
+          return;
+        }
+
+        // Insert additional user info in a profile table (optional)
+        const { error: profileError } = await supabase.from('profiles').insert([
+          {
+            id: data.user.id,
+            first_name: firstName,
+            last_name: lastName,
+            phone_number: phoneNumber,
+          },
+        ]);
+
+        if (profileError) {
+          alert('Error saving profile info: ' + profileError.message);
+          return;
+        }
+
+        alert('Registration successful! Please check your email to confirm your account.');
+
+        // Optionally redirect to login page
+        window.location.href = '../views/Login.html';
+      } catch (err) {
+        alert('Unexpected error: ' + err.message);
+      }
+    });
+  </script>
 </body>
 </html>

@@ -1,220 +1,411 @@
-<!DOCTYPE html>
+<!DOCTYPE html>  
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jumia Pay - Order Summary</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Step-by-Step Order Page</title>
     <style>
+        /* General Styling */
         body {
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
-            color: #333;
-            margin: 0;
-            padding: 20px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
         }
         .container {
-            max-width: 600px;
-            margin: auto;
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            text-align: center;
-            color: #007bff;
-        }
-        .order-summary {
-            margin: 20px 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            background-color: #f2f2f2;
-        }
-        .summary-item {
+            width: 90%;
+            max-width: 1200px;
             display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
+            gap: 20px;
         }
-        .total {
-            font-weight: bold;
-            font-size: 18px;
-            text-align: right;
-        }
-        .previous-methods {
-            margin: 20px 0;
-            border-top: 1px solid #ddd;
-            padding-top: 10px;
-        }
-        .payment-method {
-            margin: 20px 0;
-            text-align: center;
-        }
-        .discount {
-            color: #d9534f;
-        }
-        .confirm-btn {
-            display: block;
+
+        /* Header Styling */
+        .header {
             width: 100%;
-            padding: 15px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 18px;
-            text-align: center;
-            margin-top: 20px;
-        }
-        .payment-option {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #ddd;
-        }
-        .payment-option label {
-            margin-left: 8px;
-        }
-        .payment-option img {
-            margin-left: auto;
-            height: 30px;
-            width: auto;
-        }
-        .modal {
-            display: none; /* Start hidden */
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 400px;
-            text-align: center;
+            background-color: #007bff;
+            padding: 15px;
             border-radius: 8px;
+            color: #fff;
+            position: relative; /* Make the header position relative */
+        }
+        .header-logo {
+            flex: 0 0 auto; /* Prevent the logo from growing or shrinking */
+        }
+        .header-logo img {
+            height: 50px; /* Adjust logo size */
+        }
+        .header-title {
+            flex: 1; /* Allow the title to take up remaining space */
+            text-align: center; /* Center the title */
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Main Section */
+        .main-section {
+            flex: 2;
+            padding: 20px;
+        }
+
+        /* Card Styling */
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .card-header span {
+            display: flex;
+            align-items: center;
+        }
+        .card-header .step-number {
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+        }
+        .card-header .status {
+            font-size: 1.5rem;
+            color: green;
+            display: none;
+        }
+        .details, .shipment {
+            font-size: 0.95rem;
+            color: #555;
+            margin-top: 5px;
+        }
+        .change-link {
+            margin-top: 5px;
+            font-size: 0.9rem;
+            color: #007bff;
+            cursor: pointer;
+        }
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            width: fit-content;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* Order Summary Styling */
+        .order-summary {
+            flex: 1;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 20px;
+        }
+        .summary-item, .summary-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+        .summary-total {
+            font-weight: bold;
+        }
+        
+        /* Discount Code */
+        .discount-code {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+        .discount-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #eaeaea;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+        .apply-btn, .confirm-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .confirm-btn {
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        #delivery-section {
+            border: 1px solid #ccc;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .shipments-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Space between shipment items */
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .shipment-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            display: flex;
+            align-items: center; /* Center items vertically */
+        }
+
+        .shipment-item img {
+            width: 50px; /* Set image size */
+            height: 50px;
+            margin-right: 15px; /* Space between image and text */
+        }
+
+        .shipment-item h3 {
+            margin: 0; /* Remove default margin */
+            font-size: 1.2em; /* Adjust font size */
+        }
+
+        .shipment-item p {
+            margin: 5px 0; /* Add spacing between paragraphs */
         }
     </style>
 </head>
 <body>
 
+<!-- Header Section -->
+<div class="header">
+    <a class="header-logo" href="../index.html">
+        <img src="../assets/images/butchery.jpg" alt="Butchery Logo" />
+    </a>
+    <div class="header-title">Place Your Order</div>
+</div>
+
 <div class="container">
-    <h2>ButchaPay</h2>
-    
+    <!-- Left Side: Main Section -->
+    <div class="main-section">
+        <!-- Step 1: Customer Address -->
+        <div class="card" id="step1">
+            <div class="card-header">
+                <span><div class="step-number">1</div>Customer Address</span>
+                <span class="status" id="status1">✔</span>
+            </div>
+            <div class="address-container" id="address-details">
+                <!-- User address will be populated here -->
+                <p id="customerName"></p>
+                <p id="customerPhone"></p>
+                <p id="customerEmail"></p>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                <span class="change-link" onclick="window.location.href='delivery.html'">Add Address</span>
+                <button class="btn" onclick="completeStep(1)">Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Delivery Details -->
+        <div class="card" id="step2" style="display: none;">
+            <div class="card-header">
+                <span><div class="step-number">2</div>Delivery Details</span>
+                <span class="status" id="status2">✔</span>
+            </div>
+            <div class="details">
+                <strong>Delivery Method:</strong>
+                <div>
+                    <input type="radio" id="homeDelivery" name="deliveryMethod" value="home" checked />
+                    <label for="homeDelivery">Home Delivery</label><br />
+                    <input type="radio" id="pickupStation" name="deliveryMethod" value="pickup" />
+                    <label for="pickupStation">Pickup Station</label>
+                </div>
+                <br />
+                <strong>Delivery Timeframe:</strong>
+                <p>Delivery between <strong>31 October</strong> and <strong>02 November</strong>.</p>
+                <p>Save up to KSh 342.</p>
+                <span style="color: #007bff; cursor: pointer;">Switch to a pickup station starting from KSh 259</span>
+            </div>
+            <div class="details" id="shipmentContainer">
+                <h3>Shipment Details</h3>
+                <div id="shipments-items"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                <span class="change-link" onclick="window.location.href='cart.html'">Modify Cart</span>
+                <button class="btn" onclick="completeStep(2)">Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Payment Method -->
+        <div class="card" id="step3" style="display: none;">
+            <div class="card-header">
+                <span><div class="step-number">3</div>Payment Method</span>
+                <span class="status" id="status3">✔</span>
+            </div>
+            <div class="details">
+                <input type="radio" id="mpesa" name="payment" value="mpesa" checked />
+                <label for="mpesa">M-Pesa</label><br />
+                <input type="radio" id="paypal" name="payment" value="paypal" />
+                <label for="paypal">PayPal</label><br />
+                <input type="radio" id="creditCard" name="payment" value="creditCard" />
+                <label for="creditCard">Credit Card</label>
+            </div>
+            <div style="margin-top: 10px;">
+                <button class="btn" onclick="completeStep(3)">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side: Order Summary -->
     <div class="order-summary">
-        <h3>ORDER SUMMARY</h3>
+        <h3>Order Summary</h3>
         <div class="summary-item">
-            <span>Total to Pay</span>
-            <span id="final-total-price"></span>
+            <span>Order total:</span>
+            <span id="orderTotal">KSh 2560</span>
         </div>
-        
-        <div style="text-align: center; margin-top: 15px;">
-            <a href="cart.html" style="color: #007bff; text-decoration: underline;">SEE DETAILS ></a>
+        <div class="summary-item">
+            <span>Delivery:</span>
+            <span id="deliveryFee">KSh 480</span>
         </div>
-    </div>
-    <div class="payment-method">
-        <h4>CHOOSE A NEW PAYMENT METHOD</h4>
-        <div class="payment-option">
-            <div class="left-section">
-                <input type="radio" id="mpesa" name="paymentMethod" value="mpesa">
-                <label for="mpesa">M-Pesa</label>
-            </div>
-            <img src="mpesa.png" alt="M-Pesa Logo">
+        <div class="summary-item">
+            <span>Discount:</span>
+            <span id="discountAmount">-KSh 0</span>
         </div>
-        
-        <div class="payment-option">
-            <div class="left-section">
-                <input type="radio" id="airtel" name="paymentMethod" value="airtel">
-                <label for="airtel">Airtel</label>
-            </div>
-            <img src="airtel.png" alt="Airtel Logo">
+        <div class="summary-total">
+            <span>Total:</span>
+            <span id="finalTotal">KSh 3040</span>
         </div>
-        
-        <div class="payment-option">
-            <div class="left-section">
-                <input type="radio" id="bankCard" name="paymentMethod" value="bankCard">
-                <label for="bankCard">Bank Card</label>
-            </div>
-            <div class="bank-logos">
-                <img src="equity.png" alt="Equitel Logo">
-                <img src="coop.png" alt="Co-operative Bank Logo">
-            </div>
+        <div class="discount-code">
+            <input
+                type="text"
+                id="discountCode"
+                placeholder="Discount Code"
+                class="discount-input"
+            />
+            <button id="applyDiscount" class="apply-btn">Apply</button>
         </div>
-    </div>
-    
-    <div class="payment-method">
-        <h4>PAY NOW: KES 18,240.00</h4>
-        <button class="confirm-btn" onclick="confirmOrder()">Confirm Order</button>
-        <a href="index.php" class="back-button">Go Back & Continue Shopping</a>
+        <button id="confirmOrder" class="confirm-btn" style="margin-top: 20px;">
+            Confirm Order
+        </button>
     </div>
 </div>
 
-<div id="paymentModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h2>Payment Successful!</h2>
-        <p>Your order has been processed successfully.</p>
-    </div>
-</div>
-
+<!-- Supabase CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
 <script>
-    // Retrieve the total price from local storage
-    document.addEventListener('DOMContentLoaded', () => {
-        // Retrieve the total price from local storage and convert to a number
-        const orderTotalPrice = parseFloat(localStorage.getItem('totalPrice')) || 0.00;
-        const deliveryFee = 200; // Constant delivery fee
-        
-        // Calculate final total price
-        const finalTotalPrice = orderTotalPrice + deliveryFee;
+    // Initialize Supabase
+    const SUPABASE_URL = "https://YOUR_SUPABASE_URL.supabase.co";
+    const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 
-        // Debugging lines
-        console.log('Retrieved total price:', orderTotalPrice); // This should be a number now
-        console.log('Delivery fee:', deliveryFee);
-        console.log('Final total price:', finalTotalPrice); // This should display the correct final price
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Display the total price on the order summary page
-        const totalPriceElement = document.getElementById('final-total-price');
-        if (totalPriceElement) {
-            totalPriceElement.textContent = `Ksh ${finalTotalPrice.toFixed(2)}`; // Update element with final total price
-        } else {
-            console.log('Final total price element not found.'); // Error log
+    // Fetch and display the logged-in user's address info
+    async function fetchUserAddress() {
+        const user = supabase.auth.user();
+        if (!user) {
+            // Redirect to login or show message
+            document.getElementById('address-details').innerHTML =
+                '<p>Please <a href="login.html">log in</a> to see your address details.</p>';
+            return;
         }
+
+        try {
+            let { data, error } = await supabase
+                .from('customers')
+                .select('name, phone, email')
+                .eq('user_id', user.id)
+                .single();
+
+            if (error) {
+                console.error('Error fetching user data:', error);
+                document.getElementById('address-details').innerHTML =
+                    '<p>Error loading address info.</p>';
+                return;
+            }
+
+            document.getElementById('customerName').textContent = `Name: ${data.name}`;
+            document.getElementById('customerPhone').textContent = `Phone: ${data.phone}`;
+            document.getElementById('customerEmail').textContent = `Email: ${data.email}`;
+        } catch (err) {
+            console.error('Unexpected error:', err);
+            document.getElementById('address-details').innerHTML =
+                '<p>Failed to load address info.</p>';
+        }
+    }
+
+    // Step control
+    function completeStep(step) {
+        document.getElementById(`status${step}`).style.display = 'inline';
+
+        if (step === 1) {
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'block';
+        } else if (step === 2) {
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step3').style.display = 'block';
+        } else if (step === 3) {
+            alert('Order process completed. Thank you!');
+        }
+    }
+
+    // Populate shipments info example (replace with dynamic data as needed)
+    const shipments = [
+        {
+            id: 1,
+            name: "Fast Express Delivery",
+            description: "Next day delivery within Nairobi",
+            image: "../assets/images/express-delivery.png",
+        },
+        {
+            id: 2,
+            name: "Standard Pickup Station",
+            description: "Pickup from designated stations within 3 days",
+            image: "../assets/images/pickup-station.png",
+        },
+    ];
+
+    function loadShipments() {
+        const container = document.getElementById('shipments-items');
+        shipments.forEach((ship) => {
+            const div = document.createElement('div');
+            div.className = 'shipment-item';
+            div.innerHTML = `
+                <img src="${ship.image}" alt="${ship.name}" />
+                <div>
+                    <h3>${ship.name}</h3>
+                    <p>${ship.description}</p>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchUserAddress();
+        loadShipments();
     });
 
-    function confirmOrder() {
-        // Check if a payment method is selected
-        const paymentMethods = document.getElementsByName('paymentMethod');
-        let paymentSelected = false;
-
-        for (const method of paymentMethods) {
-            if (method.checked) {
-                paymentSelected = true;
-                break;
-            }
-        }
-
-        if (!paymentSelected) {
-            alert('Please select a payment method before confirming your order.'); // Refusal message
-        } else {
-            // Simulate successful payment and display the modal
-            document.getElementById('paymentModal').style.display = 'block';
-        }
-    }
-
-    function closeModal() {
-        document.getElementById('paymentModal').style.display = 'none';
-    }
 </script>
-
 </body>
 </html>

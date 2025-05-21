@@ -1,377 +1,619 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lean Grounded Meat</title>
-    <meta name="viewport" width="device-width">
-    <meta charset="utf-8" initial-scale="1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="../styles/style.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-        }
-
-        header {
-            background-color: #f5f5f5;
-            padding: 20px;
-            text-align: center;
-        }
-
-        h1 {
-            margin: 0;
-        }
-
-        nav {
-    background-color: white;
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
-    position: sticky; /* Make the nav sticky */
-    top: 0; /* Stick to the top */
-    z-index: 1000; /* Ensure it stays above other content */
-}
-
-
-        .product-container {
-            display: flex;
-            margin: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .product-images {
-            flex: 1;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .main-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-        }
-
-        .thumbnail-images img {
-            width: 50px;
-            height: auto;
-            margin: 5px;
-            cursor: pointer;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .product-details {
-            flex: 2;
-            padding: 20px;
-        }
-        .share-product {
-    margin-top: 10px;
-    text-align: left;
-}
-
-.share-product p {
-    font-size: 1em;
-    margin-bottom: 5px;
-}
-
-.social-icons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.social-icon {
-    margin: 5px 0;
-    color: #555;
-    font-size: 1.5em;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-.social-icon:hover {
-    color: #ff6f20;
-}
-
-.social-icon i {
-    margin-right: 8px;
-}
-
-
-        .price-info {
-            font-size: 1.5em;
-            margin: 10px 0;
-        }
-
-        .original-price {
-            text-decoration: line-through;
-            color: #999;
-        }
-
-        .quantity-selector {
-            display: flex;
-            align-items: center;
-            margin: 15px 0;
-        }
-
-        #counter-value {
-            margin: 0 10px;
-            font-size: 1.2em;
-        }
-
-        .add-to-cart {
-            background-color: #ff6f20;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.1em;
-        }
-
-        .add-to-cart:hover {
-            background-color: #ff5733;
-        }
-
-        .availability-info {
-            margin: 15px 0;
-            font-weight: bold;
-        }
-        .delivery-fee {
-            font-size: 16px;
-            color: #666;
-            margin-top: 10px;
-        }
-
-        .specifications, .related-products {
-            margin: 20px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .rating {
-            display: flex;
-            align-items: center;
-            margin: 20px 0;
-            direction: rtl; /* Makes the stars flow from right to left */
-        }
-
-        .rating i {
-            font-size: 2em;
-            color: #ccc;
-            cursor: pointer;
-        }
-
-        .rating i.active,
-        .rating i:hover,
-        .rating i:hover ~ i {
-            color: #ff6f20;
-        }
-
-        .specifications h2, .related-products h2 {
-            margin-top: 0;
-        }
-
-        .related-products {
-            margin-top: 40px;
-        }
-
-        .related-products h2 {
-            margin-bottom: 20px;
-        }
-
-        .product-card-container {
-            display: flex;
-            gap: 20px;
-        }
-
-        .product-card {
-            flex: 1;
-            max-width: 200px;
-            text-align: center;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .product-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .product-card img {
-            width: 100%;
-            height: 150px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
-
-        .product-name {
-            font-size: 18px;
-            margin: 10px 0;
-            font-weight: bold;
-        }
-
-        .product-price {
-            font-size: 16px;
-            color: #ff6f20;
-        }
-        .breadcrumb {
-            display: flex; /* Flexbox for layout */
-            list-style: none; /* Removing default list styles */
-            padding: 10px; /* Padding around breadcrumb */
-            background-color: #f9f9f9; /* Light background */
-            border-radius: 5px; /* Rounded corners */
-            margin-left: 10px; /* Left margin for spacing */
-        }
-
-        .breadcrumb li {
-            margin: 0 0px; /* Spacing between breadcrumb items */
-        }
-
-        .breadcrumb li a {
-            text-decoration: none; /* Removing underline from links */
-            color: #3498db; /* Link color */
-        }
-
-        .breadcrumb li span {
-            color: #666; /* Current page color */
-        }
-        .sort-by {
-    margin-left: auto; /* Push the sort dropdown to the right */
-    display: flex; /* Flex for the label and dropdown */
-    align-items: center; /* Center vertically */
-}
-
-.sort-by label {
-    margin-right: 5px; /* Space between label and dropdown */
-}
-
-        footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #f5f5f5;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lean Grounded Meat</title>
+  <link rel="stylesheet" href="style.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+  />
+  <style>
+    /* Your existing styles here (copied from your original code) */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+    header {
+      background-color: #f5f5f5;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      margin: 0;
+    }
+    nav {
+      background-color: white;
+      box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .product-container {
+      display: flex;
+      margin: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .product-images {
+      flex: 1;
+      padding: 20px;
+      text-align: center;
+    }
+    .main-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .thumbnail-images img {
+      width: 50px;
+      height: auto;
+      margin: 5px;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .product-details {
+      flex: 2;
+      padding: 20px;
+    }
+    .share-product {
+      margin-top: 10px;
+      text-align: left;
+    }
+    .share-product p {
+      font-size: 1em;
+      margin-bottom: 5px;
+    }
+    .social-icons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .social-icon {
+      margin: 5px 0;
+      color: #555;
+      font-size: 1.5em;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .social-icon:hover {
+      color: #ff6f20;
+    }
+    .social-icon i {
+      margin-right: 8px;
+    }
+    .price-info {
+      font-size: 1.5em;
+      margin: 10px 0;
+    }
+    .original-price {
+      text-decoration: line-through;
+      color: #999;
+    }
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      margin: 15px 0;
+    }
+    #counter-value {
+      margin: 0 10px;
+      font-size: 1.2em;
+    }
+    .add-to-cart {
+      background-color: #ff6f20;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1.1em;
+    }
+    .add-to-cart:hover {
+      background-color: #ff5733;
+    }
+    .availability-info {
+      margin: 15px 0;
+      font-weight: bold;
+    }
+    .delivery-fee {
+      font-size: 16px;
+      color: #666;
+      margin-top: 10px;
+    }
+    .specifications,
+    .related-products {
+      margin: 20px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .rating {
+      display: flex;
+      align-items: center;
+      margin: 20px 0;
+      direction: rtl;
+    }
+    .rating i {
+      font-size: 2em;
+      color: #ccc;
+      cursor: pointer;
+    }
+    .rating i.active,
+    .rating i:hover,
+    .rating i:hover ~ i {
+      color: #ff6f20;
+    }
+    .specifications h2,
+    .related-products h2 {
+      margin-top: 0;
+    }
+    .related-products {
+      margin-top: 40px;
+    }
+    .related-products h2 {
+      margin-bottom: 20px;
+    }
+    .product-card-container {
+      display: flex;
+      gap: 20px;
+    }
+    .product-card {
+      flex: 1;
+      max-width: 200px;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .product-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .product-card img {
+      width: 100%;
+      height: 150px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .product-name {
+      font-size: 18px;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+    .product-price {
+      font-size: 16px;
+      color: #ff6f20;
+    }
+    .breadcrumb {
+      display: flex;
+      list-style: none;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+      margin-left: 10px;
+    }
+    .breadcrumb li {
+      margin: 0 0px;
+    }
+    .breadcrumb li a {
+      text-decoration: none;
+      color: #3498db;
+    }
+    .breadcrumb li span {
+      color: #666;
+    }
+    .sort-by {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+    }
+    .sort-by label {
+      margin-right: 5px;
+    }
+    footer {
+      text-align: center;
+      padding: 10px;
+      background-color: #f5f5f5;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+    .review-section {
+      margin: 20px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .review-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+      resize: vertical;
+    }
+    .review-form button {
+      margin-top: 10px;
+      background-color: #ff6f20;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    .review-form button:hover {
+      background-color: #ff5733;
+    }
+    .existing-reviews h4 {
+      margin-top: 0;
+    }
+    .review-item {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+    .review-item:last-child {
+      border-bottom: none;
+    }
+    .review-rating {
+      color: #ff6f20;
+    }
+  </style>
 </head>
 <body>
-</div>
-   <!-- Breadcrumb Navigation -->
-   <ul class="breadcrumb">
-    <li><a href="index.php">Home</a></li>
+  <!-- Breadcrumb Navigation -->
+  <ul class="breadcrumb">
+    <li><a href="index.html">Home</a></li>
     <li><a href="Beef.html">Beef</a></li>
     <li><span>Lean Grounded Meat</span></li>
-</ul>
-</div>
-<div id="message" style="display: none;">Success!</div>
-    <main>
-        <div class="product">
-            <div class="product-image">
-                <img src="../assets/images/product1.jpg" alt="Product 1">
-                <div class="share-product">
-                <p>Share this product:</p>
-                <a href="https://www.facebook.com/sharer/sharer.php?u=your-product-link" target="_blank" class="social-icon">
-                    <i class="fab fa-facebook"></i>
-                </a>
-                <a href="https://twitter.com/intent/tweet?url=your-product-link&text=Check%20this%20out!" target="_blank" class="social-icon">
-                    <i class="fab fa-twitter"></i>
-                </a>
-            </div>
-            </div>
-             <div class="product-details">
-                <div class="product-name">Lean Grounded Meat</div>
-                <p>Our Lean Grounded Meat is freshly sourced and expertly ground to ensure quality and flavor. Perfect for various dishes, it's a staple in every kitchen.</p>
-                
-                <div class="product-price">
-                    <span class="current-price">Ksh 200</span>
-                </div>
-                <form action="../server/add_to_cart.php" method="post">
-                    <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
-                </form>
-                <div class="counterContainer" style="display:none;">
-                  <button id="increment-btn">+</button>
-                  <div id="counter-value">0</div>
-                  <button id="decrement-btn">-</button>
-              </div>
-                <div class="availability-info">
-                    <p>Status: <strong>In Stock</strong></p>
-                    <p>Estimated Delivery: <strong>2-3 Days</strong></p>
-                </div>
-                <div class="delivery-fee">
-                    Delivery fee: Ksh. 100.00 within Nairobi.
-                </div>
-            </div>
+  </ul>
+
+  <div id="message" style="display: none;">Success!</div>
+  <main>
+    <div class="product">
+      <div class="product-image">
+        <img
+          id="mainProductImage"
+          src="../assets/images/product1.jpg"
+          alt="Product Image"
+        />
+        <div class="share-product">
+          <p>Share this product:</p>
+          <a
+            href="#"
+            id="facebookShare"
+            target="_blank"
+            class="social-icon"
+            ><i class="fab fa-facebook"></i
+          ></a>
+          <a
+            href="#"
+            id="twitterShare"
+            target="_blank"
+            class="social-icon"
+            ><i class="fab fa-twitter"></i
+          ></a>
+        </div>
+      </div>
+      <div class="product-details">
+        <div class="product-name" id="productName">Loading...</div>
+        <p id="productDescription">
+          Loading product description...
+        </p>
+
+        <div class="product-price">
+          <span class="current-price" id="productPrice">Ksh 0</span>
         </div>
 
-        <section class="specifications">
-            <h2>Specifications</h2>
-            <ul>
-                <li>Weight: 500g</li>
-                <li>Type: Lean Ground Meat</li>
-                <li>Packaging: Vacuum Sealed</li>
-                <li>Storage: Refrigerate after opening</li>
-            </ul>
-        </section>
-        <div class="related-products">
-            <h2>Related Products</h2>
-            <div class="product-card-container">
-                <a href="product2.html" class="product-card">
-                    <img src="image3.png" alt="Product 2">
-                    <div class="product-name">mutton</div>
-                    <div class="product-price">Ksh. 150.00</div>
-                </a>
-                <a href="product3.html" class="product-card">
-                    <img src="image6.png" alt="Product 3">
-                    <div class="product-name">Lamb</div>
-                    <div class="product-price">Ksh. 150.00</div>
-                </a>
-                <a href="product4.html" class="product-card">
-                    <img src="image5.png" alt="Product 4">
-                    <div class="product-name">Chicken</div>
-                    <div class="product-price">Ksh. 200.00</div>
-                </a>
-            </div>
+        <button class="add-to-cart" id="addToCartBtn">Add to Cart</button>
+
+        <div class="availability-info" id="availabilityInfo">
+          <p>Status: <strong>Loading...</strong></p>
+          <p>Estimated Delivery: <strong>2-3 Days</strong></p>
         </div>
 
-       <!-- Review Section -->
-       <div class="review-section">
-        <h3>Write a Review</h3>
-        <form class="review-form" id="reviewForm">
-            <div class="rating" id="userRating">
-                <i class="far fa-star" data-value="5"></i>
-                <i class="far fa-star" data-value="4"></i>
-                <i class="far fa-star" data-value="3"></i>
-                <i class="far fa-star" data-value="2"></i>
-                <i class="far fa-star" data-value="1"></i>
-            </div>
-            <textarea id="reviewText" rows="4" placeholder="Write your review here..."></textarea>
-            <button type="submit">Submit Review</button>
-        </form>
-
-        <div class="existing-reviews" id="existingReviews">
-            <h4>Customer Reviews</h4>
-            <!-- Existing reviews will be dynamically inserted here -->
-        </div>
+        <div class="delivery-fee">Delivery fee: Ksh. 100.00 within Nairobi.</div>
+      </div>
     </div>
-    <div id="toast" style="display: none;">Quantity updated!</div>
-    </main>
-      
-    <footer>
-        <p>&copy; 2024 Family Butchery. All rights reserved.</p>
-    </footer>
+
+    <section class="specifications">
+      <h2>Specifications</h2>
+      <ul id="productSpecs">
+        <li>Loading specifications...</li>
+      </ul>
+    </section>
+
+    <div class="related-products">
+      <h2>Related Products</h2>
+      <div class="product-card-container" id="relatedProductsContainer">
+        <!-- Related products will load here -->
+      </div>
+    </div>
+
+    <!-- Review Section -->
+    <div class="review-section">
+      <h3>Write a Review</h3>
+      <form class="review-form" id="reviewForm">
+        <div class="rating" id="userRating">
+          <i class="far fa-star" data-value="5"></i>
+          <i class="far fa-star" data-value="4"></i>
+          <i class="far fa-star" data-value="3"></i>
+          <i class="far fa-star" data-value="2"></i>
+          <i class="far fa-star" data-value="1"></i>
+        </div>
+        <textarea
+          id="reviewText"
+          rows="4"
+          placeholder="Write your review here..."
+          required
+        ></textarea>
+        <button type="submit">Submit Review</button>
+      </form>
+
+      <div class="existing-reviews" id="existingReviews">
+        <h4>Reviews</h4>
+        <div id="reviewsList">Loading reviews...</div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Carnivore. All rights reserved.
+  </footer>
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    // Initialize Supabase client - replace with your own Supabase project details
+    const supabaseUrl = 'https://your-project-ref.supabase.co';
+    const supabaseAnonKey = 'your-anon-key';
+    const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+    const productId = 1; // Set your product ID here
+
+    // Elements
+    const productNameEl = document.getElementById('productName');
+    const productDescriptionEl = document.getElementById('productDescription');
+    const productPriceEl = document.getElementById('productPrice');
+    const mainProductImageEl = document.getElementById('mainProductImage');
+    const productSpecsEl = document.getElementById('productSpecs');
+    const relatedProductsContainer = document.getElementById('relatedProductsContainer');
+    const availabilityInfoEl = document.getElementById('availabilityInfo');
+    const addToCartBtn = document.getElementById('addToCartBtn');
+
+    // Review elements
+    const reviewForm = document.getElementById('reviewForm');
+    const reviewsList = document.getElementById('reviewsList');
+    const reviewText = document.getElementById('reviewText');
+    const ratingStars = document.querySelectorAll('#userRating i');
+
+    let selectedRating = 0;
+
+    // Set up rating star click behavior
+    ratingStars.forEach((star) => {
+      star.addEventListener('click', () => {
+        selectedRating = parseInt(star.dataset.value);
+        updateStarDisplay(selectedRating);
+      });
+      star.addEventListener('mouseover', () => {
+        updateStarDisplay(parseInt(star.dataset.value));
+      });
+      star.addEventListener('mouseout', () => {
+        updateStarDisplay(selectedRating);
+      });
+    });
+
+    function updateStarDisplay(rating) {
+      ratingStars.forEach((star) => {
+        if (parseInt(star.dataset.value) <= rating) {
+          star.classList.add('fas');
+          star.classList.remove('far');
+          star.style.color = '#ff6f20';
+        } else {
+          star.classList.add('far');
+          star.classList.remove('fas');
+          star.style.color = '#ccc';
+        }
+      });
+    }
+
+    // Load product data from Supabase
+    async function loadProduct() {
+      try {
+        let { data, error } = await supabase
+          .from('products')
+          .select('*')
+          .eq('id', productId)
+          .single();
+
+        if (error) throw error;
+        if (!data) {
+          productNameEl.textContent = 'Product not found';
+          return;
+        }
+
+        productNameEl.textContent = data.name;
+        productDescriptionEl.textContent = data.description || '';
+        productPriceEl.textContent = `Ksh ${data.price.toFixed(2)}`;
+        mainProductImageEl.src = data.image_url || '../assets/images/product1.jpg';
+
+        // Example: availability
+        const availability = data.available_quantity > 0 ? 'In Stock' : 'Out of Stock';
+        availabilityInfoEl.querySelector('p strong').textContent = availability;
+
+        // Specifications (assuming JSON or array in data.specifications)
+        productSpecsEl.innerHTML = '';
+        if (data.specifications && Array.isArray(data.specifications)) {
+          data.specifications.forEach((spec) => {
+            const li = document.createElement('li');
+            li.textContent = spec;
+            productSpecsEl.appendChild(li);
+          });
+        } else {
+          productSpecsEl.innerHTML = '<li>No specifications available.</li>';
+        }
+
+        // Load related products (just a simple example, load first 3 other products)
+        loadRelatedProducts();
+
+      } catch (error) {
+        console.error('Error loading product:', error.message);
+        productNameEl.textContent = 'Error loading product data.';
+      }
+    }
+
+    // Load related products (for simplicity, load 3 others)
+    async function loadRelatedProducts() {
+      try {
+        let { data, error } = await supabase
+          .from('products')
+          .select('*')
+          .neq('id', productId)
+          .limit(3);
+
+        if (error) throw error;
+
+        relatedProductsContainer.innerHTML = '';
+        data.forEach((product) => {
+          const card = document.createElement('a');
+          card.classList.add('product-card');
+          card.href = `product.html?id=${product.id}`;
+          card.innerHTML = `
+            <img src="${product.image_url || '../assets/images/product1.jpg'}" alt="${product.name}" />
+            <div class="product-name">${product.name}</div>
+            <div class="product-price">Ksh ${product.price.toFixed(2)}</div>
+          `;
+          relatedProductsContainer.appendChild(card);
+        });
+      } catch (error) {
+        console.error('Error loading related products:', error.message);
+        relatedProductsContainer.textContent = 'Failed to load related products.';
+      }
+    }
+
+    // Add to Cart button click handler
+    addToCartBtn.addEventListener('click', async () => {
+      try {
+        // For demo, just add to a 'cart' table in Supabase
+        const quantity = 1; // You can add quantity selector later
+
+        const { data, error } = await supabase
+          .from('cart')
+          .insert([{ product_id: productId, quantity }]);
+
+        if (error) throw error;
+
+        alert('Product added to cart!');
+      } catch (error) {
+        console.error('Error adding to cart:', error.message);
+        alert('Failed to add product to cart.');
+      }
+    });
+
+    // Load and display existing reviews
+    async function loadReviews() {
+      try {
+        const { data, error } = await supabase
+          .from('reviews')
+          .select('*')
+          .eq('product_id', productId)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (!data.length) {
+          reviewsList.textContent = 'No reviews yet.';
+          return;
+        }
+
+        reviewsList.innerHTML = '';
+        data.forEach((review) => {
+          const reviewEl = document.createElement('div');
+          reviewEl.classList.add('review-item');
+          reviewEl.innerHTML = `
+            <div class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
+            <p>${review.review_text}</p>
+            <small>${new Date(review.created_at).toLocaleString()}</small>
+          `;
+          reviewsList.appendChild(reviewEl);
+        });
+      } catch (error) {
+        console.error('Error loading reviews:', error.message);
+        reviewsList.textContent = 'Failed to load reviews.';
+      }
+    }
+
+    // Handle review submission
+    reviewForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (selectedRating === 0) {
+        alert('Please select a rating.');
+        return;
+      }
+
+      const review = reviewText.value.trim();
+      if (!review) {
+        alert('Please enter a review.');
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from('reviews')
+          .insert([
+            {
+              product_id: productId,
+              rating: selectedRating,
+              review_text: review,
+              created_at: new Date().toISOString(),
+            },
+          ]);
+
+        if (error) throw error;
+
+        reviewText.value = '';
+        selectedRating = 0;
+        updateStarDisplay(0);
+
+        loadReviews(); // refresh reviews list
+        alert('Thank you for your review!');
+      } catch (error) {
+        console.error('Error submitting review:', error.message);
+        alert('Failed to submit review.');
+      }
+    });
+
+    // Share buttons setup
+    function setupShareButtons() {
+      const pageUrl = encodeURIComponent(window.location.href);
+      const text = encodeURIComponent('Check out this amazing product: Lean Grounded Meat!');
+
+      document.getElementById('facebookShare').href =
+        `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+      document.getElementById('twitterShare').href =
+        `https://twitter.com/intent/tweet?url=${pageUrl}&text=${text}`;
+    }
+
+    // Initialize page
+    (function init() {
+      loadProduct();
+      loadReviews();
+      setupShareButtons();
+    })();
+  </script>
 </body>
-<script src="butchery.js"></script>
-<script src="../scripts/product1.js"></script>
 </html>
