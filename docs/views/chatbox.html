@@ -1,134 +1,312 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Chat Page</title>
-    <link rel="stylesheet" href="../styles/style.css" />
-    <style>
-        /* your existing CSS here */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        /* ... other styles ... */
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Butchery Owner Chat</title>
+  <link rel="stylesheet" href="../styles/style.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fefefe;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      display: flex;
+      list-style: none;
+      background: #fafafa;
+      padding: 12px 20px;
+      border-bottom: 1px solid #ddd;
+      margin: 0;
+      font-size: 14px;
+      color: #555;
+    }
+    .breadcrumb li + li::before {
+      content: "›";
+      margin: 0 8px;
+      color: #999;
+    }
+    .breadcrumb a {
+      text-decoration: none;
+      color: #007bff;
+    }
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    /* Chat container */
+    .chat-page {
+      flex: 1;
+      max-width: 720px;
+      margin: 20px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+      display: flex;
+      flex-direction: column;
+      height: 80vh;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background: #007bff;
+      color: white;
+      padding: 16px 20px;
+      border-radius: 12px 12px 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .close-btn:hover {
+      color: #ffc107;
+    }
+
+    /* Messages container */
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background: #f9f9f9;
+    }
+
+    /* Single message */
+    .message {
+      background: #e9ecef;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      max-width: 70%;
+      position: relative;
+      font-size: 15px;
+      line-height: 1.3;
+      word-wrap: break-word;
+      box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+    }
+
+    /* Timestamp */
+    .message time {
+      display: block;
+      font-size: 11px;
+      color: #777;
+      margin-top: 6px;
+      text-align: right;
+    }
+
+    /* Chat input area */
+    .chat-input {
+      padding: 14px 20px;
+      border-top: 1px solid #ddd;
+      background: #fff;
+      display: flex;
+      gap: 12px;
+    }
+
+    .chat-input input[type="text"] {
+      flex-grow: 1;
+      padding: 12px 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+    .chat-input input[type="text"]:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0,123,255,0.5);
+    }
+
+    .chat-input button {
+      background-color: #007bff;
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    .chat-input button:hover:not(:disabled) {
+      background-color: #0056b3;
+    }
+    .chat-input button:disabled {
+      background-color: #a5c8ff;
+      cursor: not-allowed;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 600px) {
+      .chat-page {
+        width: 95%;
+        height: 70vh;
+      }
+      .message {
+        max-width: 90%;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Breadcrumb Navigation -->
-    <ul class="breadcrumb">
-        <li><a href="/index.html">Home</a></li>
-        <li><span>Chat</span></li>
-    </ul>
 
-    <div class="chat-page" id="chat-page">
-        <div class="chat-header">
-            <h4>Chat</h4>
-            <button class="close-btn" onclick="closeChat()">X</button>
-        </div>
-        <div class="chat-messages" id="chat-messages">
-            <!-- Messages will be appended here -->
-        </div>
-        <div class="chat-input">
-            <input type="text" id="message-input" placeholder="Type a message..." />
-            <button id="send-message">Send</button>
-        </div>
-    </div>
+  <ul class="breadcrumb" aria-label="Breadcrumb">
+    <li><a href="/index.html">Home</a></li>
+    <li aria-current="page">Chat</li>
+  </ul>
 
-    <script>
-        // Initialize Supabase client - replace with your project's URL and anon key
-        const supabaseUrl = 'https://pqfofbniphvkkdscpdem.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBxZm9mYm5pcGh2a2tkc2NwZGVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc0OTIzODIsImV4cCI6MjA2MzA2ODM4Mn0.YhA7wXqI5-b2YM9A5QPKHf13nhx2fTj9PotVT_2Q92Q';
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+  <main class="chat-page" role="main" aria-live="polite" aria-relevant="additions">
+    <header class="chat-header">
+      <h1>Butchery Owner Chat</h1>
+      <button class="close-btn" aria-label="Close chat" onclick="closeChat()">×</button>
+    </header>
 
-        const chatMessages = document.getElementById('chat-messages');
-        const sendMessageButton = document.getElementById('send-message');
-        const messageInput = document.getElementById('message-input');
+    <section id="chat-messages" class="chat-messages" tabindex="0" aria-label="Chat messages">
+      <!-- Messages inserted here -->
+    </section>
 
-        // Fetch and display existing messages on load
-        async function fetchMessages() {
-            let { data, error } = await supabase
-                .from('messages')
-                .select('*')
-                .order('created_at', { ascending: true });
+    <form id="chat-form" class="chat-input" aria-label="Send new message">
+      <input
+        type="text"
+        id="message-input"
+        placeholder="Type your message..."
+        aria-required="true"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button type="submit" id="send-message" disabled>Send</button>
+    </form>
+  </main>
 
-            if (error) {
-                console.error('Error fetching messages:', error);
-                return;
-            }
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // Supabase client setup
+    const supabaseUrl = 'https://pqfofbniphvkkdscpdem.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBxZm9mYm5pcGh2a2tkc2NwZGVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc0OTIzODIsImV4cCI6MjA2MzA2ODM4Mn0.YhA7wXqI5-b2YM9A5QPKHf13nhx2fTj9PotVT_2Q92Q';
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-            chatMessages.innerHTML = ''; // Clear existing messages
+    const chatMessages = document.getElementById('chat-messages');
+    const chatForm = document.getElementById('chat-form');
+    const messageInput = document.getElementById('message-input');
+    const sendMessageButton = document.getElementById('send-message');
 
-            data.forEach(msg => {
-                appendMessage(msg.content, new Date(msg.created_at));
-            });
+    // Enable send button only if input is not empty
+    messageInput.addEventListener('input', () => {
+      sendMessageButton.disabled = messageInput.value.trim() === '';
+    });
 
-            // Scroll to bottom
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+    // Add message to DOM
+    function addMessageToDOM(message, timestamp) {
+      const messageElement = document.createElement('article');
+      messageElement.classList.add('message');
+
+      const messageContent = document.createElement('p');
+      messageContent.textContent = message;
+      messageElement.appendChild(messageContent);
+
+      const timeElem = document.createElement('time');
+      const date = timestamp ? new Date(timestamp) : new Date();
+      timeElem.textContent = date.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+      timeElem.setAttribute('datetime', date.toISOString());
+      messageElement.appendChild(timeElem);
+
+      chatMessages.appendChild(messageElement);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Fetch and render all messages
+    async function fetchMessages() {
+      const { data: messages, error } = await supabase
+        .from('messages')
+        .select('content, created_at')
+        .order('created_at', { ascending: true });
+
+      if (error) {
+        console.error('Error fetching messages:', error);
+        return;
+      }
+
+      chatMessages.innerHTML = '';
+      messages.forEach(({ content, created_at }) => {
+        addMessageToDOM(content, created_at);
+      });
+    }
+
+    // Send message to Supabase
+    async function sendMessage(message) {
+      if (!message) return;
+      const { data, error } = await supabase
+        .from('messages')
+        .insert([{ content: message }])
+        .select();
+
+      if (error) {
+        console.error('Error sending message:', error);
+        alert('Failed to send message. Please try again.');
+        return false;
+      }
+      return true;
+    }
+
+    // Real-time listener for new messages
+    supabase
+      .channel('public:messages')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'messages' },
+        (payload) => {
+          const { content, created_at } = payload.new;
+          addMessageToDOM(content, created_at);
         }
+      )
+      .subscribe();
 
-        // Append message to chat window
-        function appendMessage(text, timestamp) {
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('message');
-            messageElement.textContent = text;
+    // Handle form submission
+    chatForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const message = messageInput.value.trim();
+      if (!message) return;
 
-            const timeSpan = document.createElement('span');
-            timeSpan.textContent = timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            messageElement.appendChild(timeSpan);
+      sendMessageButton.disabled = true;
+      const success = await sendMessage(message);
+      if (success) {
+        messageInput.value = '';
+        sendMessageButton.disabled = true;
+        messageInput.focus();
+      } else {
+        sendMessageButton.disabled = false;
+      }
+    });
 
-            chatMessages.appendChild(messageElement);
-        }
+    // Close chat button handler (customize as needed)
+    function closeChat() {
+      // For example, just hide the chat container:
+      document.querySelector('.chat-page').style.display = 'none';
+      // Or redirect to home, or any other logic:
+      // window.location.href = '/index.html';
+    }
 
-        // Send message to Supabase
-        async function sendMessage() {
-            const message = messageInput.value.trim();
-            if (!message) return;
-
-            // Insert message into Supabase
-            let { error } = await supabase
-                .from('messages')
-                .insert([{ content: message }]);
-
-            if (error) {
-                console.error('Error sending message:', error);
-                alert('Failed to send message.');
-                return;
-            }
-
-            messageInput.value = '';
-        }
-
-        // Listen for new messages realtime
-        supabase
-            .channel('public:messages')
-            .on(
-                'postgres_changes',
-                { event: 'INSERT', schema: 'public', table: 'messages' },
-                (payload) => {
-                    const newMsg = payload.new;
-                    appendMessage(newMsg.content, new Date(newMsg.created_at));
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                }
-            )
-            .subscribe();
-
-        // Event listeners for sending message
-        sendMessageButton.addEventListener('click', sendMessage);
-        messageInput.addEventListener('keypress', e => {
-            if (e.key === 'Enter') sendMessage();
-        });
-
-        // Close chat function
-        function closeChat() {
-            window.location.href = "index.html"; // adjust if needed
-        }
-
-        // Load messages initially
-        fetchMessages();
-    </script>
+    // Initial load
+    fetchMessages();
+  </script>
 </body>
 </html>

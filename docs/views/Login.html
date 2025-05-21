@@ -3,6 +3,18 @@
 <head>
   <title>Login Form</title>
   <link rel="stylesheet" type="text/css" href="../styles/style.css">
+  <style>
+    /* Add focus styles for eye icon */
+    #eye:focus {
+      outline: 2px solid #007BFF;
+      cursor: pointer;
+    }
+    /* Disabled button style */
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  </style>
 </head>
 <body>
   <div class="login-form">
@@ -13,11 +25,11 @@
       <div class="form-group">       
         <input type="email" placeholder="Enter Email:" name="email" id="email" class="form-control" required>
       </div>
-      <div class="form-group">
+      <div class="form-group" style="position: relative;">
         <input type="password" placeholder="Enter Password:" name="password" id="password" class="form-control" required>
-        <i class="fa fa-eye" aria-hidden="true" id="eye"></i>
+        <i tabindex="0" class="fa fa-eye" aria-hidden="true" id="eye" role="button" aria-label="Toggle password visibility"></i>
       </div>
-      <button type="submit" class="login-btn">Login</button>
+      <button type="submit" class="login-btn" id="loginBtn">Login</button>
       <p class="no-account">Don't have an account? <a href="../views/register.html" class="register-btn btn">Register</a></p>
     </form>
     <p id="errorMessage" style="color:red;"></p>
@@ -28,14 +40,22 @@
 
   <script>
     // Initialize Supabase
-    const SUPABASE_URL = 'https://YOUR_SUPABASE_URL.supabase.co';
-    const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+    const SUPABASE_URL = 'https://pqfofbniphvkkdscpdem.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBxZm9mYm5pcGh2a2tkc2NwZGVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc0OTIzODIsImV4cCI6MjA2MzA2ODM4Mn0.YhA7wXqI5-b2YM9A5QPKHf13nhx2fTj9PotVT_2Q92Q';
     const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // Toggle password visibility (optional)
+    // Password visibility toggle
     const eyeIcon = document.getElementById('eye');
     const passwordInput = document.getElementById('password');
-    eyeIcon.addEventListener('click', () => {
+    eyeIcon.addEventListener('click', togglePassword);
+    eyeIcon.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        togglePassword();
+      }
+    });
+
+    function togglePassword() {
       if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
         eyeIcon.classList.add('fa-eye-slash');
@@ -45,11 +65,24 @@
         eyeIcon.classList.remove('fa-eye-slash');
         eyeIcon.classList.add('fa-eye');
       }
+    }
+
+    const errorMessageEl = document.getElementById('errorMessage');
+    const loginBtn = document.getElementById('loginBtn');
+
+    // Clear error message when user types
+    ['email', 'password'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => {
+        errorMessageEl.textContent = '';
+      });
     });
 
     // Handle login form submission
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Logging in...';
 
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
@@ -60,11 +93,16 @@
       });
 
       if (error) {
-        document.getElementById('errorMessage').textContent = error.message;
+        errorMessageEl.textContent = error.message;
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Login';
+      } else if (data?.user) {
+        // Redirect only if user is authenticated
+        window.location.href = '../views/dashboard.html';
       } else {
-        // Login successful
-        // Redirect to dashboard or home page
-        window.location.href = '../views/dashboard.html'; // change as needed
+        errorMessageEl.textContent = 'Unexpected error occurred.';
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Login';
       }
     });
   </script>

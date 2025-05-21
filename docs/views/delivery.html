@@ -5,6 +5,54 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="style.css" />
     <link rel="stylesheet" href="../styles/style.css" />
+    <style>
+      .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #555;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        animation: spin 1s linear infinite;
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 10px;
+        display: none;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg);}
+        100% { transform: rotate(360deg);}
+      }
+      .address-list {
+        margin-top: 20px;
+        max-width: 520px;
+        background: #fafafa;
+        border: 1px solid #ddd;
+        padding: 12px;
+        border-radius: 6px;
+      }
+      .address-item {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .address-item:last-child {
+        border-bottom: none;
+      }
+      .address-item button {
+        background-color: #e74c3c;
+        border: none;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .address-item button:disabled {
+        background-color: #999;
+        cursor: not-allowed;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
@@ -19,54 +67,147 @@
       <p>Certain items may not be present at your closest store. You have the option to substitute these products in your cart.</p>
       
       <form id="addressForm">
-        <input type="text" name="q" id="addressInput" placeholder="Enter your address" required>
+        <input type="text" name="q" id="addressInput" placeholder="Enter your address" required autocomplete="off" />
         <button type="submit" class="button" id="address-button">Save Address</button>
+        <span id="loadingSpinner" class="spinner"></span>
       </form>
       
       <p id="message" style="color:green;"></p>
 
-      <div class="map-container">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15959.051141154838!2d36.05099334591605!3d-0.30230489181572145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x18298ddc068e4f17%3A0xa8c2270c2c0ea0d6!2sFamily%20Butchery!5e0!3m2!1sen!2ske!4v1723611951408!5m2!1sen!2ske" width="520" margin-top: 10px; height="405" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div class="address-list" id="addressList">
+        <h3>Your Saved Addresses</h3>
+        <div id="addressesContainer">Loading addresses...</div>
       </div>
+
+      <div class="map-container" style="margin-top: 20px;">
+        <iframe id="mapFrame" 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15959.051141154838!2d36.05099334591605!3d-0.30230489181572145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x18298ddc068e4f17%3A0xa8c2270c2c0ea0d6!2sFamily%20Butchery!5e0!3m2!1sen!2ske!4v1723611951408!5m2!1sen!2ske" 
+          width="520" height="405" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+
       <img src="../assets/images/delivery-truck.png" alt="Delivery Truck" />
     </div>
 
     <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
     <script>
-      // Initialize Supabase client
-      const SUPABASE_URL = 'https://YOUR_SUPABASE_URL.supabase.co';
-      const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+      const SUPABASE_URL = 'https://pqfofbniphvkkdscpdem.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBxZm9mYm5pcGh2a2tkc2NwZGVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc0OTIzODIsImV4cCI6MjA2MzA2ODM4Mn0.YhA7wXqI5-b2YM9A5QPKHf13nhx2fTj9PotVT_2Q92Q';
       const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-      // Form submission handler
-      document.getElementById('addressForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const address = document.getElementById('addressInput').value.trim();
-        const messageEl = document.getElementById('message');
-        messageEl.textContent = '';
+      const form = document.getElementById('addressForm');
+      const addressInput = document.getElementById('addressInput');
+      const messageEl = document.getElementById('message');
+      const addressButton = document.getElementById('address-button');
+      const loadingSpinner = document.getElementById('loadingSpinner');
+      const addressesContainer = document.getElementById('addressesContainer');
+      const mapFrame = document.getElementById('mapFrame');
 
-        if (!address) {
-          messageEl.style.color = 'red';
-          messageEl.textContent = 'Please enter an address.';
-          return;
-        }
-
-        // Insert address into Supabase table "addresses"
+      // Load addresses from Supabase and display them
+      async function loadAddresses() {
+        addressesContainer.textContent = 'Loading addresses...';
         const { data, error } = await supabase
           .from('addresses')
-          .insert([{ address: address }]);
+          .select('id, address')
+          .order('id', { ascending: false });
 
         if (error) {
-          messageEl.style.color = 'red';
-          messageEl.textContent = 'Failed to save address: ' + error.message;
+          addressesContainer.textContent = 'Failed to load addresses.';
+          console.error(error);
           return;
         }
 
-        messageEl.style.color = 'green';
-        messageEl.textContent = 'Address saved successfully!';
-        document.getElementById('addressForm').reset();
+        if (data.length === 0) {
+          addressesContainer.textContent = 'No addresses saved yet.';
+          return;
+        }
+
+        addressesContainer.innerHTML = '';
+        data.forEach(addr => {
+          const div = document.createElement('div');
+          div.className = 'address-item';
+          div.innerHTML = `
+            <span>${addr.address}</span>
+            <button data-id="${addr.id}">Delete</button>
+          `;
+          addressesContainer.appendChild(div);
+
+          div.querySelector('button').addEventListener('click', async () => {
+            const confirmed = confirm('Delete this address?');
+            if (!confirmed) return;
+
+            // Disable button while deleting
+            const btn = div.querySelector('button');
+            btn.disabled = true;
+            btn.textContent = 'Deleting...';
+
+            const { error } = await supabase
+              .from('addresses')
+              .delete()
+              .eq('id', addr.id);
+
+            if (error) {
+              alert('Failed to delete: ' + error.message);
+              btn.disabled = false;
+              btn.textContent = 'Delete';
+              return;
+            }
+            div.remove();
+            showMessage('Address deleted.', false);
+          });
+        });
+
+        // Update map to first address
+        updateMap(data[0].address);
+      }
+
+      // Show message (success or error)
+      function showMessage(text, isError = false) {
+        messageEl.style.color = isError ? 'red' : 'green';
+        messageEl.textContent = text;
+      }
+
+      // Update Google Maps iframe to show given address using Embed API
+      // Replace YOUR_GOOGLE_MAPS_EMBED_API_KEY with your actual API key
+      function updateMap(address) {
+        if (!address) return;
+        const baseUrl = 'https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_EMBED_API_KEY&q=';
+        const query = encodeURIComponent(address);
+        mapFrame.src = baseUrl + query;
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const address = addressInput.value.trim();
+        if (!address) {
+          showMessage('Please enter an address.', true);
+          return;
+        }
+
+        addressButton.disabled = true;
+        loadingSpinner.style.display = 'inline-block';
+        messageEl.textContent = '';
+
+        // Insert into Supabase
+        const { data, error } = await supabase
+          .from('addresses')
+          .insert([{ address }]);
+
+        loadingSpinner.style.display = 'none';
+        addressButton.disabled = false;
+
+        if (error) {
+          showMessage('Failed to save address: ' + error.message, true);
+          return;
+        }
+
+        showMessage('Address saved successfully!');
+        addressInput.value = '';
+        await loadAddresses();
       });
+
+      window.addEventListener('DOMContentLoaded', loadAddresses);
     </script>
 
     <script src="../scripts/delivery.js"></script>
