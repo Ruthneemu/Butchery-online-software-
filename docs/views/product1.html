@@ -492,6 +492,7 @@
         <h4>Reviews</h4>
         <div id="reviewsList">Loading reviews...</div>
       </div>
+
     </div>
   </main>
 
@@ -520,48 +521,14 @@ const relatedProductsContainer = document.getElementById('relatedProductsContain
 const availabilityInfoEl = document.getElementById('availabilityInfo');
 const addToCartBtn = document.getElementById('addToCartBtn');
 
-// Only declare these ONCE, near the top of your script
-let quantity = 1;
 
-// Make these functions global for HTML onclick
-window.increaseQuantity = function() {
-  quantity++;
-  counterValue.textContent = quantity;
-};
+// Review elements
+const reviewForm = document.getElementById('reviewForm');
+const reviewsList = document.getElementById('reviewsList');
+const reviewText = document.getElementById('reviewText');
+const ratingStars = document.querySelectorAll('#userRating i');
 
-window.decreaseQuantity = function() {
-  if (quantity > 1) {
-    quantity--;
-    counterValue.textContent = quantity;
-  }
-};
-
-// Improved Add to Cart function
-window.handleAddToCartClick = async function() {
-  if (quantitySelector.style.display === 'none') {
-    quantitySelector.style.display = 'flex';
-    successMessage.style.display = 'none';
-  } else {
-    // Add to cart in Supabase
-    try {
-      const { error } = await supabase
-        .from('cart')
-        .insert([{ product_id: productId, quantity }]);
-      if (error) throw error;
-
-      successMessage.textContent = 'Item added to cart!';
-      successMessage.style.display = 'block';
-      setTimeout(() => {
-        successMessage.style.display = 'none';
-        quantitySelector.style.display = 'none';
-      }, 2000);
-    } catch (error) {
-      successMessage.textContent = 'Failed to add item to cart.';
-      successMessage.style.display = 'block';
-      console.error('Error adding to cart:', error.message);
-    }
-  }
-};
+let selectedRating = 0;
 
     // Set up rating star click behavior
     ratingStars.forEach((star) => {
@@ -638,38 +605,42 @@ window.handleAddToCartClick = async function() {
 
   // Initialize quantity to 1
 
-
-  // Get references to DOM elements
+  let quantity = 1;
   const quantitySelector = document.getElementById('quantity-selector');
   const counterValue = document.getElementById('counter-value');
   const successMessage = document.getElementById('success-message');
 
+  function updateCounter() {
+    counterValue.textContent = quantity;
+  }
+
   function increaseQuantity() {
     quantity++;
-    counterValue.textContent = quantity;
+    updateCounter();
   }
 
   function decreaseQuantity() {
     if (quantity > 1) {
       quantity--;
-      counterValue.textContent = quantity;
+      updateCounter();
     }
   }
 
   function handleAddToCartClick() {
-    // Show quantity selector on first click
+    // Show quantity selector if hidden
     if (quantitySelector.style.display === 'none') {
       quantitySelector.style.display = 'flex';
-      successMessage.style.display = 'none';  // Hide success message initially
+      successMessage.style.display = 'none';
+      addToCartBtn.textContent = 'Update Cart';
     } else {
-      // Add to cart logic here (e.g., update cart, call backend)
-      // Show success message briefly
+      // Assume adding to cart logic here
       successMessage.style.display = 'block';
-      setTimeout(() => {
-        successMessage.style.display = 'none';
-      }, 2000);
+
+      // Optionally disable the button or reset quantity after adding
+      // addToCartBtn.disabled = true; // uncomment to disable button after add
     }
   }
+
 
     // Load related products (for simplicity, load 3 others)
     async function loadRelatedProducts() {
