@@ -611,19 +611,17 @@ let selectedRating = 0;
       }
     }
 
-  // Increase quantity
-  function increaseQuantity() {
-    quantity++;
+  window.increaseQuantity = function() {
+  quantity++;
+  counter.textContent = quantity;
+};
+
+window.decreaseQuantity = function() {
+  if (quantity > 1) {
+    quantity--;
     counter.textContent = quantity;
   }
-
-  // Decrease quantity
-  function decreaseQuantity() {
-    if (quantity > 1) {
-      quantity--;
-      counter.textContent = quantity;
-    }
-  }
+};
 
   // Show quantity selector for a limited time
   function showQuantitySelectorTemporarily() {
@@ -635,28 +633,28 @@ let selectedRating = 0;
   }
 
   // Handle Add to Cart button click
-  async function handleAddToCartClick() {
-    // Show the counter first
-    showQuantitySelectorTemporarily();
+  window.handleAddToCartClick = async function() {
+  showQuantitySelectorTemporarily();
+  successMessage.style.display = 'none';
 
-    // Hide previous success message if any
-    successMessage.style.display = 'none';
+  try {
+    const { error } = await supabase
+      .from('cart')
+      .insert([{ product_id: productId, quantity }]);
+    if (error) throw error;
 
-    // Actually add to cart in Supabase
-    try {
-      const { error } = await supabase
-        .from('cart')
-        .insert([{ product_id: productId, quantity }]);
-      if (error) throw error;
-
-      successMessage.style.display = 'block';
-      successMessage.textContent = 'Item added to cart!';
-    } catch (error) {
-      successMessage.style.display = 'block';
-      successMessage.textContent = 'Failed to add item to cart.';
-      console.error('Error adding to cart:', error.message);
-    }
+    successMessage.style.display = 'block';
+    successMessage.textContent = 'Item added to cart!';
+    setTimeout(() => {
+      successMessage.style.display = 'none';
+      quantitySelector.style.display = 'none';
+    }, 2000);
+  } catch (error) {
+    successMessage.style.display = 'block';
+    successMessage.textContent = 'Failed to add item to cart.';
+    console.error('Error adding to cart:', error.message);
   }
+};
 
     // Load related products (for simplicity, load 3 others)
     async function loadRelatedProducts() {
