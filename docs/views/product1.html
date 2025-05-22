@@ -404,7 +404,7 @@
     
     <section class="product">
       <div class="product-image">
-        <img src="assets/images/image1.PNG" alt="Product Image">
+        <img src="../assets/images/image1.PNG" alt="Product Image">
         <div class="share-product">
           <p>Share:</p>
           <a href="#" class="social-icon" id="facebookShare"><i class="fab fa-facebook"></i></a>
@@ -450,17 +450,17 @@
             <h2>Related Products</h2>
             <div class="product-card-container">
                 <a href="product2.html" class="product-card">
-                    <img src="assets/images/image3.png" alt="Product 2">
+                    <img src="../assets/images/image3.png" alt="Product 2">
                     <div class="product-name">mutton</div>
                     <div class="product-price">Ksh. 150.00</div>
                 </a>
                 <a href="product3.html" class="product-card">
-                    <img src="assets/images/image6.png" alt="Product 3">
+                    <img src="../assets/images/image6.png" alt="Product 3">
                     <div class="product-name">Lamb</div>
                     <div class="product-price">Ksh. 150.00</div>
                 </a>
                 <a href="product4.html" class="product-card">
-                    <img src="assets/images/image5.png" alt="Product 4">
+                    <img src="../assets/images/image5.png" alt="Product 4">
                     <div class="product-name">Chicken</div>
                     <div class="product-price">Ksh. 200.00</div>
                 </a>
@@ -516,21 +516,27 @@
 
     // Elements
     const productNameEl = document.getElementById('productName');
-    const productDescriptionEl = document.getElementById('productDescription');
-    const productPriceEl = document.getElementById('productPrice');
-    const mainProductImageEl = document.getElementById('mainProductImage');
-    const productSpecsEl = document.getElementById('productSpecs');
-    const relatedProductsContainer = document.getElementById('relatedProductsContainer');
-    const availabilityInfoEl = document.getElementById('availabilityInfo');
-    const addToCartBtn = document.getElementById('addToCartBtn');
+const productDescriptionEl = document.getElementById('productDescription');
+const productPriceEl = document.getElementById('productPrice');
+const mainProductImageEl = document.getElementById('mainProductImage');
+const productSpecsEl = document.getElementById('productSpecs');
+const relatedProductsContainer = document.getElementById('relatedProductsContainer');
+const availabilityInfoEl = document.getElementById('availabilityInfo');
+const addToCartBtn = document.getElementById('addToCartBtn');
 
-    // Review elements
-    const reviewForm = document.getElementById('reviewForm');
-    const reviewsList = document.getElementById('reviewsList');
-    const reviewText = document.getElementById('reviewText');
-    const ratingStars = document.querySelectorAll('#userRating i');
+// Add these here:
+let quantity = 1;
+const counter = document.getElementById("counter-value");
+const quantitySelector = document.getElementById("quantity-selector");
+const successMessage = document.getElementById("success-message");
 
-    let selectedRating = 0;
+// Review elements
+const reviewForm = document.getElementById('reviewForm');
+const reviewsList = document.getElementById('reviewsList');
+const reviewText = document.getElementById('reviewText');
+const ratingStars = document.querySelectorAll('#userRating i');
+
+let selectedRating = 0;
 
     // Set up rating star click behavior
     ratingStars.forEach((star) => {
@@ -604,10 +610,6 @@
         productNameEl.textContent = 'Error loading product data.';
       }
     }
-    let quantity = 1;
-  const counter = document.getElementById("counter-value");
-  const quantitySelector = document.getElementById("quantity-selector");
-  const successMessage = document.getElementById("success-message");
 
   // Increase quantity
   function increaseQuantity() {
