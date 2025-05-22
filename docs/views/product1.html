@@ -387,17 +387,24 @@
 </head>
 <body>
   <!-- Breadcrumb Navigation -->
-  <ul class="breadcrumb">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="Beef.html">Beef</a></li>
-  </ul>
+  <ul class="breadcrumb flex space-x-2 text-sm text-gray-600">
+  <li>
+    <a href="index.html" class="text-blue-600 hover:underline">Home</a>
+    <span class="mx-1">/</span>
+  </li>
+  <li>
+    <a href="Beef.html" class="text-blue-600 hover:underline">Beef</a>
+    <span class="mx-1">/</span>
+  </li>
+  <li class="text-gray-500" aria-current="page">Lean Grounded Meat</li>
+</ul>
 
   <div id="message" style="display: none;">Success!</div>
   <main>
     
     <section class="product">
       <div class="product-image">
-        <img src="assets/images/image1.png" alt="Product Image">
+        <img src="assets/images/image1.PNG" alt="Product Image">
         <div class="share-product">
           <p>Share:</p>
           <a href="#" class="social-icon" id="facebookShare"><i class="fab fa-facebook"></i></a>
@@ -411,11 +418,21 @@
         <div class="product-price" id="productPrice">Ksh 450 / Kg</div>
         <div class="availability-info" id="availabilityInfo">
           <p>Status: <strong>In Stock</strong></p>
-          <p>Delivery: <strong>2-3 days within Nairobi</strong></p>
+          <p>Delivery: <strong>1 hour within Jua lako</strong></p>
         </div>
         <div class="delivery-fee">Delivery Fee: Ksh 100.00</div>
-        <button class="add-to-cart" id="addToCartBtn">Add to Cart</button>
-      </div>
+<!-- Quantity selector initially hidden -->
+<div id="quantity-selector" class="quantity-selector" style="display: none;">
+  <button onclick="decreaseQuantity()">-</button>
+  <span id="counter-value">1</span>
+  <button onclick="increaseQuantity()">+</button>
+</div>
+
+<!-- Add to cart button -->
+<button class="add-to-cart" onclick="handleAddToCartClick()">Add to Cart</button>
+
+<!-- Success message -->
+<div id="success-message" style="display: none; color: green; margin-top: 10px;">Item added to cart!</div>      </div>
       </section>
 
     <section class="specifications">
@@ -424,6 +441,7 @@
         <li>Weight: 1kg</li>
         <li>Category: Beef</li>
         <li>Type: Lean Grounded</li>
+        <li>Price: Ksh 450.00</li>
         <li>Storage: Keep refrigerated</li>
       </ul>
     </section>
@@ -586,6 +604,58 @@
         productNameEl.textContent = 'Error loading product data.';
       }
     }
+    let quantity = 1;
+  const counter = document.getElementById("counter-value");
+  const quantitySelector = document.getElementById("quantity-selector");
+  const successMessage = document.getElementById("success-message");
+
+  // Increase quantity
+  function increaseQuantity() {
+    quantity++;
+    counter.textContent = quantity;
+  }
+
+  // Decrease quantity
+  function decreaseQuantity() {
+    if (quantity > 1) {
+      quantity--;
+      counter.textContent = quantity;
+    }
+  }
+
+  // Show quantity selector for a limited time
+  function showQuantitySelectorTemporarily() {
+    quantitySelector.style.display = 'flex'; // or 'block' depending on your styling
+
+    // Hide after 5 seconds
+    setTimeout(() => {
+      quantitySelector.style.display = 'none';
+    }, 5000);
+  }
+
+  // Handle Add to Cart button click
+  async function handleAddToCartClick() {
+    // Show the counter first
+    showQuantitySelectorTemporarily();
+
+    // Hide previous success message if any
+    successMessage.style.display = 'none';
+
+    // Actually add to cart in Supabase
+    try {
+      const { error } = await supabase
+        .from('cart')
+        .insert([{ product_id: productId, quantity }]);
+      if (error) throw error;
+
+      successMessage.style.display = 'block';
+      successMessage.textContent = 'Item added to cart!';
+    } catch (error) {
+      successMessage.style.display = 'block';
+      successMessage.textContent = 'Failed to add item to cart.';
+      console.error('Error adding to cart:', error.message);
+    }
+  }
 
     // Load related products (for simplicity, load 3 others)
     async function loadRelatedProducts() {
@@ -616,24 +686,7 @@
       }
     }
 
-    // Add to Cart button click handler
-    addToCartBtn.addEventListener('click', async () => {
-      try {
-        // For demo, just add to a 'cart' table in Supabase
-        const quantity = 1; // You can add quantity selector later
-
-        const { data, error } = await supabase
-          .from('cart')
-          .insert([{ product_id: productId, quantity }]);
-
-        if (error) throw error;
-
-        alert('Product added to cart!');
-      } catch (error) {
-        console.error('Error adding to cart:', error.message);
-        alert('Failed to add product to cart.');
-      }
-    });
+  
 
     // Load and display existing reviews
     async function loadReviews() {
