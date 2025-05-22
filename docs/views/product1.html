@@ -282,56 +282,37 @@
 
   <div id="message" style="display: none;">Success!</div>
   <main>
-    <div class="product">
+    
+    <section class="product">
       <div class="product-image">
-        <img
-          id="mainProductImage"
-          src="../assets/images/product1.jpg"
-          alt="Product Image"
-        />
+        <img src="../assets/images/product1.jpg" alt="Lean Grounded Meat" id="mainProductImage" />
         <div class="share-product">
-          <p>Share this product:</p>
-          <a
-            href="#"
-            id="facebookShare"
-            target="_blank"
-            class="social-icon"
-            ><i class="fab fa-facebook"></i
-          ></a>
-          <a
-            href="#"
-            id="twitterShare"
-            target="_blank"
-            class="social-icon"
-            ><i class="fab fa-twitter"></i
-          ></a>
+          <p>Share:</p>
+          <a href="#" class="social-icon" id="facebookShare"><i class="fab fa-facebook"></i></a>
+          <a href="#" class="social-icon" id="twitterShare"><i class="fab fa-twitter"></i></a>
         </div>
       </div>
-      <div class="product-details">
-        <div class="product-name" id="productName">Loading...</div>
-        <p id="productDescription">
-          Loading product description...
-        </p>
 
-        <div class="product-price">
-          <span class="current-price" id="productPrice">Ksh 0</span>
-        </div>
-
-        <button class="add-to-cart" id="addToCartBtn">Add to Cart</button>
-
+       <div class="product-details">
+        <div class="product-name" id="productName">Lean Grounded Meat</div>
+        <p id="productDescription">Freshly minced lean beef perfect for all your meaty recipes.</p>
+        <div class="product-price" id="productPrice">Ksh 450 / Kg</div>
         <div class="availability-info" id="availabilityInfo">
-          <p>Status: <strong>Loading...</strong></p>
-          <p>Estimated Delivery: <strong>2-3 Days</strong></p>
+          <p>Status: <strong>In Stock</strong></p>
+          <p>Delivery: <strong>2-3 days within Nairobi</strong></p>
         </div>
-
-        <div class="delivery-fee">Delivery fee: Ksh. 100.00 within Nairobi.</div>
+        <div class="delivery-fee">Delivery Fee: Ksh 100.00</div>
+        <button class="add-to-cart" id="addToCartBtn">Add to Cart</button>
       </div>
-    </div>
+      </section>
 
     <section class="specifications">
       <h2>Specifications</h2>
       <ul id="productSpecs">
-        <li>Loading specifications...</li>
+        <li>Weight: 1kg</li>
+        <li>Category: Beef</li>
+        <li>Type: Lean Grounded</li>
+        <li>Storage: Keep refrigerated</li>
       </ul>
     </section>
 
@@ -347,11 +328,11 @@
       <h3>Write a Review</h3>
       <form class="review-form" id="reviewForm">
         <div class="rating" id="userRating">
-          <i class="far fa-star" data-value="5"></i>
-          <i class="far fa-star" data-value="4"></i>
-          <i class="far fa-star" data-value="3"></i>
-          <i class="far fa-star" data-value="2"></i>
           <i class="far fa-star" data-value="1"></i>
+          <i class="far fa-star" data-value="2"></i>
+          <i class="far fa-star" data-value="3"></i>
+          <i class="far fa-star" data-value="4"></i>
+          <i class="far fa-star" data-value="5"></i>
         </div>
         <textarea
           id="reviewText"
@@ -366,11 +347,15 @@
         <h4>Reviews</h4>
         <div id="reviewsList">Loading reviews...</div>
       </div>
+      <div class="review-item">
+          <p><strong>Peter:</strong> Great packaging and delivery was fast.</p>
+          <p class="review-rating">★★★★☆</p>
+        </div>
     </div>
   </main>
 
-  <footer>
-    &copy; 2025 Carnivore. All rights reserved.
+ <footer>
+    <p>&copy; 2025 Butchee. All rights reserved.</p>
   </footer>
 
   <!-- Supabase SDK -->
@@ -490,7 +475,7 @@
         data.forEach((product) => {
           const card = document.createElement('a');
           card.classList.add('product-card');
-          card.href = `product.html?id=${product.id}`;
+          card.href = `product1.html?id=${product.id}`;
           card.innerHTML = `
             <img src="${product.image_url || '../assets/images/product1.jpg'}" alt="${product.name}" />
             <div class="product-name">${product.name}</div>
@@ -614,6 +599,7 @@
       loadReviews();
       setupShareButtons();
     })();
+       
   </script>
 </body>
 </html>
