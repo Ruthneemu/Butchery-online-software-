@@ -429,7 +429,7 @@
 </div>
 
 <!-- Add to cart button -->
-<button class="add-to-cart" onclick="handleAddToCartClick()">Add to Cart</button>
+<button id="add-to-cart" onclick="handleAddToCartClick()">Add to Cart</button>
 
 <!-- Success message -->
 <div id="success-message" style="display: none; color: green; margin-top: 10px;">Item added to cart!</div>      </div>
@@ -492,10 +492,6 @@
         <h4>Reviews</h4>
         <div id="reviewsList">Loading reviews...</div>
       </div>
-      <div class="review-item">
-          <p><strong>Peter:</strong> Great packaging and delivery was fast.</p>
-          <p class="review-rating">★★★★☆</p>
-        </div>
     </div>
   </main>
 
@@ -524,19 +520,48 @@ const relatedProductsContainer = document.getElementById('relatedProductsContain
 const availabilityInfoEl = document.getElementById('availabilityInfo');
 const addToCartBtn = document.getElementById('addToCartBtn');
 
-// Add these here:
+// Only declare these ONCE, near the top of your script
 let quantity = 1;
-const counter = document.getElementById("counter-value");
-const quantitySelector = document.getElementById("quantity-selector");
-const successMessage = document.getElementById("success-message");
 
-// Review elements
-const reviewForm = document.getElementById('reviewForm');
-const reviewsList = document.getElementById('reviewsList');
-const reviewText = document.getElementById('reviewText');
-const ratingStars = document.querySelectorAll('#userRating i');
+// Make these functions global for HTML onclick
+window.increaseQuantity = function() {
+  quantity++;
+  counterValue.textContent = quantity;
+};
 
-let selectedRating = 0;
+window.decreaseQuantity = function() {
+  if (quantity > 1) {
+    quantity--;
+    counterValue.textContent = quantity;
+  }
+};
+
+// Improved Add to Cart function
+window.handleAddToCartClick = async function() {
+  if (quantitySelector.style.display === 'none') {
+    quantitySelector.style.display = 'flex';
+    successMessage.style.display = 'none';
+  } else {
+    // Add to cart in Supabase
+    try {
+      const { error } = await supabase
+        .from('cart')
+        .insert([{ product_id: productId, quantity }]);
+      if (error) throw error;
+
+      successMessage.textContent = 'Item added to cart!';
+      successMessage.style.display = 'block';
+      setTimeout(() => {
+        successMessage.style.display = 'none';
+        quantitySelector.style.display = 'none';
+      }, 2000);
+    } catch (error) {
+      successMessage.textContent = 'Failed to add item to cart.';
+      successMessage.style.display = 'block';
+      console.error('Error adding to cart:', error.message);
+    }
+  }
+};
 
     // Set up rating star click behavior
     ratingStars.forEach((star) => {
@@ -611,60 +636,40 @@ let selectedRating = 0;
       }
     }
 
-  // Increase quantity
+  // Initialize quantity to 1
+
+
+  // Get references to DOM elements
+  const quantitySelector = document.getElementById('quantity-selector');
+  const counterValue = document.getElementById('counter-value');
+  const successMessage = document.getElementById('success-message');
+
   function increaseQuantity() {
     quantity++;
-    counter.textContent = quantity;
+    counterValue.textContent = quantity;
   }
 
-  // Decrease quantity
   function decreaseQuantity() {
     if (quantity > 1) {
       quantity--;
-      counter.textContent = quantity;
+      counterValue.textContent = quantity;
     }
   }
 
-  // Show quantity selector for a limited time
-  function showQuantitySelectorTemporarily() {
-    quantitySelector.style.display = 'flex';
-    setTimeout(() => {
-      quantitySelector.style.display = 'none';
-    }, 3000);
-  }
-
-  // Handle Add to Cart button click
-  async function handleAddToCartClick() {
-  const quantitySelector = document.getElementById('quantity-selector');
-  const successMessage = document.getElementById('success-message');
-
-  if (quantitySelector && successMessage) {
-    quantitySelector.style.display = 'flex';
-    successMessage.style.display = 'none';
-
-    // Actually add to cart in Supabase
-    try {
-      const { error } = await supabase
-        .from('cart')
-        .insert([{ product_id: productId, quantity }]);
-      if (error) throw error;
-
-      successMessage.textContent = 'Item added to cart!';
+  function handleAddToCartClick() {
+    // Show quantity selector on first click
+    if (quantitySelector.style.display === 'none') {
+      quantitySelector.style.display = 'flex';
+      successMessage.style.display = 'none';  // Hide success message initially
+    } else {
+      // Add to cart logic here (e.g., update cart, call backend)
+      // Show success message briefly
       successMessage.style.display = 'block';
-
       setTimeout(() => {
         successMessage.style.display = 'none';
-        quantitySelector.style.display = 'none';
-      }, 3000);
-    } catch (error) {
-      successMessage.textContent = 'Failed to add item to cart.';
-      successMessage.style.display = 'block';
-      console.error('Error adding to cart:', error.message);
+      }, 2000);
     }
-  } else {
-    console.error('Required elements not found in the DOM.');
   }
-}
 
     // Load related products (for simplicity, load 3 others)
     async function loadRelatedProducts() {
