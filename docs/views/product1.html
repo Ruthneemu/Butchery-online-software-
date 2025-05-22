@@ -627,20 +627,19 @@ let selectedRating = 0;
 
   // Show quantity selector for a limited time
   function showQuantitySelectorTemporarily() {
-    quantitySelector.style.display = 'flex'; // or 'block' depending on your styling
-
-    // Hide after 5 seconds
+    quantitySelector.style.display = 'flex';
     setTimeout(() => {
       quantitySelector.style.display = 'none';
-    }, 5000);
+    }, 3000);
   }
 
   // Handle Add to Cart button click
   async function handleAddToCartClick() {
-    // Show the counter first
-    showQuantitySelectorTemporarily();
+  const quantitySelector = document.getElementById('quantity-selector');
+  const successMessage = document.getElementById('success-message');
 
-    // Hide previous success message if any
+  if (quantitySelector && successMessage) {
+    quantitySelector.style.display = 'flex';
     successMessage.style.display = 'none';
 
     // Actually add to cart in Supabase
@@ -650,14 +649,22 @@ let selectedRating = 0;
         .insert([{ product_id: productId, quantity }]);
       if (error) throw error;
 
-      successMessage.style.display = 'block';
       successMessage.textContent = 'Item added to cart!';
-    } catch (error) {
       successMessage.style.display = 'block';
+
+      setTimeout(() => {
+        successMessage.style.display = 'none';
+        quantitySelector.style.display = 'none';
+      }, 3000);
+    } catch (error) {
       successMessage.textContent = 'Failed to add item to cart.';
+      successMessage.style.display = 'block';
       console.error('Error adding to cart:', error.message);
     }
+  } else {
+    console.error('Required elements not found in the DOM.');
   }
+}
 
     // Load related products (for simplicity, load 3 others)
     async function loadRelatedProducts() {
